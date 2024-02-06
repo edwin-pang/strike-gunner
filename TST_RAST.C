@@ -65,7 +65,7 @@ int main()
 {
 	void *base = Physbase();
 
-	/*clear_screen(); clear screen works */
+	/*clear_screen();clear screen works */
 
 	plot_bitmap_16(base,128,120,powerup,16);
 	plot_bitmap_16(base,640,120,powerup,16); /* various test cases of 16 ensuring it works*/
@@ -74,9 +74,17 @@ int main()
 	plot_bitmap_16(base,305,370,powerup,16);
 	plot_bitmap_16(base,620,330,powerup,16);
 	plot_bitmap_16(base,622,300,powerup,16);
+	plot_bitmap_16(base,400,-5,powerup,16);
+	plot_bitmap_16(base,400,390,powerup,16);
+	plot_bitmap_16(base,634,200,powerup,16);
+
 
 	plot_bitmap_32(base,320,200,player_ship,32);
-
+	plot_bitmap_32(base,630,80,player_ship,32);
+	plot_bitmap_32(base,334,250,player_ship,32);
+	plot_bitmap_32(base,310,150,player_ship,32);
+	plot_bitmap_32(base,310,-15,player_ship,32);
+	plot_bitmap_32(base,100,390,player_ship,32);
 
 
 	plot_pixel(base,500,250);

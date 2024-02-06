@@ -15,14 +15,14 @@ void plot_vertical_line(UINT32 *base, int x, int y, unsigned int length, int up)
 	hex_for_line = hex_for_line << extra_x;
 	if (up == 1){
 		while (pixels > 0 && loc >= base) {
-			*loc = hex_for_line;
+			*loc |= hex_for_line;
 			loc -= 20;
 			pixels--;
 		}
 	}
 	else {
 		while (pixels > 0 && loc < base + 8000){
-			*loc = hex_for_line;
+			*loc |= hex_for_line;
 			loc += 20;
 			pixels--;
 		}
@@ -57,8 +57,9 @@ void plot_horizontal_line(UINT32 *base, int x, int y, unsigned int length,int ri
 		extra_to_add = 0xFFFFFFFF;
 		extra_to_add = extra_to_add >> extra_bits;
 	}
-
+	if (loc <= base + 8000 || loc > base){
 	*loc |= extra_to_add;
+	}
 }
 
 void plot_bitmap_8(UINT8 *base, int x, int y, const UINT8 *bitmap, unsigned int height)
@@ -67,13 +68,13 @@ void plot_bitmap_8(UINT8 *base, int x, int y, const UINT8 *bitmap, unsigned int 
 	int row;
 	int bitOffset = x % 8;
 
-	if (loc < base | y + height > SCREEN_HEIGHT)
-	{
-		return;
-	}
 
 	for (row = 0; row < height; row++)
 	{
+		if ((loc < base) || (loc > base + 32000)){
+			loc += 80;
+		}
+		else{
 		UINT8 right_char = bitmap[row] << 8 - bitOffset ;
 		UINT8 left_char = bitmap[row] >> bitOffset;
 
@@ -82,20 +83,20 @@ void plot_bitmap_8(UINT8 *base, int x, int y, const UINT8 *bitmap, unsigned int 
 		loc += 80;
 	}
 }
-
+}
 void plot_bitmap_32(UINT32 *base, int x, int y, const UINT32 *bitmap, unsigned int height)
 {
 	UINT32 *loc = (base + (y * 20) + (x >> 5) + 1);
 	int row;
 	int bitOffset = x % 32;
 	
-	if (loc < base | y + height > SCREEN_HEIGHT) 
-	{
-		return;
-	}
 
 	for(row = 0; row < height; row++)
 	{
+		if ((loc < base) || (loc > base + 8000)){
+			loc += 20;
+		}
+		else{
 		UINT32 right_long = bitmap[row] << 32 - bitOffset;
 		UINT32 left_long = bitmap[row] >> bitOffset;
 
@@ -104,23 +105,28 @@ void plot_bitmap_32(UINT32 *base, int x, int y, const UINT32 *bitmap, unsigned i
 		loc += 20;
 	}
 }
-
+}
 void plot_bitmap_16(UINT16 *base, int x, int y, const UINT16 *bitmap, unsigned int height)
 {
+	
     UINT16 *loc = (base + (y * 40) + (x >> 4)+ 1);
     int row;
     int bitOffset = x % 16;  
-	if ( (loc < base) || (y + height) > SCREEN_HEIGHT) {
-		return;
-	}
+
     for (row = 0; row < height; row++)
     {
+		if ((loc < base) || (loc > base + 16000)){
+			loc += 40;
+		}
+		else{
+
+		
 		UINT16 right_word = bitmap[row] << 16 - bitOffset;     /*since this function can plot on any x pixel, the bitmap needs to be broken into 2 seperate words.*/
 		UINT16 left_word = bitmap[row] >> bitOffset; /*the right word is is printed to the screen in the current location, and the left word is printed in the current location -1 word*/
         *loc = (*loc  | right_word);					  /*print right word to screen*/	     
 		*(loc -1) = *(loc - 1) | left_word;				  /*print left word to screen*/
         loc += 40;										  /*move down 1 pixel in y*/
-		
+		}
 }
 }
 
