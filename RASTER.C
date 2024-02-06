@@ -75,7 +75,7 @@ void plot_bitmap_8(UINT8 *base, int x, int y, const UINT8 *bitmap, unsigned int 
 	for (row = 0; row < height; row++)
 	{
 		UINT8 right_char = bitmap[row] << 8 - bitOffset ;
-		UINT8 left_char = bitmap[row] >> bitOffset
+		UINT8 left_char = bitmap[row] >> bitOffset;
 
 		*loc = (*loc | right_char);
 		*(loc - 1) = *(loc - 1) | left_char;
@@ -121,6 +121,7 @@ void plot_bitmap_16(UINT16 *base, int x, int y, const UINT16 *bitmap, unsigned i
 		*(loc -1) = *(loc - 1) | left_word;				  /*print left word to screen*/
         loc += 40;										  /*move down 1 pixel in y*/
 		
+}
 }
 
 void plot_pixel(UINT8 *base, int x, int y)
