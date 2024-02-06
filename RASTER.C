@@ -12,10 +12,20 @@ void plot_bitmap_8(UINT8 *base, int x, int y, const UINT8 *bitmap, unsigned int 
 {
 	UINT8 *loc = base + (y * 80) + (x >> 3);
 	int row;
+	int bitOffset = x % 8;
+
+	if (loc < base | y + height > SCREEN_HEIGHT)
+	{
+		return;
+	}
 
 	for (row = 0; row < height; row++)
 	{
-		*loc |= bitmap[row];
+		UINT8 right_char = bitmap[row] << bitOffset;
+		UINT8 left_char = bitmap[row] >> 16 - bitOffset;
+
+		*loc = (*loc | right_char);
+		*(loc - 1) = *(loc - 1) | left_char;
 		loc += 80;
 	}
 }
@@ -24,11 +34,39 @@ void plot_bitmap_32(UINT32 *base, int x, int y, const UINT32 *bitmap, unsigned i
 {
 	UINT32 *loc = base + (y * 20) + (x >> 5);
 	int row;
+	int bitOffset = x % 32;
+	
+	if (loc < base | y + height > SCREEN_HEIGHT) 
+	{
+		return;
+	}
 
 	for(row = 0; row < height; row++)
 	{
-		*loc |= bitmap[row];
+		UINT32 right_long = bitmap[row] << bitOffset;
+		UINT32 left_long = bitmap[row] >> 16 - bitOffset;
+
+		*loc = (*loc | right_long);
+		*(loc - 1) = *(loc - 1) | left_long;
 		loc += 20;
+	}
+}
+
+void plot_bitmap_16(UINT16 *base, int x, int y, const UINT16 *bitmap, unsigned int height)
+{
+    UINT16 *loc = base + (y * 40) + (x >> 4);
+    int row;
+    int bitOffset = x % 16;  
+	if ( loc < base | y + height > SCREEN_HEIGHT) {
+		return;
+	}
+    for (row = 0; row < height; row++)
+    {
+		UINT16 right_word = bitmap[row] << bitOffset;     /*since this function can plot on any x pixel, the bitmap needs to be broken into 2 seperate words.*/
+		UINT16 left_word = bitmap[row] >> 16 - bitOffset; /*the right word is is printed to the screen in the current location, and the left word is printed in the current location -1 word*/
+        *loc = (*loc  | right_word);					  /*print right word to screen*/	     
+		*(loc -1) = *(loc - 1) | left_word;				  /*print left word to screen*/
+        loc += 40;										  /*move down 1 pixel in y*/
 	}
 }
 
@@ -39,23 +77,4 @@ void plot_pixel(UINT8 *base, int x, int y)
 		UINT8 *loc = base + y * 80 + (x >> 3);
 		*loc |= 1 << 7 - (x & 7);
 	}
-}
-
-void plot_bitmap_16(UINT16 *base, int x, int y, const UINT16 *bitmap, unsigned int height)
-{
-    UINT16 *loc = base + (y * 40) + (x >> 4);
-    int row;
-    int bitOffset = x % 16;  
-	if ( loc < base | y + height > 400) {
-		return;
-	}
-    for (row = 0; row < height; row++)
-    {
-		UINT16 right_word = bitmap[row] << bitOffset;     /*since this function can plot on any x pixel, the bitmap needs to be broken into 2 seperate words.*/
-		UINT16 left_word = bitmap[row] >> 16 - bitOffset; /*the right word is is printed to the screen in the current location, and the left word is printed in the current location -1 word*/
-        *loc = (*loc  | right_word);					  /*print right word to screen*/	     
-		*(loc -1) = *(loc - 1) | left_word;				  /*print left word to screen*/
-        loc += 40;										  /*move down 1 pixel in y*/
-		
-}
 }
