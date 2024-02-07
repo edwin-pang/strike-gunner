@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "TST_RAST.C": "cpp",
-        "RASTER.C": "cpp"
+        "RASTER.C": "cpp",
+        "EVENTS.C": "cpp",
+        "MODEL.C": "cpp"
     }
 }
