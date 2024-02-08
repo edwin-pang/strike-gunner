@@ -1,7 +1,9 @@
 /*note to later change some of our spec properties to characters as i dont think we need the space ints take up for some of them*/
 
 /*By the way C doesn't actaully have booleans, so we need to use something else instead*/
-
+#define LEFT_BOUND   50
+#define RIGHT_BOUND  590
+#define PLAYER_WIDTH 32
 typedef struct 
 {
 UINT16 x,y;               /*horizontal and vertical postion of the player's ship*/              
