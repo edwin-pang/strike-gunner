@@ -24,4 +24,28 @@ void player_shoot (PlayerShip player) {
     if (player_shoot == 1) {
         
     }
+
+    while (check_collision(bullet) != 1){       /* not too sure if this will work, just general idea */
+        move_bullet(*bullet);
+    }
+
+}
+
+void move_bullet(Bullet *bullet){
+    bullet->y += bullet->speed;         /* this doesnt seem right, i think bullet speed should be declared a constant somewhere idk tho*/
+}
+
+int check_collision(Bullet bullet){    /* i feel like there should be a general function to check for collisions but i think thats what we were */
+    int bulletLeft = bullet.x;         /*sorta dicussing earlier with having to check for all collisions all the time*/
+    int bulletRight = bullet.x + 32;
+    int bulletTop = bullet.y;
+    int bulletBottom = bullet.y + 32;
+    
+    // There should be a way to also pass other types of structs for collsions but i'm not too sure how
+
+    if (bulletRight >= objectLeft && bulletLeft <= objectRight && bulletBottom >= objectTop){ // checks right bound of bullet
+        return 1;
+    }
+    
+    return 0;
 }
