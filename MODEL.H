@@ -1,6 +1,8 @@
 /*note to later change some of our spec properties to characters as i dont think we need the space ints take up for some of them*/
 
 /*By the way C doesn't actaully have booleans, so we need to use something else instead*/
+
+/*reminder to add function prototypes here later*/
 #define LEFT_BOUND   50
 #define RIGHT_BOUND  590
 #define PLAYER_WIDTH 32
@@ -89,3 +91,14 @@ UINT16 x,y;               /*horizontal and vertical postion of the powerup*/
 UINT8 collision;          /*determines if player has collided with powerup. 0 for no, 1 for yes*/             
 
 } PowerUp;
+
+typedef struct{
+Playership player;
+Bullet bullets[50] = new array[50];
+Missile missiles[25] = new array [25];
+Helicopter helicopters[20] = new array[20];
+Jet jets[20] = new array[20];
+Score score;
+Lifecounter lives;
+
+} Model;
