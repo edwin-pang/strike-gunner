@@ -25,27 +25,37 @@ void player_shoot (PlayerShip player) {
         
     }
 
-    while (check_collision(bullet) != 1){       /* not too sure if this will work, just general idea */
+    while (check_collision(*bullet->position, *Uh Oh->position) != 1){       /* not too sure if this will work, just general idea */
         move_bullet(*bullet);
     }
 
 }
 
 void move_bullet(Bullet *bullet){
-    bullet->y += bullet->speed;         /* this doesnt seem right, i think bullet speed should be declared a constant somewhere idk tho*/
+    bullet->position->y += bullet->speed;             /* this doesnt seem right, i think bullet speed should be declared a constant somewhere idk tho*/
 }
 
-int check_collision(Bullet bullet){    /* i feel like there should be a general function to check for collisions but i think thats what we were */
-    int bulletLeft = bullet.x;         /*sorta dicussing earlier with having to check for all collisions all the time*/
-    int bulletRight = bullet.x + 32;
-    int bulletTop = bullet.y;
-    int bulletBottom = bullet.y + 32;
-    
-    // There should be a way to also pass other types of structs for collsions but i'm not too sure how
+int check_collision(Position *pos1, Position *pos2){    /* I think i found the general collsion function we need!! */
+    int obj1_left = pos1->x;
+    int obj1_right = pos1->x + 32;        // I think there should also be way to pass in the bitmap width and height but for now hard coded
+    int obj1_top = pos1->y;
+    int obj1_bottom = pos1->y + 32;
 
-    if (bulletRight >= objectLeft && bulletLeft <= objectRight && bulletBottom >= objectTop){ // checks right bound of bullet
+    int obj2_left = pos2->x;
+    int obj2_right = pos2->x + 32;
+    int obj2_top = pos2->y;
+    int obj2_bottom = pos2->y + 32;
+
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top) // this checks for collisions top-down
+    {
         return 1;
     }
-    
+
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_top >= obj2_bottom) // this checks for collisions bottom-up
+    {
+        return 1;                                                                      // I would've just thrown an OR operator into code above but
+                                                                                       // if im writing the function like this, it depends what obj1 and obj2 are.
+    }
+
     return 0;
 }
