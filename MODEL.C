@@ -3,6 +3,25 @@
 /*The location for things is going to represent the top left corner of their bitmap*/
 /*for now lets imagine that x = 0-50, and x = 590-640 are not inside the playable area (this is the side panel where health and stuff will be)*/
 /*no ship cannot fly below y = 368*/
+UINT32 player_bullet_hex[16] = 
+{
+    0x00700E00,
+    0x00700E00,
+    0x00700E00,
+    0x00700E00,
+    0x00700E00,
+    0x00700E00,
+    0x00700E00,
+    0x3800001C,
+    0x3800001C,
+    0x3800001C,
+    0x3800001C,
+    0x3800001C,
+    0x3800001C,
+    0x3800001C,
+    0x00000000,
+    0x00000000
+};
 
 void move_player (PlayerShip player) {
     if (player.hor_dir == 1 && player.x < (RIGHT_BOUND - PLAYER_WIDTH)){
@@ -20,15 +39,14 @@ void move_player (PlayerShip player) {
     }
 }
 
-void player_shoot (PlayerShip player) {
+void player_shoot (PlayerShip player, Model model) {
     if (player_shoot == 1) {
-        
+        int i = 0
+        while ((model.PlayerBullets[i]).position.y != 0 ){
+            i++;            /*find a bullet in the array not being used*/
+        }
+        (model.PlayerBullets[i]).position.y = player.position.y + 16;
     }
-
-    while (check_collision(*bullet->position, *Uh Oh->position) != 1){       /* not too sure if this will work, just general idea */
-        move_bullet(*bullet);
-    }
-
 }
 
 void move_bullet(Bullet *bullet){
