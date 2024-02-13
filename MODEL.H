@@ -3,13 +3,15 @@
 /*By the way C doesn't actaully have booleans, so we need to use something else instead*/
 
 /*reminder to add function prototypes here later*/
+#include "TYPES.H"
 #define LEFT_BOUND   50
 #define RIGHT_BOUND  590
 #define PLAYER_WIDTH 32
 
+
 typedef struct {
-    int x, y;             // This is a generic struct that contains x and y coordinates
-} Position;               // We can change int to something else if we don't need to alloc that much for position
+    int x, y;             /* This is a generic struct that contains x and y coordinates */
+} Position;               /* We can change int to something else if we don't need to alloc that much for position*/
 
 typedef struct 
 {
@@ -75,9 +77,14 @@ Position position;        /*horizontal and vertical postion of the bullet*/
 const UINT8 speed = 1;    /*rate of displacement for movement in any direction (pixels per clock cycle)*/
 UINT8 hor_dir,ver_dir;    /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 damage;             /*amount of damage the bullet will do*/
-UINT8 friendly;           /*boolean flag to determine whether bullet is from a player (1) or not (0). players cant hurt players */
-
 } Bullet;
+
+typedef struct {
+Position position;        /*horizontal and vertical postion of the bullet*/              
+const UINT8 speed = 1;    /*rate of displacement for movement in any direction (pixels per clock cycle)*/
+UINT8 hor_dir,ver_dir;    /*direction of movement, 1 for up or right, 2 for down or left*/
+UINT8 damage;             /*amount of damage the bullet will do*/
+} PlayerBullet;
 
 typedef struct 
 {
@@ -100,6 +107,7 @@ UINT8 collision;          /*determines if player has collided with powerup. 0 fo
 typedef struct{
 Playership player;
 Bullet bullets[50] = new array[50];
+PlayerBullet PlayerBullets[50] = new array[50];
 Missile missiles[25] = new array [25];
 Helicopter helicopters[20] = new array[20];
 Jet jets[20] = new array[20];
