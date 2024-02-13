@@ -50,12 +50,12 @@ void player_shoot (PlayerShip player, Model model) {
 }
 
 void move_bullet(Bullet *bullet){
-    bullet->position->y += bullet->speed;             /* this doesnt seem right, i think bullet speed should be declared a constant somewhere idk tho*/
+    bullet->position.y += bullet->speed;             /* seems okay, can be changed in the future*/
 }
 
 int check_collision(Position *pos1, Position *pos2){    /* I think i found the general collsion function we need!! */
     int obj1_left = pos1->x;
-    int obj1_right = pos1->x + 32;        // I think there should also be way to pass in the bitmap width and height but for now hard coded
+    int obj1_right = pos1->x + 32;                      // I think there should also be way to pass in the bitmap width and height but for now hard coded
     int obj1_top = pos1->y;
     int obj1_bottom = pos1->y + 32;
 
@@ -64,16 +64,23 @@ int check_collision(Position *pos1, Position *pos2){    /* I think i found the g
     int obj2_top = pos2->y;
     int obj2_bottom = pos2->y + 32;
 
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top) // this checks for collisions top-down
-    {
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top){ // this checks for collisions top-down
         return 1;
     }
 
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_top >= obj2_bottom) // this checks for collisions bottom-up
-    {
-        return 1;                                                                      // I would've just thrown an OR operator into code above but
-                                                                                       // if im writing the function like this, it depends what obj1 and obj2 are.
-    }
-
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_top >= obj2_bottom){ // this checks for collisions bottom-up
+        return 1;                                                                       // I would've just thrown an OR operator into code above but
+    }      
+                                                                                        // if im writing the function like this, it depends what obj1 and obj2 are.
     return 0;
+}
+
+void update_score(Score *score, int value){
+    score->value += value;
+}
+
+void update_heli_down(Helicopter *helicopter){                                          // I think this belongs in events.c (timer based)
+    if(helicopter->ver_dir == 1 && helicopter->position.y < 368) {                      // this is basically just the player ship code
+        helicopter->position.y += helicopter->speed;
+    }
 }
