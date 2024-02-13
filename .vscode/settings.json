@@ -3,6 +3,9 @@
         "TST_RAST.C": "cpp",
         "RASTER.C": "cpp",
         "EVENTS.C": "cpp",
-        "MODEL.C": "cpp"
+        "MODEL.C": "cpp",
+        "TST_MODEL.C": "cpp",
+        "TST_MO.C": "cpp",
+        "TST_MODE.C": "cpp"
     }
 }
