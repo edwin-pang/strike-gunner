@@ -4,8 +4,10 @@
 
 /*reminder to add function prototypes here later*/
 #include "types.h"
-#define LEFT_BOUND   50
-#define RIGHT_BOUND  590
+#define LEFT_BOUND_PLAYER   50
+#define RIGHT_BOUND_PLAYER  590 
+#define LEFT_BOUND_ENEMY    0
+#define RIGHT_BOUND_ENEMY   640
 #define PLAYER_WIDTH 32
 
 
@@ -116,8 +118,8 @@ LifeCounter lives;
 
 } Model;
 
-void move_player (PlayerShip player);
-void player_shoot (PlayerShip player, Model model);
+void move_player (PlayerShip *player);
+void player_shoot (PlayerShip *player, Model *model);
 void move_bullet(Bullet *bullet);
 int check_collision(Position *pos1, Position *pos2);
 void update_score(Score *score, int value);

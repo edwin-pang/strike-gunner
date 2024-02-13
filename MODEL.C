@@ -39,6 +39,7 @@ void move_player (PlayerShip player) {
     }
 }
 
+
 void player_shoot (PlayerShip player, Model model) {
     if (player.fire_wep == 1) {
         int i = 0;
