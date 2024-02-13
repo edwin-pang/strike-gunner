@@ -24,24 +24,25 @@ UINT32 player_bullet_hex[16] =
 };
 
 void move_player (PlayerShip player) {
-    if (player.hor_dir == 1 && player.x < (RIGHT_BOUND - PLAYER_WIDTH)){
-        player.x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/
+    if (player.hor_dir == 1 && player.position.x < (RIGHT_BOUND - PLAYER_WIDTH)){
+        player.position.x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/
     }
-    else if (player.hor_dir == 2 && player.x > (RIGHT_BOUND + 1)) {
-        player.x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
+    else if (player.hor_dir == 2 && player.position.x > (RIGHT_BOUND + 1)) {
+        player.position.x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
     }
     /*seperate if because player can move both horizontally and vertically in one clock cycle*/
-    if (player.vertical == 1 && player.y > 0) {
-        player.y += 1;      /*move player one pixel upwards if inputted, and it still has room to move up*/
+    if (player.ver_dir == 1 && player.position.y > 0) {
+        player.position.y += 1;      /*move player one pixel upwards if inputted, and it still has room to move up*/
     }
-    else if (player.vertical == 2 && player.y <= 368) {
-        player.y -= 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
+    else if (player.ver_dir == 2 && player.position.y <= 368) {
+        player.position.y -= 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
     }
 }
 
+
 void player_shoot (PlayerShip player, Model model) {
-    if (player_shoot == 1) {
-        int i = 0
+    if (player.fire_wep == 1) {
+        int i = 0;
         while ((model.PlayerBullets[i]).position.y != 0 ){
             i++;            /*find a bullet in the array not being used*/
         }
@@ -55,7 +56,7 @@ void move_bullet(Bullet *bullet){
 
 int check_collision(Position *pos1, Position *pos2){    /* I think i found the general collsion function we need!! */
     int obj1_left = pos1->x;
-    int obj1_right = pos1->x + 32;                      // I think there should also be way to pass in the bitmap width and height but for now hard coded
+    int obj1_right = pos1->x + 32;                      /* I think there should also be way to pass in the bitmap width and height but for now hard coded*/
     int obj1_top = pos1->y;
     int obj1_bottom = pos1->y + 32;
 
@@ -79,8 +80,8 @@ void update_score(Score *score, int value){
     score->value += value;
 }
 
-void move_heli_down(Helicopter *helicopter){                                            // I think this belongs in events.c (timer based)
-    if(helicopter->ver_dir == 1 && helicopter->position.y < 368) {                      // this is basically just the player ship code
+void move_heli_down(Helicopter *helicopter){                                            /* I think this belongs in events.c (timer based)*/
+    if(helicopter->ver_dir == 1 && helicopter->position.y < 368) {                      /* this is basically just the player ship code*/
         helicopter->position.y += helicopter->speed;
     }
 }
