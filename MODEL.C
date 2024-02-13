@@ -64,14 +64,14 @@ int check_collision(Position *pos1, Position *pos2){    /* I think i found the g
     int obj2_top = pos2->y;
     int obj2_bottom = pos2->y + 32;
 
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top){ // this checks for collisions top-down
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top){  /*this checks for collisions top-down*/
         return 1;
     }
 
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_top >= obj2_bottom){ // this checks for collisions bottom-up
-        return 1;                                                                       // I would've just thrown an OR operator into code above but
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_top >= obj2_bottom){  /*this checks for collisions bottom-up*/
+        return 1;                                                                        /*I would've just thrown an OR operator into code above but*/
     }      
-                                                                                        // if im writing the function like this, it depends what obj1 and obj2 are.
+                                                                                         /*if im writing the function like this, it depends what obj1 and obj2 are*/
     return 0;
 }
 
@@ -79,7 +79,7 @@ void update_score(Score *score, int value){
     score->value += value;
 }
 
-void update_heli_down(Helicopter *helicopter){                                          // I think this belongs in events.c (timer based)
+void move_heli_down(Helicopter *helicopter){                                            // I think this belongs in events.c (timer based)
     if(helicopter->ver_dir == 1 && helicopter->position.y < 368) {                      // this is basically just the player ship code
         helicopter->position.y += helicopter->speed;
     }

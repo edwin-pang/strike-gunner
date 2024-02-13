@@ -67,7 +67,7 @@ const UINT16 x_len = 32;
 const UINT16 y_len = 32;  /*dimensions of life counter size*/    
 UINT16 health_bar = 3;    /*current life count*/
 
-} lifeCounter;
+} LifeCounter;
 
 typedef struct 
 {
@@ -98,12 +98,19 @@ UINT8 collision;          /*determines if player has collided with powerup. 0 fo
 } PowerUp;
 
 typedef struct{
-Playership player;
+PlayerShip player;
 Bullet bullets[50] = new array[50];
 Missile missiles[25] = new array [25];
 Helicopter helicopters[20] = new array[20];
 Jet jets[20] = new array[20];
 Score score;
-Lifecounter lives;
+LifeCounter lives;
 
 } Model;
+
+void move_player (PlayerShip player);
+void player_shoot (PlayerShip player, Model model);
+void move_bullet(Bullet *bullet);
+int check_collision(Position *pos1, Position *pos2);
+void update_score(Score *score, int value);
+void move_heli_down(Helicopter *helicopter);
