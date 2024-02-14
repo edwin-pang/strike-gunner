@@ -1,8 +1,11 @@
+#ifndef MODEL_H
+#define MODEL_H
 /*note to later change some of our spec properties to characters as i dont think we need the space ints take up for some of them*/
 
 /*By the way C doesn't actaully have booleans, so we need to use something else instead*/
 
 /*reminder to add function prototypes here later*/
+
 #include "types.h"
 #define LEFT_BOUND_PLAYER   50
 #define RIGHT_BOUND_PLAYER  590 
@@ -124,3 +127,5 @@ void move_bullet(Bullet *bullet);
 int check_collision(Position *pos1, Position *pos2);
 void update_score(Score *score, int value);
 void move_heli_down(Helicopter *helicopter);
+
+#endif

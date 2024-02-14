@@ -1,0 +1,8 @@
+tst_mo: tst_mo.o model.o
+	cc68x -g tst_mo.o model.o -o tst_mo
+
+tst_mo.o: tst_mo.c model.h
+	cc68x -g -c tst_mo.c
+
+model.o: model.c model.h
+	cc68x -g -c model.c

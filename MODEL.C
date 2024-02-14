@@ -1,4 +1,4 @@
-#include "MODEL.H"
+#include "model.h"
 
 /*The location for things is going to represent the top left corner of their bitmap*/
 /*for now lets imagine that x = 0-50, and x = 590-640 are not inside the playable area (this is the side panel where health and stuff will be)*/
@@ -23,30 +23,30 @@ UINT32 player_bullet_hex[16] =
     0x00000000
 };
 
-void move_player (PlayerShip player) {
-    if (player.hor_dir == 1 && player.position.x < (RIGHT_BOUND - PLAYER_WIDTH)){
-        player.position.x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/
+void move_player (PlayerShip *player) {
+    if (player->hor_dir == 1 && player->position.x < (RIGHT_BOUND_PLAYER - PLAYER_WIDTH)){
+        player->position.x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/
     }
-    else if (player.hor_dir == 2 && player.position.x > (RIGHT_BOUND + 1)) {
-        player.position.x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
+    else if (player->hor_dir == 2 && player->position.x > (RIGHT_BOUND_PLAYER + 1)) {
+        player->position.x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
     }
     /*seperate if because player can move both horizontally and vertically in one clock cycle*/
-    if (player.ver_dir == 1 && player.position.y > 0) {
-        player.position.y += 1;      /*move player one pixel upwards if inputted, and it still has room to move up*/
+    if (player->ver_dir == 1 && player->position.y > 0) {
+        player->position.y += 1;      /*move player one pixel upwards if inputted, and it still has room to move up*/
     }
-    else if (player.ver_dir == 2 && player.position.y <= 368) {
-        player.position.y -= 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
+    else if (player->ver_dir == 2 && player->position.y <= 368) {
+        player->position.y -= 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
     }
 }
 
 
-void player_shoot (PlayerShip player, Model model) {
-    if (player.fire_wep == 1) {
+void player_shoot (PlayerShip *player, Model *model) {
+    if (player->fire_wep == 1) {
         int i = 0;
-        while ((model.PlayerBullets[i]).position.y != 0 ){
+        while ((model->PlayerBullets[i]).position.y != 0 ){
             i++;            /*find a bullet in the array not being used*/
         }
-        (model.PlayerBullets[i]).position.y = player.position.y + 16;
+        (model->PlayerBullets[i]).position.y = player->position.y + 16;
     }
 }
 
