@@ -23,6 +23,18 @@ UINT32 player_bullet_hex[16] =
     0x00000000
 };
 
+UINT8 heli_bullet_bitmap[8] = 
+{
+    0x7E,
+    0xFF,
+    0xFF,
+    0xFD,
+    0xFD,
+    0xF9,
+    0xE3,
+    0x7E
+};
+
 void move_player (PlayerShip *player) {
     if (player->hor_dir == 1 && player->position.x < (RIGHT_BOUND_PLAYER - PLAYER_WIDTH)){
         player->position.x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/

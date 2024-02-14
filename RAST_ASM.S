@@ -1,4 +1,4 @@
-			xdef	clear_screen
+			xdef	_clear_screen
 
 ; [TO DO] delete this example function
 
@@ -6,7 +6,7 @@ y			equ		14
 x			equ		12
 base		equ		64		; offset from SP, not A6
 
-clear_screen:	movem.l		d0-7/a0-6,-(sp)
+_clear_screen:	movem.l		d0-7/a0-6,-(sp)
 		lea		zeros,a0
 		movem.l		(a0)+,d1-7/a1-6
 		movea.l		base(sp),a0

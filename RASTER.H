@@ -3,14 +3,13 @@
 
 #include "types.h"
 /*
-purpose: Will make the entire screen white, clears all bits in frame buffer
-input: no input is required
-output: a clear frame buffer
+purpose:     will make the entire screen white, clears all bits in frame buffer
+input:       base   - this is a pointer to the location (0,0) in the frame buffer
+output:      a clear frame buffer
 assumptions: N/A
 limitations; N/A
 Bugs: N/A*/
-void clear_screen();
-
+void clear_screen(UINT32 *base);
 
 
 

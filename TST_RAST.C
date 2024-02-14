@@ -1,6 +1,7 @@
 #include <osbind.h>
 #include "raster.h"
 #include "TYPES.H"
+
 const UINT32 player_ship[32] = {
 	0x00018000,
 	0x00018000,
@@ -56,16 +57,11 @@ const UINT16 powerup[16] = {
 };
 
 
-
-
-
-	
-
 int main()
 {
 	void *base = Physbase();
 
-	/*clear_screen();clear screen works */
+	clear_screen(base);
 
 	plot_bitmap_16(base,128,120,powerup,16);
 	plot_bitmap_16(base,640,120,powerup,16); /* various test cases of 16 ensuring it works*/

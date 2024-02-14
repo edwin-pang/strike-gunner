@@ -7,8 +7,9 @@ int main()
 {
     PlayerShip player;
     Bullet bullet;
-    Position *player1 = &(player.position);
-    Position *bullet1 = &(bullet.position);
+    
+    Position *player_pos = &(player.position);
+    Position *bullet_pos = &(bullet.position);
     
     player.position.x = 320;
     player.position.y = 200;
@@ -16,12 +17,20 @@ int main()
     bullet.position.x = 320;
     bullet.position.y = 300;
 
-    printf("%d\n", check_collision(player1, bullet1));
+    printf("%d\n", check_collision(player_pos, bullet_pos));    /* testing for no collision */
 
-    bullet.position.x = 320;
-    bullet.position.y = 230;
+    bullet.position.y = 232;
+    printf("%d\n", check_collision(player_pos, bullet_pos));    /* testing for bottom-up collision */
 
-    printf("%d\n", check_collision(player1,bullet1));
+    bullet.position.y = 168;
+    printf("%d\n", check_collision(player_pos, bullet_pos));    /* testing for top-down collision */
+
+    bullet.position.x = 288;
+    bullet.position.y = 200;
+    printf("%d\n", check_collision(player_pos, bullet_pos));    /* testing for left-bound collision */
+
+    bullet.position.x = 352;
+    printf("%d\n", check_collision(player_pos, bullet_pos));    /* testing for right-bound collision */
 
     return 0;
 }
