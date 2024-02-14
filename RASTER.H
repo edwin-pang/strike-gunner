@@ -1,18 +1,6 @@
 #ifndef RASTER_H
 #define RASTER_H
-
 #include "types.h"
-/*
-purpose:     will make the entire screen white, clears all bits in frame buffer
-input:       base   - this is a pointer to the location (0,0) in the frame buffer
-output:      a clear frame buffer
-assumptions: N/A
-limitations; N/A
-Bugs: N/A*/
-void clear_screen(UINT32 *base);
-
-
-
 
 /*
 purpose:     will print a horizontal line to the screen, left or right, starting at long boundaries for x
@@ -68,7 +56,7 @@ output:      a frame buffer changed as requested (it has your bitmap)
 assumptions: bitmap won't exceed screen on either left or right, if it does it will wrap around with y -= 1
              the bitmap can go above or below frame buffer, and will be cut accordingly
 limitations: will not be cut off if bit map goes past screen on left or right, will instead wrap around.
-bugs: see above
+bugs:        see above
 */
 void plot_bitmap_8(UINT8 *base, int x, int y, const UINT8 *bitmap, unsigned int height);
 /*
@@ -82,7 +70,7 @@ output:      a frame buffer changed as requested (it has your bitmap)
 assumptions: bitmap won't exceed screen on either left or right, if it does it will wrap around with y -= 1
              the bitmap can go above or below frame buffer, and will be cut accordingly
 limitations: will not be cut off if bit map goes past screen on left or right, will instead wrap around.
-bugs: see above
+bugs:        see above
 */
 void plot_bitmap_16(UINT16 *base, int x, int y, const UINT16 *bitmap, unsigned int height);
 /*
@@ -96,7 +84,7 @@ output:      a frame buffer changed as requested (it has your bitmap)
 assumptions: bitmap won't exceed screen on either left or right, if it does it will wrap around with y -= 1
              the bitmap can go above or below frame buffer, and will be cut accordingly
 limitations: will not be cut off if bit map goes past screen on left or right, will instead wrap around.
-bugs: see above
+bugs:        see above
 */
 void plot_bitmap_32(UINT32 *base, int x, int y, const UINT32 *bitmap, unsigned int height);
 

@@ -3,10 +3,7 @@
 #define SCREEN_HEIGHT 400	/* These can be moved later on if there is a better */
 #define SCREEN_WIDTH 640	/* spot to put them */
 
-/*void plot_something_2(UINT16 *base, int x, int y, ..)
-{
-	 [TO DO] delete this example function 
-}*/
+
 void plot_vertical_line(UINT32 *base, int x, int y, unsigned int length, int up){
 	UINT32 *loc = base + (y * 20) + (x >> 5);
 	int extra_x = 32 - (x % 32);
