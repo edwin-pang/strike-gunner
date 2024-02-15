@@ -3,7 +3,7 @@
 void on_playership_move(Model *model, int player){
   PlayerShip *curr_ship = &(model->ship[player]);
 
-  switch (model->ship[player].hor_dir)
+  switch (curr_ship->hor_dir)
   {
   case RIGHT_KEY:                                 /* not too sure how hardware inputs work yet*/
     /* move right calling move_player */          /* just assigned each "key" to a number in TYPES.H*/
@@ -16,7 +16,7 @@ void on_playership_move(Model *model, int player){
     break;
   }
 
-  switch (model->ship[player].ver_dir)
+  switch (curr_ship->ver_dir)
   {
   case UP_KEY:
     /* move up calling move_player*/
