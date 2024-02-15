@@ -1,10 +1,11 @@
 #include "EVENTS.H"
 
-void move_up_request(Player *player){
+void on_playership_move(PlayerShip *player){
+    Position player_pos = player->position;
 
 }
 
-void move_up_cancel(Player *player){
+void move_up_cancel(PlayerShip *player){
   
 }
 
