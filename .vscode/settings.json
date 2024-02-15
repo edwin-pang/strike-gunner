@@ -6,6 +6,6 @@
         "MODEL.C": "cpp",
         "TST_MODEL.C": "cpp",
         "TST_MO.C": "cpp",
-        "TST_MODE.C": "cpp"
+        "RENDERER.C": "cpp"
     }
 }
