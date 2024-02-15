@@ -9,7 +9,12 @@ i dont think we need the space ints take up for some of them*/
 #define RIGHT_BOUND_PLAYER  590 
 #define LEFT_BOUND_ENEMY    0
 #define RIGHT_BOUND_ENEMY   640
-#define PLAYER_WIDTH 32
+#define SHIP_WIDTH 32
+#define SHIP_HEIGHT 32
+#define BULLET_WIDTH 8
+#define BULLET_HEIGHT 8
+#define PLAYER_BULLET_WIDTH 32
+#define PLAYER_BULLET_HEIGHT 16
 
 
 typedef struct {
@@ -113,6 +118,7 @@ LifeCounter lives;
 
 void init_playership(Model *model, int player);
 void move_player (PlayerShip *player);
+void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound);
 void player_shoot (PlayerShip *player, Model *model);
 void init_helicopter(Model *model);
 void move_heli_down(Helicopter *helicopter);
