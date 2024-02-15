@@ -167,24 +167,22 @@ void move_player_missile(Missile *missile){
     missile->position.y += missile->speed;
 }
 
-int check_collision(Position *pos1, Position *pos2){    /* I think i found the general collsion function we need!! */
+int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2, UINT8 width2, UINT8 height2){    /* I think i found the general collsion function we need!! */
     int obj1_left = pos1->x;
-    int obj1_right = pos1->x + 32;                      /* I think there should also be way to pass in the bitmap width and height but for now hard coded*/
+    int obj1_right = pos1->x + width1 - 1;                      /* I think there should also be way to pass in the bitmap width and height but for now hard coded*/
     int obj1_top = pos1->y;
-    int obj1_bottom = pos1->y + 32;
+    int obj1_bottom = pos1->y + height1 - 1;
 
     int obj2_left = pos2->x;
-    int obj2_right = pos2->x + 32;
+    int obj2_right = pos2->x + width2 - 1;
     int obj2_top = pos2->y;
-    int obj2_bottom = pos2->y + 32;
+    int obj2_bottom = pos2->y + height2 - 1;
 
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top){  /*this checks for collisions top-down*/
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top && obj1_top <= obj2_bottom){  /*this checks for collisions top-down*/
         return 1;
     }
 
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_top >= obj2_bottom){  /*this checks for collisions bottom-up*/
-        return 1;                                                                        /*I would've just thrown an OR operator into code above but*/
-    }      
+     
                                                                                          /*if im writing the function like this, it depends what obj1 and obj2 are*/
     return 0;
 }

@@ -134,6 +134,6 @@ void init_player_bullets(Model *model);
 void move_player_bullet(PlayerBullet *playerBullet);
 void init_missile(Model *model);
 void move_player_missile(Missile *missile);
-int check_collision(Position *pos1, Position *pos2);
+check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2, UINT8 width2, UINT8 height2);
 
 #endif
