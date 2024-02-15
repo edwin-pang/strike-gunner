@@ -1,0 +1,14 @@
+tst_ren: tst_ren.o renderer.o
+	cc68x -g tst_ren.o renderer.o raster.o rast_asm.o -o tst_ren
+
+tst_ren.o: tst_ren.c renderer.h raster.h
+	cc68x -g -c tst_ren.c
+
+raster.o:	raster.c raster.h
+	cc68x -g -c raster.c
+
+renderer.o: renderer.c renderer.h raster.h
+	cc68x -g -c renderer.c
+
+rast_asm.o: rast_asm.s
+	gen -D -L2 rast_asm.s
