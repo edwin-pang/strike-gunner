@@ -111,11 +111,23 @@ Score score;
 LifeCounter lives;
 } Model;
 
+void init_playership(Model *model, int player);
 void move_player (PlayerShip *player);
 void player_shoot (PlayerShip *player, Model *model);
-void move_bullet(Bullet *bullet);
-int check_collision(Position *pos1, Position *pos2);
-void update_score(Score *score, int value);
+void init_helicopter(Model *model);
 void move_heli_down(Helicopter *helicopter);
+void init_jet(Model *model);
+void init_score(Model *model);
+void move_bullet(Bullet *bullet);
+void update_score(Model *model, int value);
+void init_life_counter(Model *model);
+void update_lives(Model *model);
+void init_enem_bullets(Model *model);
+void move_enem_bullet(Bullet *bullet);
+void init_player_bullets(Model *model);
+void move_player_bullet(PlayerBullet *playerBullet);
+void init_missile(Model *model);
+void move_player_missile(Missile *missile);
+int check_collision(Position *pos1, Position *pos2);
 
 #endif
