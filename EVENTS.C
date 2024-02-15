@@ -3,23 +3,23 @@
 void on_playership_move(Model *model, int player){
   switch (model->ship[player].hor_dir)
   {
-  case 1:
-    /* move right */
+  case RIGHT_KEY:
+    /* move right calling move_player */
     break;
 
-  case 2:
-    /* move left */
+  case LEFT_KEY:
+    /* move left calling move_player*/
     break;
   }
 
   switch (model->ship[player].ver_dir)
   {
-  case 1:
-    /* move up */
+  case UP_KEY:
+    /* move up calling move_player*/
     break;
   
-  case 2:
-    /* move down */
+  case DOWN_KEY:
+    /* move down calling move_player*/
     break;
   }
 }

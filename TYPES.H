@@ -14,4 +14,11 @@ typedef unsigned char UINT8;
 typedef unsigned int  UINT16;
 typedef unsigned long UINT32;
 
+typedef enum {
+    RIGHT_KEY,
+    LEFT_KEY,
+    UP_KEY,
+    DOWN_KEY
+} keys;
+
 #endif
