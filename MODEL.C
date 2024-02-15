@@ -47,19 +47,23 @@ void init_playership(Model *model, int player){
 }
 
 void move_player (PlayerShip *player) {
-    if (player->hor_dir == 1 && player->position.x < (RIGHT_BOUND_PLAYER - PLAYER_WIDTH)){
-        player->position.x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/
-    }
-    else if (player->hor_dir == 2 && player->position.x > (RIGHT_BOUND_PLAYER + 1)) {
-        player->position.x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
-    }
-    /*seperate if because player can move both horizontally and vertically in one clock cycle*/
-    if (player->ver_dir == 1 && player->position.y > 0) {
-        player->position.y += 1;      /*move player one pixel upwards if inputted, and it still has room to move up*/
-    }
-    else if (player->ver_dir == 2 && player->position.y <= 368) {
-        player->position.y -= 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
-    }
+    Position *position = &(player->position);
+   move_ship_pos(position, player->hor_dir, player->ver_dir, LEFT_BOUND_PLAYER,RIGHT_BOUND_PLAYER);
+}
+void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound){
+    if (hor_dir == 1 && position->x < (left_bound - SHIP_WIDTH)){
+            position->x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/
+        }
+        else if (hor_dir == 2 && position->x > (right_bound + 1)) {
+         position->x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
+        }
+        /*seperate if because player can move both horizontally and vertically in one clock cycle*/
+        if (ver_dir == 1 && position->y > 0) {
+         position->y -= 1;      /*move player one pixel upwards if inputted, and it still has room to move up*/
+        }
+        else if (ver_dir == 2 && position->y <= 368) {
+         position->y += 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
+     }
 }
 
 void player_shoot (PlayerShip *player, Model *model) {
