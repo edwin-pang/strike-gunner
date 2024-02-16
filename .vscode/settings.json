@@ -5,6 +5,7 @@
         "TST_MO.C": "cpp",
         "RASTER.C": "cpp",
         "RENDERER.C": "cpp",
-        "TST_REN.C": "cpp"
+        "TST_REN.C": "cpp",
+        "EVENTS.C": "cpp"
     }
 }

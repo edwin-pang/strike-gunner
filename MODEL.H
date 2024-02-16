@@ -117,6 +117,7 @@ Jet jets[20];
 Score score;
 LifeCounter lives;
 PowerUp powerup;
+UINT8 quit_game;
 } Model;
 
 /*

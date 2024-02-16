@@ -60,7 +60,7 @@ int main()
     printf("%d\n", heli.position.y);
     heli.ver_dir = 2;
     move_heli(&heli);
-    print("%d\n", heli.position.y);
+    printf("%d\n", heli.position.y);
 
     return 0;
 }
