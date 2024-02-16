@@ -1,3 +1,5 @@
+all: tst_rast tst_mo tst_ren
+
 tst_rast: tst_rast.o raster.o rast_asm.o
 	cc68x -g tst_rast.o raster.o rast_asm.o -o tst_rast
 
@@ -9,3 +11,21 @@ raster.o: raster.c raster.h
 
 rast_asm.o: rast_asm.s
 	gen -D -L2 rast_asm.s
+
+tst_mo: tst_mo.o model.o
+	cc68x -g tst_mo.o model.o -o tst_mo
+
+tst_mo.o: tst_mo.c model.h
+	cc68x -g -c tst_mo.c
+
+model.o: model.c model.h
+	cc68x -g -c model.c
+
+tst_ren: tst_ren.o renderer.o
+	cc68x -g tst_ren.o renderer.o raster.o rast_asm.o -o tst_ren
+
+tst_ren.o: tst_ren.c renderer.h raster.h
+	cc68x -g -c tst_ren.c
+
+renderer.o: renderer.c renderer.h raster.h
+	cc68x -g -c renderer.c
