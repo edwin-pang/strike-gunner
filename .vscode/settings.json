@@ -6,6 +6,7 @@
         "RASTER.C": "cpp",
         "RENDERER.C": "cpp",
         "TST_REN.C": "cpp",
-        "EVENTS.C": "cpp"
+        "EVENTS.C": "cpp",
+        "TST_EV.C": "cpp"
     }
 }

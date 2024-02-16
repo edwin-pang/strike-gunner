@@ -53,3 +53,11 @@ void fire_spec_request(PlayerShip *player){
 void quit_game(Model *model) {
     model->quit_game = QUIT;                   /*will change the model's quit game flag to 1 for true*/
 }
+
+void move_all(Model *model){
+
+}
+
+void move_ships(PlayerShip *players, Helicopter *helicopters, Jet *jets){
+
+}
