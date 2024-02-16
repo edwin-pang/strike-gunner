@@ -5,8 +5,8 @@
 /*note to later change some of our spec properties to characters as 
 i dont think we need the space ints take up for some of them*/
 
-#define LEFT_BOUND_PLAYER   50
-#define RIGHT_BOUND_PLAYER  590 
+#define LEFT_BOUND_PLAYER   100
+#define RIGHT_BOUND_PLAYER  540 
 #define LEFT_BOUND_ENEMY    0
 #define RIGHT_BOUND_ENEMY   640
 #define SHIP_WIDTH 32
