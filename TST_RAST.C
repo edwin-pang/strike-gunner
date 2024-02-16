@@ -1,6 +1,7 @@
 #include <osbind.h>
 #include "raster.h"
 #include "TYPES.H"
+#include "bitmap.c"
 
 
 

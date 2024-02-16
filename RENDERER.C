@@ -1,6 +1,7 @@
 #include "RENDERER.H"
 #include "RASTER.H"
 #include <osbind.h>
+#include "bitmap.c"
 
 
 void render(Model *model){
