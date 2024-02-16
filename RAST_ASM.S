@@ -1,11 +1,12 @@
 			xdef		_clear_screen
-
+;=====================================================================================================================
 ;purpose:			will make the entire screen white, clears all bits in frame buffer
 ;input:				base	- this is a pointer to the location (0,0) in the frame buffer
 ;output:			a clear frame buffer
 ;assumptions:		N/A
 ;limitations:		N/A
 ;bugs:				N/A
+;=====================================================================================================================
 
 y			equ			14
 x			equ			12

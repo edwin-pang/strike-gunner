@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "MODEL.C": "cpp",
+        "TST_RAST.C": "cpp",
+        "TST_MO.C": "cpp",
+        "RASTER.C": "cpp",
+        "RENDERER.C": "cpp",
+        "TST_REN.C": "cpp"
+    }
+}

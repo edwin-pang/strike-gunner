@@ -1,8 +1,11 @@
 #ifndef RASTER_H
 #define RASTER_H
 #include "types.h"
-const UINT32 player_ship[];
+
+extern void clear_screen();
+
 /*
+=====================================================================================================================
 purpose:     will print a horizontal line to the screen, left or right, starting at long boundaries for x
 input:       base   - this is a pointer to the location (0,0) in the frame buffer
              x      - this is the x coordinate that the line will start at
@@ -16,10 +19,12 @@ limitations: this function cannot work with non multiples of 32, but this should
              understands this.              
 bugs:        this function will continue to draw a line until it wraps around the screen. This should be known to the 
              programmer as there isn't a dire need for error checking in this domain (it won't destory random data)
+=====================================================================================================================
 */
 void plot_horizontal_line(UINT32 *base, int x, int y, unsigned int length, int right);
 
 /*
+=====================================================================================================================
 purpose:     will print a vertical line onto the screen at any starting x or y coordinate for the length
              and direction specified
 input:       base   - this is a pointer to the location (0,0) in the frame buffer
@@ -31,10 +36,12 @@ output:      a frame buffer changed as requested (it has your vertical line)
 assumptions: there is error checking, but just stay in the frame buffer
 limitations: N/A
 bugs:        N/A
+=====================================================================================================================
 */
 void plot_vertical_line(UINT32 *base, int x, int y, unsigned int length, int up);
 
 /*
+=====================================================================================================================
 purpose:     will plot a single pixel at the desired x and y value
 input:       base   - this is a pointer to the location (0,0) in the frame buffer
              x      - this is the x coordinate that the pixel will be
@@ -43,9 +50,12 @@ output:      a frame buffer changed as requested (it has your pixel)
 assumptions: there is error checking, but just stay in the frame buffer
 limitations: N/A
 bugs:        N/A
+=====================================================================================================================
 */
 void plot_pixel(UINT8 *base, int x, int y);
+
 /*
+=====================================================================================================================
 purpose:     will plot an 8x8 bitmap with the top left of that bitmap starting at the x and y value provided
 input:       base   - this is a pointer to the location (0,0) in the frame buffer
              x      - this is the x coordinate that the bitmap will start at
@@ -57,9 +67,12 @@ assumptions: bitmap won't exceed screen on either left or right, if it does it w
              the bitmap can go above or below frame buffer, and will be cut accordingly
 limitations: will not be cut off if bit map goes past screen on left or right, will instead wrap around.
 bugs:        see above
+=====================================================================================================================
 */
 void plot_bitmap_8(UINT8 *base, int x, int y, const UINT8 *bitmap, unsigned int height);
+
 /*
+=====================================================================================================================
 purpose:     will plot an 16x16 bitmap with the top left of that bitmap starting at the x and y value provided
 input:       base   - this is a pointer to the location (0,0) in the frame buffer
              x      - this is the x coordinate that the bitmap will start at
@@ -71,9 +84,12 @@ assumptions: bitmap won't exceed screen on either left or right, if it does it w
              the bitmap can go above or below frame buffer, and will be cut accordingly
 limitations: will not be cut off if bit map goes past screen on left or right, will instead wrap around.
 bugs:        see above
+=====================================================================================================================
 */
 void plot_bitmap_16(UINT16 *base, int x, int y, const UINT16 *bitmap, unsigned int height);
+
 /*
+=====================================================================================================================
 purpose:     will plot an 32x32 bitmap with the top left of that bitmap starting at the x and y value provided
 input:       base   - this is a pointer to the location (0,0) in the frame buffer
              x      - this is the x coordinate that the bitmap will start at
@@ -85,6 +101,7 @@ assumptions: bitmap won't exceed screen on either left or right, if it does it w
              the bitmap can go above or below frame buffer, and will be cut accordingly
 limitations: will not be cut off if bit map goes past screen on left or right, will instead wrap around.
 bugs:        see above
+=====================================================================================================================
 */
 void plot_bitmap_32(UINT32 *base, int x, int y, const UINT32 *bitmap, unsigned int height);
 

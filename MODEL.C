@@ -16,13 +16,14 @@ void init_playership(Model *model, int player){
 
 void move_player (PlayerShip *player) {
     Position *position = &(player->position);
-   move_ship_pos(position, player->hor_dir, player->ver_dir, LEFT_BOUND_PLAYER,RIGHT_BOUND_PLAYER);
+    move_ship_pos(position, player->hor_dir, player->ver_dir, LEFT_BOUND_PLAYER,RIGHT_BOUND_PLAYER);
 }
+
 void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound){
-    if (hor_dir == 1 && position->x < (left_bound - SHIP_WIDTH)){
-            position->x += 1;      /*move player one to the right if that direction is inputted, and it still has room to move right*/
+    if (hor_dir == 1 && position->x < (right_bound - SHIP_WIDTH)){
+            position->x += 1;    /*move player one to the right if that direction is inputted, and it still has room to move right*/
         }
-        else if (hor_dir == 2 && position->x > (right_bound + 1)) {
+        else if (hor_dir == 2 && position->x > (left_bound + 1)) {
          position->x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
         }
         /*seperate if because player can move both horizontally and vertically in one clock cycle*/
@@ -31,7 +32,7 @@ void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
         }
         else if (ver_dir == 2 && position->y <= 368) {
          position->y += 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
-     }
+    }
 }
 
 void player_shoot (PlayerShip *player, Model *model) {
@@ -56,9 +57,24 @@ void init_helicopter(Model *model){
     }
 }
 
-void move_heli_down(Helicopter *helicopter){                                            /* I think this belongs in events.c (timer based)*/
-    if(helicopter->ver_dir == 1 && helicopter->position.y < 368) {                      /* this is basically just the player ship code*/
-        helicopter->position.y += helicopter->speed;
+void move_heli(Helicopter *helicopter){
+    Position *heli_pos = &(helicopter->position);
+    move_ship_pos(heli_pos, helicopter->hor_dir, helicopter->ver_dir, LEFT_BOUND_PLAYER, RIGHT_BOUND_PLAYER);
+}
+
+void move_heli_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound){
+    if (hor_dir == 1 && position->x < (right_bound - SHIP_WIDTH)){
+            position->x += 1;           /*move helicopter one to the right if that direction is inputted, and it still has room to move right*/
+        }
+        else if (hor_dir == 2 && position->x > (left_bound + 1)) {
+            position->x -= 1;           /*move helicopter one to the left if that direction is inputted, and it still has room to move left*/
+        }
+                                        /*seperate if because helicopter can move both horizontally and vertically in one clock cycle*/
+        if (ver_dir == 1 && position->y > 0) {
+            position->y -= 1;           /*move helicopter one pixel upwards if inputted, and it still has room to move up*/
+        }
+        else if (ver_dir == 2 && position->y <= 368) {
+            position->y += 1;           /*move helicopter one pixel downwards if inputted, and it still has room to move down*/
     }
 }
 
@@ -71,6 +87,27 @@ void init_jet(Model *model){
         model->jets[i].cur_weapon = 2;
         model->jets[i].collision = 0;
         model->jets[i].value = 200;
+    }
+}
+
+void move_jet(Jet *jet){
+    Position *jet_pos = &(jet->position);
+    move_jet_pos(jet_pos, jet->hor_dir, jet->ver_dir, LEFT_BOUND_PLAYER, RIGHT_BOUND_PLAYER);
+}
+
+void move_jet_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound){
+    if (hor_dir == 1 && position->x < (right_bound - SHIP_WIDTH)){
+            position->x += 1;           /*move jet one to the right if that direction is inputted, and it still has room to move right*/
+        }
+        else if (hor_dir == 2 && position->x > (left_bound + 1)) {
+            position->x -= 1;           /*move jet one to the left if that direction is inputted, and it still has room to move left*/
+        }
+                                        /*seperate if because jet can move both horizontally and vertically in one clock cycle*/
+        if (ver_dir == 1 && position->y > 0) {
+            position->y -= 1;           /*move jet one pixel upwards if inputted, and it still has room to move up*/
+        }
+        else if (ver_dir == 2 && position->y <= 368) {
+            position->y += 1;           /*move jet one pixel downwards if inputted, and it still has room to move down*/    
     }
 }
 
@@ -135,9 +172,9 @@ void move_player_missile(Missile *missile){
     missile->position.y += missile->speed;
 }
 
-int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2, UINT8 width2, UINT8 height2){    /* I think i found the general collsion function we need!! */
+int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2, UINT8 width2, UINT8 height2){
     int obj1_left = pos1->x;
-    int obj1_right = pos1->x + width1 - 1;                      /* I think there should also be way to pass in the bitmap width and height but for now hard coded*/
+    int obj1_right = pos1->x + width1 - 1;
     int obj1_top = pos1->y;
     int obj1_bottom = pos1->y + height1 - 1;
 
@@ -146,11 +183,9 @@ int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2,
     int obj2_top = pos2->y;
     int obj2_bottom = pos2->y + height2 - 1;
 
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top && obj1_top <= obj2_bottom){  /*this checks for collisions top-down*/
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top && obj1_top <= obj2_bottom){  /* this checks for top-down and bottom-up collisions */
         return 1;
     }
 
-     
-                                                                                         /*if im writing the function like this, it depends what obj1 and obj2 are*/
     return 0;
 }

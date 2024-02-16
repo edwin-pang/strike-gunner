@@ -30,6 +30,7 @@ UINT8 heli_bullet_bitmap[8] =
     0xE3,
     0x7E
 };
+
 const UINT32 player_ship[32] = {
 	0x00018000,
 	0x00018000,
