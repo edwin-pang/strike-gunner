@@ -19,7 +19,8 @@ void fire_spec_cancel(PlayerShip *player);
 void quit_game(Model *model);
 
 void move_ships(PlayerShip *players, Helicopter *helicopters, Jet *jets);
-void move_bullets(Model *model);
+void move_bullets(PlayerBullet *player_bullets, Bullet *bullets);
 void move_all(Model *model);
-
+void players_shoot(PlayerShip *players, PlayerBullet *bullets);
+void shoot_bullets(Model *model);
 #endif

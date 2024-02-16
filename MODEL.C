@@ -6,7 +6,7 @@
 void init_playership(Model *model, int player){
     model->ship[player].position.x = 288;       /* initialize at bottom-middle of screen */
     model->ship[player].position.y = 368;
-    model->ship[player].speed = 35;             /* arbitrary value for now, need to understand clock cycles more */
+    model->ship[player].speed = 1;             /* arbitrary value for now, need to understand clock cycles more */
     model->ship[player].lives = 3;
     model->ship[player].wep_upgrade = 10;       /* was not sure how much damage player should start with */
     model->ship[player].fire_wep = 0;
@@ -35,20 +35,20 @@ void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
     }
 }
 
-void player_shoot (PlayerShip *player, Model *model) {
+void player_shoot (PlayerShip *player, PlayerBullet *bullets) {
     if (player->fire_wep == 1) {
         int i = 0;
-        while ((model->playerBullets[i]).position.y != 0 ){
+        while (bullets[i].position.y != 0 ){
             i++;            /*find a bullet in the array not being used*/
         }
-        (model->playerBullets[i]).position.y = player->position.y + 16;
+        bullets[i].position.y = player->position.y + 16;
     }
 }
 
 void init_helicopter(Model *model){
     int i;
     for(i = 0; i < 20; i++){
-        model->helicopters[i].speed = 20;
+        model->helicopters[i].speed = 1;
         model->helicopters[i].fire_wep = 0;
         model->helicopters[i].cooldown = 210;
         model->helicopters[i].cur_weapon = 1;
@@ -81,7 +81,7 @@ void move_heli_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
 void init_jet(Model *model){
     int i;
     for(i = 0; i < 20; i++){
-        model->jets[i].speed = 30;
+        model->jets[i].speed = 1;
         model->jets[i].fire_wep = 0;
         model->jets[i].cooldown = 210;
         model->jets[i].cur_weapon = 2;
@@ -138,7 +138,7 @@ void update_lives(Model *model){
 void init_enem_bullets(Model *model){
     int i;
     for(i = 0; i < 50; i++){
-        model->bullets[i].speed = 15;
+        model->bullets[i].speed = 1;
         model->bullets[i].damage = 10;                  /* does amount of damage really matter? everything 1-shots the player if I remember correctly */
     }
 }
@@ -150,21 +150,21 @@ void move_enem_bullet(Bullet *bullet){
 void init_player_bullets(Model *model){
     int i;
     for(i = 0; i < 50; i++){
-        model->playerBullets[i].speed = 20;
+        model->playerBullets[i].speed = 1;
         model->playerBullets[i].damage = 20;
     }
 }
 
 void move_player_bullet(PlayerBullet *playerBullet){
-    playerBullet->position.y += playerBullet->speed;
+    playerBullet->position.y -= playerBullet->speed;
 }
 
 void init_missile(Model *model){
     int i;
     for(i = 0; i < 25; i++){
-        model->missiles[i].speed = 20;
+        model->missiles[i].speed = 1;
         model->missiles[i].damage = 20;
-        model->missiles[i].home_cd = 10; 
+        model->missiles[i].home_cd = 300; 
     }
 }
 

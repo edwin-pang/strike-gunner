@@ -166,14 +166,14 @@ void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
 =====================================================================================================================
 purpose:     handling player shooting by initializing a player bullet's position if the player is ready to fire.
 input:       player     - pointer to the position struct representing the player that is shooting.
-             model      - pointer to the model struct containing the player bullets array.
+             bullets    - pointer to the bullets array containing the player bullets.
 output:      updated y coordinates of the player ship bullet that is being shot.
 assumptions: player cannot fire all bullets in array at once during a given time, therefore bullets are "infinite".
 limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void player_shoot (PlayerShip *player, Model *model);
+void player_shoot (PlayerShip *player, PlayerBullet *bullets);
 
 /*
 =====================================================================================================================

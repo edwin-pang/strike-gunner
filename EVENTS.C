@@ -56,7 +56,8 @@ void quit_game(Model *model) {
 }
 
 void move_all(Model *model){
-
+    move_ships(model->ship,model->helicopters,model->jets);
+    move_bullets(model->playerBullets,model->bullets);
 }
 
 void move_ships(PlayerShip *players, Helicopter *helicopters, Jet *jets){
@@ -65,5 +66,36 @@ move_player(players);
 if ((players + 1)->position.x != 0) {
     move_player(players + 1);
 }
+while (i < 20 && helicopters[i].position.x != 0){
+    move_heli(helicopters + i);
+    i++;
+}
+i = 0;
+while (i < 20 && jets[i].position.x != 0){
+    move_jet(jets + i);
+    i++;
+}
+}
 
+void move_bullets(PlayerBullet *player_bullets, Bullet *bullets){
+    int i = 0;
+    while (i < 50 && player_bullets[i].position.x != 0){
+    move_player_bullet(player_bullets + i);
+    i++;
+}
+i = 0;
+    while (i < 50 && bullets[i].position.x != 0){
+    move_enem_bullet(bullets + i);
+    i++;
+}
+}
+
+void players_shoot(PlayerShip *players, PlayerBullet *bullets){
+    player_shoot(players, bullets);
+    if ((players + 1)->position.x != 0){
+    player_shoot(players + 1, bullets);
+    }
+}
+void shoot_bullets(Model *model){
+    players_shoot(model->ship,model->playerBullets);
 }
