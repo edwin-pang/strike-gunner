@@ -106,7 +106,7 @@ UINT8 collision;            /*determines if player has collided with powerup. 0 
 } PowerUp;
 
 typedef struct{
-PlayerShip ship;
+PlayerShip ship[2];
 Bullet bullets[50];
 PlayerBullet playerBullets[50];
 Missile missiles[25];
