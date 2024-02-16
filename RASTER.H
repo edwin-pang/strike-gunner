@@ -1,7 +1,7 @@
 #ifndef RASTER_H
 #define RASTER_H
 #include "types.h"
-
+const UINT32 player_ship[];
 /*
 purpose:     will print a horizontal line to the screen, left or right, starting at long boundaries for x
 input:       base   - this is a pointer to the location (0,0) in the frame buffer
