@@ -19,7 +19,7 @@ int main(){
 
     the_model.helicopters[0].position.x = 100;
     the_model.helicopters[0].position.y = 100;
-    the_model.helicopters[1].position.x = 540;
+    the_model.helicopters[1].position.x = 500;
     the_model.helicopters[1].position.y = 100;
     the_model.helicopters[2].position.x = 200;
     the_model.helicopters[2].position.y = 200;
@@ -32,7 +32,7 @@ int main(){
 
     the_model.bullets[0].position.x = 120;
     the_model.bullets[0].position.y = 141;
-    the_model.bullets[1].position.x = 530;
+    the_model.bullets[1].position.x = 490;
     the_model.bullets[1].position.y = 141;
     the_model.bullets[2].position.x = 230;
     the_model.bullets[2].position.y = 261;
@@ -42,8 +42,9 @@ int main(){
     the_model.powerup.position.x = 310;
     the_model.powerup.position.y = 250;
 
-    
-
+    the_model.score.total =56374;
+    the_model.score.position.x = 10;
+    the_model.score.position.y = 100;
 
 
 

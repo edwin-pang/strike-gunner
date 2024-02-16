@@ -2,6 +2,50 @@
 #include "RASTER.H"
 #include <osbind.h>
 #include "bitmap.c"
+#include "font.c"
+
+
+
+void render_score(Model *model, UINT8 *base){
+    int divisor = 10000;
+    UINT16 score = model->score.total;
+    int subtractor = 0;
+    char num[5];
+    int index = NUMS;
+    int i = 0;
+    int x = model->score.position.x;
+    int y = model->score.position.y; 
+    while (i < 5){
+        num[i] = (score - subtractor) / divisor;
+        subtractor += num[i] * divisor;
+        divisor /= 10;
+        i++;
+    }
+    i = 0;
+    index += (num[i] << 3);
+    while (i < 5) {
+    plot_bitmap_8(base,x,y,font + index, FONT_HEIGHT);
+    x += 12;
+    i++;
+    index = NUMS + (num[i] << 3);
+    }
+    }
+void render_panel_left(UINT32 *base){
+    plot_vertical_line(base,96,0,400,0);
+    plot_vertical_line(base,97,0,400,0);
+    plot_vertical_line(base,98,0,400,0);
+    plot_vertical_line(base,99,0,400,0);
+    plot_vertical_line(base,100,0,400,0);
+
+}
+void render_panel_right(UINT32 *base){
+    plot_vertical_line(base,540,0,400,0);
+    plot_vertical_line(base,541,0,400,0);
+    plot_vertical_line(base,542,0,400,0);
+    plot_vertical_line(base,543,0,400,0);
+    plot_vertical_line(base,544,0,400,0);
+
+}
 
 void render_all_32(Model *model, UINT32 *base) {
     int i = 0;
@@ -28,7 +72,7 @@ void render_all_8(Model *model, UINT8 *base) {
     }
 }
 void render_all_16(Model *model, UINT16 *base) {
-    if (model->bullets[i].position.x != 0){
+    if (model->powerup.position.x != 0){
         plot_bitmap_16(base,model->powerup.position.x,model->powerup.position.y,powerup, POWER_UP_HEIGHT);
     }
 }
@@ -41,6 +85,9 @@ void render(Model *model){
     render_all_16(model, base);/*rasterize all 16 bitmaps to screen*/
     render_all_8(model, base); /*rasterize all 8 bitmaps to screen*/
 
+    render_panel_left(base);
+    render_panel_right(base);
+    render_score(model,base);
     
     
     
