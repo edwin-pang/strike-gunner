@@ -3,38 +3,6 @@
 /*The location for things is going to represent the top left corner of their bitmap*/
 /*for now lets imagine that x = 0-50, and x = 590-640 are not inside the playable area (this is the side panel where health and stuff will be)*/
 /*no ship cannot fly below y = 368*/
-UINT32 player_bullet_hex[16] = 
-{
-    0x00700E00,
-    0x00700E00,
-    0x00700E00,
-    0x00700E00,
-    0x00700E00,
-    0x00700E00,
-    0x00700E00,
-    0x3800001C,
-    0x3800001C,
-    0x3800001C,
-    0x3800001C,
-    0x3800001C,
-    0x3800001C,
-    0x3800001C,
-    0x00000000,
-    0x00000000
-};
-
-UINT8 heli_bullet_bitmap[8] = 
-{
-    0x7E,
-    0xFF,
-    0xFF,
-    0xFD,
-    0xFD,
-    0xF9,
-    0xE3,
-    0x7E
-};
-
 void init_playership(Model *model, int player){
     model->ship[player].position.x = 288;       /* initialize at bottom-middle of screen */
     model->ship[player].position.y = 368;
