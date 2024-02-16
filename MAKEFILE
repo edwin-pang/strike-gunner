@@ -1,4 +1,4 @@
-all: tst_rast tst_mo tst_ren
+all: tst_rast tst_mo tst_ren tst_ev
 
 tst_rast: tst_rast.o raster.o rast_asm.o
 	cc68x -g tst_rast.o raster.o rast_asm.o -o tst_rast
@@ -29,4 +29,15 @@ renderer.o: renderer.c renderer.h raster.h
 
 tst_ren.o: tst_ren.c renderer.h raster.h
 	cc68x -g -c tst_ren.c
+
+tst_ev: events.o tst_ev.o
+	cc68x -g events.o tst_ev.o -o tst_ev
+
+events.o: events.c events.h 
+	cc68x -g -c events.c
+
+tst_ev.o: tst_ev.c events.h
+	cc68x -g -c tst_ev.c
+
+
 

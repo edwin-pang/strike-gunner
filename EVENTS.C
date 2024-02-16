@@ -46,7 +46,7 @@ void fire_spec_request(PlayerShip *player){
     player->fire_spec = TRUE;                  /*will change the player's special fire flag to 1 for true*/
 }
 
-void fire_spec_request(PlayerShip *player){
+void fire_spec_cancel(PlayerShip *player){
     player->fire_spec = FALSE;                 /*will change the player's special fire flag to 0 for false*/
 }
 
