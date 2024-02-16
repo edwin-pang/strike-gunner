@@ -15,6 +15,8 @@ i dont think we need the space ints take up for some of them*/
 #define BULLET_HEIGHT 8
 #define PLAYER_BULLET_WIDTH 32
 #define PLAYER_BULLET_HEIGHT 16
+#define POWER_UP_WIDTH 16
+#define POWER_UP_HEIGHT 16
 
 
 typedef struct {
@@ -114,6 +116,7 @@ Helicopter helicopters[20];
 Jet jets[20];
 Score score;
 LifeCounter lives;
+PowerUp powerup;
 } Model;
 
 void init_playership(Model *model, int player);
