@@ -1,4 +1,5 @@
 #include "EVENTS.H"
+#include "MODEL.H"
 
 
 void move_up_request(PlayerShip *player) {
@@ -59,5 +60,10 @@ void move_all(Model *model){
 }
 
 void move_ships(PlayerShip *players, Helicopter *helicopters, Jet *jets){
+int i = 0;
+move_player(players);
+if ((players + 1)->position.x != 0) {
+    move_player(players + 1);
+}
 
 }

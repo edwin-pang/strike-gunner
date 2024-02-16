@@ -30,13 +30,13 @@ renderer.o: renderer.c renderer.h raster.h
 tst_ren.o: tst_ren.c renderer.h raster.h
 	cc68x -g -c tst_ren.c
 
-tst_ev: events.o tst_ev.o
-	cc68x -g events.o tst_ev.o -o tst_ev
+tst_ev: events.o tst_ev.o model.o
+	cc68x -g events.o tst_ev.o model.o -o tst_ev
 
-events.o: events.c events.h 
+events.o: events.c events.h model.h
 	cc68x -g -c events.c
 
-tst_ev.o: tst_ev.c events.h
+tst_ev.o: tst_ev.c events.h model.h
 	cc68x -g -c tst_ev.c
 
 
