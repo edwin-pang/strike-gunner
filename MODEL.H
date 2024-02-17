@@ -386,4 +386,7 @@ bugs:        N/A
 */
 int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2, UINT8 width2, UINT8 height2);
 
+void heli_shoot(Helicopter *helicopter, Bullet *bullets);
+
+
 #endif
