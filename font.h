@@ -13,7 +13,8 @@ extern const UINT8 font[];     /* 8x8 system font */
 #define CHAR_FF    12
 #define CHAR_CR    13
 #define CHAR_DEL  127
-#define NUMS        127
+#define NUMS      127
+#define LETTERS   263
 
 #define IS_PRINTABLE(i) ((i) >= ' ' && (i) <= '~')
 #define GLYPH_START(i) (font + (((i) - ' ') << 3))

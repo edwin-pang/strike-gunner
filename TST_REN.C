@@ -46,7 +46,9 @@ int main(){
     the_model.score.position.x = 10;
     the_model.score.position.y = 100;
 
-
+    the_model.lives.health_bar = 3;
+    the_model.lives.position.x = 10;
+    the_model.lives.position.y = 150;
 
     render(&(the_model));
     return 0;

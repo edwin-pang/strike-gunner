@@ -30,6 +30,32 @@ void render_score(Model *model, UINT8 *base){
     index = NUMS + (num[i] << 3);
     }
     }
+
+void render_life_counter(Model *model, UINT8 *base){
+    UINT8 lives = model->lives.health_bar;
+    int index = NUMS + (lives << 3);
+
+    int letter_l = LETTERS + (11 << 3);
+    int letter_i = LETTERS + (8 << 3);
+    int letter_v = LETTERS + (21 << 3);
+    int letter_e = LETTERS + (4 << 3);
+    int letter_s = LETTERS + (18 << 3);
+    int colon = NUMS + (10 << 3);
+
+    int x = model->lives.position.x;
+    int y = model->lives.position.y;
+
+    plot_bitmap_8(base, x, y, font + letter_l, FONT_HEIGHT);
+    plot_bitmap_8(base, x + 10, y, font + letter_i, FONT_HEIGHT);
+    plot_bitmap_8(base, x + 20, y, font + letter_v, FONT_HEIGHT);
+    plot_bitmap_8(base, x + 30, y, font + letter_e, FONT_HEIGHT);
+    plot_bitmap_8(base, x + 40, y, font + letter_s, FONT_HEIGHT);
+    plot_bitmap_8(base, x + 49, y, font + colon, FONT_HEIGHT);
+    plot_bitmap_8(base, x + 60, y, font + index, FONT_HEIGHT);
+
+
+}
+
 void render_panel_left(UINT32 *base){
     plot_vertical_line(base,96,0,400,0);
     plot_vertical_line(base,97,0,400,0);
@@ -88,7 +114,7 @@ void render(Model *model){
     render_panel_left(base);
     render_panel_right(base);
     render_score(model,base);
-    
+    render_life_counter(model,base);
     
     
 }

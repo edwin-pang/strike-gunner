@@ -14,7 +14,7 @@
 #define DOWN_KEY 0x00500000
 #define RIGHT_KEY 0x004d0000
 #define LEFT_KEY 0x004b0000
-#define ESC_KEY 0x0001001b
+#define ESC_KEY 27
 
 #define STOP 0
 #define RIGHT 1

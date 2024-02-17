@@ -38,10 +38,11 @@ void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
 void player_shoot (PlayerShip *player, PlayerBullet *bullets) {
     if (player->fire_wep == 1) {
         int i = 0;
-        while (i < 49 && bullets[i].position.y != 0 ){
+        while (i < 49 && bullets[i].position.x != 0 ){
             i++;            /*find a bullet in the array not being used*/
         }
-        bullets[i].position.y = player->position.y + 16;
+        bullets[i].position.y = player->position.y - 16;
+        bullets[i].position.x = player->position.x;
     }
 }
 
