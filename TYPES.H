@@ -10,6 +10,12 @@
 #define PLAYER_ONE 0
 #define PLAYER_TWO 1
 
+#define UP_KEY 0x00480000
+#define DOWN_KEY 0x00500000
+#define RIGHT_KEY 0x004d0000
+#define LEFT_KEY 0x004b0000
+#define ESC_KEY 0x0001001b
+
 #define STOP 0
 #define RIGHT 1
 #define LEFT 2
@@ -21,12 +27,5 @@
 typedef unsigned char UINT8;
 typedef unsigned int  UINT16;
 typedef unsigned long UINT32;
-
-typedef enum {
-    RIGHT_KEY,
-    LEFT_KEY,
-    UP_KEY,
-    DOWN_KEY
-} keys;
 
 #endif
