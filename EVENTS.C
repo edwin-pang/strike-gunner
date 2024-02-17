@@ -112,3 +112,15 @@ void shoot_bullets(Model *model){
     players_shoot(model->ship,model->playerBullets);
     helicopters_shoot(model->helicopters,model->bullets);
 }
+
+void check_heliopter_hit(Helicopter *helicopters, PlayerBullet *bullets){
+    int i = 0;
+    int j = 0;
+    while (i < NUM_ENEMY && helicopters[i].position.x != 0){
+        while(j < NUM_BULLET && bullets[j].position.x != 0){
+            if (check_collision(&(helicopters[j].position), SHIP_WIDTH, SHIP_HEIGHT,&(bullets[i].position), PLAYER_BULLET_WIDTH,PLAYER_BULLET_HEIGHT)){
+                
+            }
+        }
+    }
+}

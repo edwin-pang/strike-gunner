@@ -17,6 +17,8 @@ i dont think we need the space ints take up for some of them*/
 #define PLAYER_BULLET_HEIGHT 16
 #define POWER_UP_WIDTH 16
 #define POWER_UP_HEIGHT 16
+#define NUM_ENEMY 19
+#define NUM_BULLET 49
 
 
 typedef struct {
