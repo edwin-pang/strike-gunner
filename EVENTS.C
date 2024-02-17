@@ -96,6 +96,19 @@ void players_shoot(PlayerShip *players, PlayerBullet *bullets){
     player_shoot(players + 1, bullets);
     }
 }
+void helicopters_shoot(Helicopter *helicopters, Bullet *bullets){
+    int i = 0;
+    while (i < 19 && helicopters[i].position.x != 0){
+        if (helicopters[i].cooldown == 0){
+            heli_shoot(helicopters,bullets);
+        }
+        else{
+            helicopters[i].cooldown--;
+        }
+        i++;
+    }
+}
 void shoot_bullets(Model *model){
     players_shoot(model->ship,model->playerBullets);
+    helicopters_shoot(model->helicopters,model->bullets);
 }

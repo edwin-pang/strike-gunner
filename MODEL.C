@@ -38,7 +38,7 @@ void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
 void player_shoot (PlayerShip *player, PlayerBullet *bullets) {
     if (player->fire_wep == 1) {
         int i = 0;
-        while (bullets[i].position.y != 0 ){
+        while (i < 49 && bullets[i].position.y != 0 ){
             i++;            /*find a bullet in the array not being used*/
         }
         bullets[i].position.y = player->position.y + 16;
@@ -189,3 +189,20 @@ int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2,
 
     return 0;
 }
+void heli_shoot(Helicopter *helicopter, Bullet *bullets){
+    int i = 0;
+    int j = 0;
+    int bullet_x = helicopter->position.x;
+    int bullet_y = helicopter->position.y + 32;
+    while (i < 3 && j < 49){
+        while (j < 49 && bullets[i].position.x < 2) {
+            j++;
+        }
+        bullets[i].position.x = bullet_x;  
+        bullets[i].position.y = bullet_y;
+            bullet_x += 12;
+            i++;
+    }
+        helicopter->cooldown = 300;
+    }
+
