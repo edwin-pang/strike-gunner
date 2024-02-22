@@ -78,7 +78,7 @@ int main() {
         move_left_cancel(player);
         move_right_cancel(player);
         player_shoot(player, model_ptr->playerBullets);
-        move_player_bullet(p_bullet);
+        move_bullets(model_ptr->playerBullets,model_ptr->bullets);
         printf("Player bullet is x: %d, y: %d\n", p_bullet_pos->x, p_bullet_pos->y);
         collision = check_collision(player_pos, SHIP_WIDTH, SHIP_HEIGHT, bullet_pos, BULLET_WIDTH, BULLET_HEIGHT);
         collision2 = check_collision(p_bullet_pos, PLAYER_BULLET_WIDTH, PLAYER_BULLET_HEIGHT, heli_pos, SHIP_WIDTH, SHIP_HEIGHT);

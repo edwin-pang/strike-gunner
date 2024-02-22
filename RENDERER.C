@@ -5,7 +5,10 @@
 #include "font.c"
 
 
-
+void render_clear(){
+    void *base = Physbase();
+    clear_screen(base);
+}
 void render_score(Model *model, UINT8 *base){
     int divisor = 10000;
     UINT16 score = model->score.total;

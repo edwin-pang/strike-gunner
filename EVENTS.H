@@ -294,7 +294,7 @@ void shoot_bullets(Model *model);
 =====================================================================================================================
 purpose:     
 
-input:      
+input:      game is a lot bigger than originally thought
 output:     
 assumptions: 
 limitations: 
@@ -337,7 +337,7 @@ limitations:
 bugs:        
 =====================================================================================================================
 */
-void check_player_hit(PlayerShip *player, Bullet bullets);
+void check_player_hit(PlayerShip *player, Bullet* bullets);
 /*
 =====================================================================================================================
 purpose:     
@@ -361,7 +361,7 @@ limitations:
 bugs:        
 =====================================================================================================================
 */
-void destroy_player(PlayerShip player);
+void destroy_player(PlayerShip *player);
 /*
 =====================================================================================================================
 purpose:     
@@ -373,4 +373,11 @@ limitations:
 bugs:        
 =====================================================================================================================
 */
+void destroy_helicopters(Helicopter *helicopters);
+
+void helicopters_shoot(Helicopter *helicopters, Bullet *bullets);
+
+void destroy_all(Model *model);
+
+
 #endif

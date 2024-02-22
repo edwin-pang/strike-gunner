@@ -12,5 +12,5 @@ void render_all_8(Model *model, UINT8 *base);
 void render_all_16(Model *model, UINT16 *base);
 void render(Model *model);
 void render_score(Model *model, UINT8 *base);
-
+void render_clear();
 #endif

@@ -38,9 +38,13 @@ void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
 void player_shoot (PlayerShip *player, PlayerBullet *bullets) {
     if (player->fire_wep == 1) {
         int i = 0;
-        while (i < 49 && bullets[i].position.x != 0 ){
+        while (i < 50 && bullets[i].position.x != 0 ){
+            if (bullets[i].position.x == 1){
+                break;     /*break loop if 1 found*/
+            }
             i++;            /*find a bullet in the array not being used*/
-        }
+        }                   /*position 0 means no bullet at this point, or past that point has been used*/
+                            /*1 means a bullet has since been despawned and can be used again*/
         bullets[i].position.y = player->position.y - 16;
         bullets[i].position.x = player->position.x;
     }
@@ -49,12 +53,15 @@ void player_shoot (PlayerShip *player, PlayerBullet *bullets) {
 void init_helicopter(Model *model){
     int i;
     for(i = 0; i < 20; i++){
+        model->helicopters[i].position.x = 0;
+        model->helicopters[i].position.y = 0;
         model->helicopters[i].speed = 1;
         model->helicopters[i].fire_wep = 0;
         model->helicopters[i].cooldown = 210;
         model->helicopters[i].cur_weapon = 1;
         model->helicopters[i].collision = 0;
         model->helicopters[i].value = 100;
+        model->helicopters[i].num = i;
     }
 }
 
@@ -82,12 +89,15 @@ void move_heli_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left
 void init_jet(Model *model){
     int i;
     for(i = 0; i < 20; i++){
+        model->helicopters[i].position.x = 0;
+        model->helicopters[i].position.y = 0;
         model->jets[i].speed = 1;
         model->jets[i].fire_wep = 0;
         model->jets[i].cooldown = 210;
         model->jets[i].cur_weapon = 2;
         model->jets[i].collision = 0;
         model->jets[i].value = 200;
+        model->jets[i].num = i;
     }
 }
 
@@ -139,8 +149,11 @@ void update_lives(Model *model){
 void init_enem_bullets(Model *model){
     int i;
     for(i = 0; i < 50; i++){
+        model->bullets[i].position.x = 0;
+        model->bullets[i].position.y = 0;
         model->bullets[i].speed = 1;
-        model->bullets[i].damage = 10;                  /* does amount of damage really matter? everything 1-shots the player if I remember correctly */
+        model->bullets[i].damage = 10;     
+        model->bullets[i].num = i;           
     }
 }
 
@@ -151,8 +164,11 @@ void move_enem_bullet(Bullet *bullet){
 void init_player_bullets(Model *model){
     int i;
     for(i = 0; i < 50; i++){
+        model->playerBullets[i].position.x = 0;
+        model->playerBullets[i].position.y = 0;
         model->playerBullets[i].speed = 1;
         model->playerBullets[i].damage = 20;
+        model->playerBullets[i].num = i;
     }
 }
 
@@ -163,6 +179,8 @@ void move_player_bullet(PlayerBullet *playerBullet){
 void init_missile(Model *model){
     int i;
     for(i = 0; i < 25; i++){
+        model->missiles[i].position.x = 0;
+        model->missiles[i].position.y = 0;
         model->missiles[i].speed = 1;
         model->missiles[i].damage = 20;
         model->missiles[i].home_cd = 300; 
@@ -178,17 +196,17 @@ int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2,
     int obj1_right = pos1->x + width1 - 1;
     int obj1_top = pos1->y;
     int obj1_bottom = pos1->y + height1 - 1;
-
+                                                /*establish the bounding box*/
     int obj2_left = pos2->x;
     int obj2_right = pos2->x + width2 - 1;
     int obj2_top = pos2->y;
     int obj2_bottom = pos2->y + height2 - 1;
-
-    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top && obj1_top <= obj2_bottom){  /* this checks for top-down and bottom-up collisions */
-        return 1;
+                                            
+    if (obj1_right >= obj2_left && obj1_left <= obj2_right && obj1_bottom >= obj2_top && obj1_top <= obj2_bottom){ 
+        return 1;                               /*if objects have intersecting bounding boxes, return a 1*/
     }
 
-    return 0;
+    return 0;                                   /*else return a 0*/
 }
 void heli_shoot(Helicopter *helicopter, Bullet *bullets){
     int i = 0;
@@ -204,6 +222,48 @@ void heli_shoot(Helicopter *helicopter, Bullet *bullets){
             bullet_x += 12;
             i++;
     }
-        helicopter->cooldown = 300;
+        helicopter->cooldown = 210;
     }
 
+void despawn_player_bullet(PlayerBullet *bullet, PlayerBullet *bullets){
+    bullets[bullet->num].position.x = 1;            /*reset the bullet to resting state, however now using x = 1*/
+    bullets[bullet->num].position.y = 0;            /*as a value indicating previously used bullet*/
+}
+
+void despawn_enem_bullet(Bullet *bullet, Bullet *bullets){
+    bullets[bullet->num].position.x = 1;            /*reset the bullet to resting state, however now using x = 1*/
+    bullets[bullet->num].position.y = 0;            /*as a value indicating previously used bullet*/
+}
+
+void despawn_helicopter(Helicopter *helicopter, Helicopter *helicopters){
+    helicopters[helicopter->num].position.x = 1;            /*reset the helicopter to resting state, however now using x = 1*/
+    helicopters[helicopter->num].position.y = 0;            /*as a value indicating previously used helicopter*/
+    helicopters[helicopter->num].collision = 0;
+    helicopters[helicopter->num].death_time = 0;
+}
+
+void respawn_player(PlayerShip *player){
+    if(player->lives < 0){
+        player->death_time = 0;
+        player->collision = 0;
+        player->fire_wep = 0;
+        player->wep_upgrade = 10;
+        player->lives--;
+        player->position.x = 288;
+        player->position.y = 368;
+    }
+}
+
+void init_model(Model *model){
+    init_playership(model,0);
+    model->ship[1].position.x = 0;
+    init_enem_bullets(model);
+    init_player_bullets(model);
+    init_missile(model);
+    init_helicopter(model);
+    init_jet(model);
+    init_score(model);
+    init_life_counter(model);
+    model->quit_game = 0;
+    model->game_over = 0;
+}

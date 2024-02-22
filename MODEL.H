@@ -17,8 +17,9 @@ i dont think we need the space ints take up for some of them*/
 #define PLAYER_BULLET_HEIGHT 16
 #define POWER_UP_WIDTH 16
 #define POWER_UP_HEIGHT 16
-#define NUM_ENEMY 19
-#define NUM_BULLET 49
+#define NUM_ENEMY 20
+#define NUM_BULLET 50
+#define NUM_PLAYER 1 /*for now*/
 
 
 typedef struct {
@@ -35,6 +36,7 @@ UINT8 fire_wep;             /*boolean flag for whether the main cannon is firing
 UINT8 fire_spec;            /*boolean flag for whether the special weapon is firing. 1 for fire, 0 for not*/
 UINT8 lives;                /*amount of lives the player currently has*/
 UINT8 collision;            /*a value used to determine the type of collsion, 0 none, 1 player shot, 2 obtained power-up*/
+UINT8 death_time;           /*a value used to determine how long until player should respawn*/
 } PlayerShip;
 
 
@@ -48,6 +50,8 @@ UINT16 cooldown;            /*amount of time until the fire_wep flag is set, thi
 UINT8 cur_weapon;           /*value specifies weapon held. 1 for bullet, 2 for missile*/
 UINT8 collision;            /*a value used to determine the type of collsion, 0 none, 1 helicopter to be destroyed*/
 UINT16 value;               /*amount of points to be added to score upon elimination*/
+UINT8 death_time;           /*a value used to determine how long until helicopter should despawn*/
+UINT8 num;                  /*position in array*/
 } Helicopter;
 
 typedef struct 
@@ -60,6 +64,8 @@ UINT16 cooldown;            /*amount of time until the fire_wep flag is set, thi
 UINT8 cur_weapon;           /*value specifies weapon held. 1 for bullet, 2 for missile*/
 UINT8 collision;            /*a value used to determine the type of collsion, 0 none, 1 helicopter to be destroyed*/
 UINT16 value;               /*amount of points to be added to score upon elimination*/
+UINT8 death_time;           /*a value used to determine how long until jet should despawn*/
+UINT8 num;                  /*position in array*/
 } Jet;
 
 typedef struct 
@@ -84,6 +90,7 @@ Position position;          /*horizontal and vertical postion of the bullet*/
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
 UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 damage;               /*amount of damage the bullet will do*/
+UINT8 num;                  /*position in array*/
 } Bullet;
 
 typedef struct {
@@ -91,6 +98,7 @@ Position position;          /*horizontal and vertical postion of the bullet*/
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
 UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 damage;               /*amount of damage the bullet will do*/
+UINT8 num;                  /*position in array*/
 } PlayerBullet;
 
 typedef struct 
@@ -120,6 +128,7 @@ Score score;
 LifeCounter lives;
 PowerUp powerup;
 UINT8 quit_game;
+UINT8 game_over;
 } Model;
 
 /*
@@ -390,5 +399,14 @@ int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2,
 
 void heli_shoot(Helicopter *helicopter, Bullet *bullets);
 
+void despawn_player_bullet(PlayerBullet *bullet, PlayerBullet *bullets);
+
+void despawn_enem_bullet(Bullet *bullet, Bullet *bullets);
+
+void despawn_helicopter(Helicopter *helicopter, Helicopter *helicopters);
+
+void init_model(Model *model);
+
+void respawn_player(PlayerShip *player);
 
 #endif
