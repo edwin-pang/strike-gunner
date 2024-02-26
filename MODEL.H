@@ -162,6 +162,7 @@ purpose:     moving player ship position based on the specified horizontal and v
 input:       position   - pointer to the position struct representing current position of the ship.
              hor_dir    - unsigned 8-bit int representing horizontal direction of movement (1 for right, 2 for left).
              ver_dir    - unsigned 8-bit int representing vertical direction of movement (1 for up, 2 for down).
+             speed      - the size of displacement per of the clock
              left_bound - unsigned 16-bit int representing the left boundary within which the ship can move.
              right_bound- unsigned 16-bit int representing the right boundary within which the ship can move.
 output:      updated x or y coordinates of the player ship that is based on the direction to be moved to.
@@ -171,7 +172,7 @@ limitations: movement is constrained within the specified boundaries.
 bugs:        N/A
 =====================================================================================================================
 */
-void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound);
+void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT8 speed, UINT16 left_bound, UINT16 right_bound);
 
 /*
 =====================================================================================================================
@@ -396,17 +397,124 @@ bugs:        N/A
 =====================================================================================================================
 */
 int check_collision(Position *pos1, UINT8 width1, UINT8 height1, Position *pos2, UINT8 width2, UINT8 height2);
+/*
+=====================================================================================================================
+purpose:  make the the given helicopter fire its weapon, and reset its cooldown
 
+input:      helicopter  -   pointer to a helicopter inside the helicopter array
+            bullets     -   pointer to the array containing the enemy bullets
+
+output:     bullets     -   bullets will be added to the playable area beneath the helicopter   
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
+
+limitations: bullets will not be fired if there is no room in the array for more
+bugs:        N/A
+=====================================================================================================================
+*/
 void heli_shoot(Helicopter *helicopter, Bullet *bullets);
+/*
+=====================================================================================================================
+purpose:    remove player bullet from screen and reserve in array for future usage
 
+input:      bullet  -   pointer to a bullet in the array that needs to be despawned
+            bullets -   the pointer to the array of player bullets
+
+output:     bullets -   the specific bullet in the array will now be set to x = 1 and y = 0
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right) 
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
 void despawn_player_bullet(PlayerBullet *bullet, PlayerBullet *bullets);
+/*
+=====================================================================================================================
+purpose:     remove enemy bullet from screen and reserve in array for future usage
 
+input:       bullet  -   pointer to a bullet in the array that needs to be despawned
+             bullets -   the pointer to the array of enemy bullets
+
+output:      bullets -   the specific bullet in the array will now be set to x = 1 and y = 0
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right) 
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
 void despawn_enem_bullet(Bullet *bullet, Bullet *bullets);
+/*
+=====================================================================================================================
+purpose:     remove helicopter from screen and reserve in array for future usage
 
+input:       helicopter  -   pointer to a helicopter in the array that needs to be despawned
+             helicopters -   the pointer to the array of helicopters
+
+output:      helicopters -   the specific helicopter in the array will now be set to x = 1 and y = 0,
+                             and have its other properties returned to default
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right) 
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
 void despawn_helicopter(Helicopter *helicopter, Helicopter *helicopters);
+/*
+=====================================================================================================================
+purpose:      remove jet from screen and reserve in array for future usage
 
+input:       jet  -   pointer to a jet in the array that needs to be despawned
+             jets -   the pointer to the array of jets
+
+output:     jets  -   the specific jet in the array will now be set to x = 1 and y = 0,
+                      and have its other properties returned to default
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right) 
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
+void despawn_jet(Jet *jet, Jet *jets)
+/*
+=====================================================================================================================
+purpose:     initialize all components of the games model needed to start the game
+
+input:       model       -   the pointer to the model of the game which houses all information  
+
+output:      model       -  all components of the model will be changed to their default state 
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right) 
+             it is also assumed this will only ever be called at the games start
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
 void init_model(Model *model);
+/*
+=====================================================================================================================
+purpose:  if the player still has lives, respawn the player upon death
 
+input:      player  -   pointer to a player ship object
+
+output:     player  -   will have the following properties changed: x = 288, y = 368, lives = lives - 1
+                        wep_upgrade = 10, fire_wep = 0, collision = 0, death_time = 0
+assumptions: this function on its own will not alter the game's state upon the player reaching 0 lives,
+             the game will need to check for this on its own
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
 void respawn_player(PlayerShip *player);
 
 #endif

@@ -10,7 +10,8 @@
 int main(){
     Model model;
     Model *model_ptr = &model;
-
+    int old_lives = 3;
+    int old_score = 0;
     int key;
     int collision;
     int collision2;
@@ -23,7 +24,7 @@ int main(){
     while(model_ptr->quit_game == FALSE){
         timeNow = get_time();
         timeElapsed = timeNow - timeThen;
-        if (timeElapsed <= 0){ 
+        if (timeElapsed <= 5){ 
             key = get_key();
             if(key)
             {
@@ -54,8 +55,6 @@ int main(){
             check_collisions(model_ptr);
             destroy_all(model_ptr);
 
-
-            render_clear();
             render(model_ptr);
             timeThen = timeNow;
         }

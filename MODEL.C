@@ -16,22 +16,22 @@ void init_playership(Model *model, int player){
 
 void move_player (PlayerShip *player) {
     Position *position = &(player->position);
-    move_ship_pos(position, player->hor_dir, player->ver_dir, LEFT_BOUND_PLAYER,RIGHT_BOUND_PLAYER);
+    move_ship_pos(position, player->hor_dir, player->ver_dir, player->speed, LEFT_BOUND_PLAYER,RIGHT_BOUND_PLAYER);
 }
 
-void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound){
+void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT8 speed, UINT16 left_bound, UINT16 right_bound){
     if (hor_dir == 1 && position->x < (right_bound - SHIP_WIDTH)){
-            position->x += 1;    /*move player one to the right if that direction is inputted, and it still has room to move right*/
+            position->x += speed;    /*move player one to the right if that direction is inputted, and it still has room to move right*/
         }
         else if (hor_dir == 2 && position->x > (left_bound + 1)) {
-         position->x -= 1;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
+         position->x -= speed;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
         }
         /*seperate if because player can move both horizontally and vertically in one clock cycle*/
         if (ver_dir == 1 && position->y > 0) {
-         position->y -= 1;      /*move player one pixel upwards if inputted, and it still has room to move up*/
+         position->y -= speed;      /*move player one pixel upwards if inputted, and it still has room to move up*/
         }
         else if (ver_dir == 2 && position->y <= 368) {
-         position->y += 1;      /*move player one pixel downwards if inputted, and it still has room to move down*/
+         position->y += speed;      /*move player one pixel downwards if inputted, and it still has room to move down*/
     }
 }
 
@@ -67,24 +67,9 @@ void init_helicopter(Model *model){
 
 void move_heli(Helicopter *helicopter){
     Position *heli_pos = &(helicopter->position);
-    move_ship_pos(heli_pos, helicopter->hor_dir, helicopter->ver_dir, LEFT_BOUND_PLAYER, RIGHT_BOUND_PLAYER);
+    move_ship_pos(heli_pos, helicopter->hor_dir, helicopter->ver_dir, helicopter->speed, LEFT_BOUND_PLAYER, RIGHT_BOUND_PLAYER);
 }
 
-void move_heli_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound){
-    if (hor_dir == 1 && position->x < (right_bound - SHIP_WIDTH)){
-            position->x += 1;           /*move helicopter one to the right if that direction is inputted, and it still has room to move right*/
-        }
-        else if (hor_dir == 2 && position->x > (left_bound + 1)) {
-            position->x -= 1;           /*move helicopter one to the left if that direction is inputted, and it still has room to move left*/
-        }
-                                        /*seperate if because helicopter can move both horizontally and vertically in one clock cycle*/
-        if (ver_dir == 1 && position->y > 0) {
-            position->y -= 1;           /*move helicopter one pixel upwards if inputted, and it still has room to move up*/
-        }
-        else if (ver_dir == 2 && position->y <= 368) {
-            position->y += 1;           /*move helicopter one pixel downwards if inputted, and it still has room to move down*/
-    }
-}
 
 void init_jet(Model *model){
     int i;
@@ -103,24 +88,9 @@ void init_jet(Model *model){
 
 void move_jet(Jet *jet){
     Position *jet_pos = &(jet->position);
-    move_jet_pos(jet_pos, jet->hor_dir, jet->ver_dir, LEFT_BOUND_PLAYER, RIGHT_BOUND_PLAYER);
+    move_ship_pos(jet_pos, jet->hor_dir, jet->ver_dir, jet->speed, LEFT_BOUND_PLAYER, RIGHT_BOUND_PLAYER);
 }
 
-void move_jet_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT16 left_bound, UINT16 right_bound){
-    if (hor_dir == 1 && position->x < (right_bound - SHIP_WIDTH)){
-            position->x += 1;           /*move jet one to the right if that direction is inputted, and it still has room to move right*/
-        }
-        else if (hor_dir == 2 && position->x > (left_bound + 1)) {
-            position->x -= 1;           /*move jet one to the left if that direction is inputted, and it still has room to move left*/
-        }
-                                        /*seperate if because jet can move both horizontally and vertically in one clock cycle*/
-        if (ver_dir == 1 && position->y > 0) {
-            position->y -= 1;           /*move jet one pixel upwards if inputted, and it still has room to move up*/
-        }
-        else if (ver_dir == 2 && position->y <= 368) {
-            position->y += 1;           /*move jet one pixel downwards if inputted, and it still has room to move down*/    
-    }
-}
 
 void init_score(Model *model){
     model->score.total = 0;
@@ -241,9 +211,14 @@ void despawn_helicopter(Helicopter *helicopter, Helicopter *helicopters){
     helicopters[helicopter->num].collision = 0;
     helicopters[helicopter->num].death_time = 0;
 }
-
+void despawn_jet(Jet *jet, Jet *jets){
+    jets[jet->num].position.x = 1;            /*reset the jet to resting state, however now using x = 1*/
+    jets[jet->num].position.y = 0;            /*as a value indicating previously used jet*/
+    jets[jet->num].collision = 0;
+    jets[jet->num].death_time = 0;
+}
 void respawn_player(PlayerShip *player){
-    if(player->lives < 0){
+    if(player->lives > 0){
         player->death_time = 0;
         player->collision = 0;
         player->fire_wep = 0;
@@ -251,6 +226,9 @@ void respawn_player(PlayerShip *player){
         player->lives--;
         player->position.x = 288;
         player->position.y = 368;
+    }
+    else {
+        
     }
 }
 

@@ -292,11 +292,16 @@ bugs:        N/A
 void shoot_bullets(Model *model);
 /*
 =====================================================================================================================
-purpose:     
+purpose: will check every helicopter on the game field for collisions with all player bullets on the game field 
 
-input:      game is a lot bigger than originally thought
-output:     
-assumptions: 
+input:          helicopters     -   the pointer to the array containing the helicopters
+                bullets         -   the point to the array containing the player bullets
+
+output:         player bullets  -   if collision occured, they will be removed from screen and returned to storage
+                helicopters     -   if collision occured, they will enter a doomed state and explode, then despawn                
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
 limitations: 
 bugs:        
 =====================================================================================================================
@@ -304,79 +309,159 @@ bugs:
 void check_heliopter_hit(Helicopter *helicopters, PlayerBullet *bullets);
 /*
 =====================================================================================================================
-purpose:     
+purpose: will check jet helicopter on the game field for collisions with all player bullets on the game field 
 
-input:      
-output:     
-assumptions: 
-limitations: 
-bugs:        
+input:          jets            -   the pointer to the array containing the jets
+                bullets         -   the pointer to the array containing the player bullets
+
+output:         player bullets  -   if collision occured, they will be removed from screen and returned to storage
+                jets            -   if collision occured, they will enter a doomed state and explode, then despawn                  
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
+limitations: N/A
+bugs:        N/A
 =====================================================================================================================
 */
 void check_jet_hit(Jet *jets, PlayerBullet bullets);
 /*
 =====================================================================================================================
-purpose:     
+purpose:     performs the collision detection functions on all enemies on the screen
+             if they are in play
 
-input:      
-output:     
-assumptions: 
-limitations: 
-bugs:        
+input:      model   -   the pointer to the model containing all game information
+
+output:     helicopters -   if a helicopter is found to have a collision, it's collision property is changed to a 1   
+            jets        -   if a jet is found to have a collision, it's collision property is changed to a 1
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
+limitations: N/A
+bugs:        N/A
 =====================================================================================================================
 */
 void check_enemy_hit(Model *model);
 /*
 =====================================================================================================================
-purpose:     
+purpose:     will check players on the game field for collisions with enemy bullets
 
-input:      
-output:     
-assumptions: 
-limitations: 
-bugs:        
+input:      player   -   the pointer to the array of players within the game
+            bullets  -   the pointer to the array of enemy bullets within the game
+
+output:     players  -   if a collision is detected on a player, the collsion property of that player will be changed to 1
+            bullets  -   if an enemy bullet collides with a player, it is reverted to position of x = 1 and removed from playable region
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right) 
+limitations: N/A
+bugs:        N/A
 =====================================================================================================================
 */
 void check_player_hit(PlayerShip *player, Bullet* bullets);
 /*
 =====================================================================================================================
-purpose:     
+purpose: check collisions of every single object in the playable area, and changes
+         collision properties as is neccessary
 
-input:      
-output:     
-assumptions: 
-limitations: 
-bugs:        
+input:      model       -   the pointer to the model of the game which houses all information      
+
+output:     players     -   if a collision is detected on a player, the collsion property of that player will be changed to 1    
+            helicopters -   if a helicopter is found to have a collision, it's collision property is changed to a 1   
+            jets        -   if a jet is found to have a collision, it's collision property is changed to a 1
+            bullets     -   if an enemy bullet collides with a player, it is reverted to position of x = 1 and removed from playable region
+            Pbullets    -   if a player bullet collides with an enemy, it is reverted to position of x = 1 and removed from playable region
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)  
+limitations: N/A
+bugs:        N/A
 =====================================================================================================================
 */
 void check_collisions(Model *model);
 /*
 =====================================================================================================================
-purpose:     
+purpose: process the "death state" of the players, facilitating its explosion and respawning
 
-input:      
-output:     
-assumptions: 
-limitations: 
-bugs:        
+input:      player  -   pointer to the array of player ships
+
+output:     player  -   death time may increase until 10, reset properties and respawn ship with one less life
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)  
+limitations: N/A
+bugs:        N/A
 =====================================================================================================================
 */
 void destroy_player(PlayerShip *player);
 /*
 =====================================================================================================================
-purpose:     
+purpose:     process the "death state" of the helicopters, facilitating its explosion and respawning
 
-input:      
-output:     
-assumptions: 
-limitations: 
-bugs:        
+input:      helicopters -   the pointer to the array of helicopters
+
+output:     helicopters -   death time may increase until 10, reset properties and return to x = 1
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
+limitations: N/A
+bugs:        N/A
 =====================================================================================================================
 */
 void destroy_helicopters(Helicopter *helicopters);
+/*
+=====================================================================================================================
+purpose:     check all helicopters in playable area for weapon cooldown. fire if 0 and reset, or otherwise reduce by 1
 
+input:      helicopters -   the pointer to the array of helicopters
+
+output:     helicopters -   helicopters will have their cooldown properties altered when in playable area
+            bullets     -   enemy bullets may spawn below helicopters     
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
 void helicopters_shoot(Helicopter *helicopters, Bullet *bullets);
+/*
+=====================================================================================================================
+purpose:     process the "death state" of the jets, facilitating its explosion and respawning
 
+
+input:      jets    -   the pointer to the array of jets
+
+output:     jets    -   death time may increase until 10, reset properties and return to x = 1
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
+void destroy_jets(Jet *jets)
+/*
+=====================================================================================================================
+purpose:  process the death of all objects capable and meant to be dead that are in the playable area
+
+input:      model       -   the pointer to the model of the game which houses all information     
+
+output:     player  -   death time may increase until 10, reset properties and respawn ship with one less life
+            jets    -   death time may increase until 10, reset properties and return to x = 1
+            helicopters -   death time may increase until 10, reset properties and return to x = 1
+
+assumptions: it is assumed that anything not in play is set either 0 (meaning that specific object has
+             not been used yet, meaning there's nothing to its right) or set to 1 (meaning that specific
+             object has been used before, so there's potentially more objects to the right)
+limitations: N/A
+bugs:        N/A
+=====================================================================================================================
+*/
 void destroy_all(Model *model);
 
 
