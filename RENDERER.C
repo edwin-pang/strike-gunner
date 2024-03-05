@@ -78,26 +78,65 @@ void render_panel_right(UINT32 *base){
 
 void render_all_32(Model *model, UINT32 *base) {
     int i = 0;
-     while (i < 49 && model->playerBullets[i].position.x != 0) {
+     while (i < NUM_BULLET && model->playerBullets[i].position.x != 0) {
+        if (model->playerBullets[i].position.x == 1){
+            i++;
+        }
+        else{
+        plot_bitmap_32(base,model->playerBullets[i].position.x, model->playerBullets[i].position.y + model->playerBullets->speed, empty_32, PLAYER_BULLET_HEIGHT );
         plot_bitmap_32(base,model->playerBullets[i].position.x,model->playerBullets[i].position.y,player_bullet_hex, PLAYER_BULLET_HEIGHT);
         i++;
+        }
     }
     i = 0;
-    while (i < 19 && model->helicopters[i].position.x != 0) {
+    while (i < NUM_PLAYER && model->ship[i].position.x != 0) {
+        if (model->ship[i].hor_dir != 0 || model->ship[i].ver_dir != 0){
+        clear_part(base,model->ship[i].position.x + ( model->ship[i].hor_dir * model->ship[i].speed * -1),model->ship[i].position.y - ( model->ship[i].ver_dir * model->ship[i].speed * -1),SHIP_WIDTH,SHIP_HEIGHT);
+        plot_bitmap_32(base,model->ship[i].position.x,model->ship[i].position.y,player_ship, SHIP_HEIGHT);
+        i++;
+        }
+        else {
+        i++;
+        }
+    }
+    render_enemies(model,base);
+}
+void render_enemies(Model *model, UINT32 *base){
+    int i = 0;
+    while (i < NUM_ENEMY && model->helicopters[i].position.x != 0) {
+        if (model->helicopters[i].hor_dir == 0 && model->helicopters[i].ver_dir == 0 ){
+            i++;
+        }
+        else{
+        plot_bitmap_32(base,model->helicopters[i].position.x +(model->helicopters[i].hor_dir * model->helicopters[i].speed), model->helicopters[i].position.y + (model->helicopters[i].ver_dir * model->helicopters[i].speed), empty_32, SHIP_HEIGHT );
         plot_bitmap_32(base,model->helicopters[i].position.x,model->helicopters[i].position.y, helicopter, SHIP_HEIGHT);
         i++;
+        }
     }
     i = 0;
-    while (i < 19 && model->jets[i].position.x != 0) {
+    while (i < NUM_ENEMY && model->jets[i].position.x != 0) {
+        if (model->jets[i].hor_dir == 0 && model->jets[i].ver_dir == 0){
+            i++;
+        }
+        else{
+        plot_bitmap_32(base,model->jets[i].position.x +(model->jets[i].hor_dir * model->jets[i].speed), model->jets[i].position.y + (model->jets[i].ver_dir * model->jets[i].speed), empty_32, SHIP_HEIGHT );
         plot_bitmap_32(base,model->jets[i].position.x,model->jets[i].position.y, jet, SHIP_HEIGHT);
         i++;
     }
+    }
 }
+
 void render_all_8(Model *model, UINT8 *base) {
      int i = 0;
-     while (i < 49 && model->bullets[i].position.x != 0) {
-        plot_bitmap_8(base,model->bullets[i].position.x,model->bullets[i].position.y,heli_bullet_bitmap, BULLET_HEIGHT);
-        i++;
+     while (i < NUM_BULLET && model->bullets[i].position.x != 0) {
+         if (model->bullets[i].position.x == 1){
+            i++;
+        }
+        else{
+            plot_bitmap_8(base,model->bullets[i].position.x,model->bullets[i].position.y - model->bullets->speed,empty_8, BULLET_HEIGHT);
+            plot_bitmap_8(base,model->bullets[i].position.x,model->bullets[i].position.y,heli_bullet_bitmap, BULLET_HEIGHT);
+            i++;
+        }
     }
 }
 void render_all_16(Model *model, UINT16 *base) {
@@ -120,5 +159,27 @@ void render(Model *model){
     render_life_counter(model,base);
     
     
+}
+void render_moveables(Model *model){
+    void *base = Physbase();
+    render_all_32(model, base);/*rasterize all 32 bitmaps that should be on screen */
+
+    render_all_16(model, base);/*rasterize all 16 bitmaps to screen*/
+    render_all_8(model, base); /*rasterize all 8 bitmaps to screen*/
+}
+
+void clear_moveables(Model *model){
+ 
+}
+void clear_32(UINT16 height, UINT16 x, UINT16 y, UINT8 hor_dir, UINT8 Ver_dir){
+    
+}
+
+void clear_score(Model *model){
+
+}
+
+void clear_lives(Model *model){
+
 }
 

@@ -16,11 +16,6 @@
 #define LEFT_KEY 0x004b0000
 #define ESC_KEY 27
 
-#define STOP 0
-#define RIGHT 1
-#define LEFT 2
-#define UP 1
-#define DOWN 2
 
 #define QUIT 1
 

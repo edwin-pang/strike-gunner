@@ -19,18 +19,18 @@ void move_player (PlayerShip *player) {
     move_ship_pos(position, player->hor_dir, player->ver_dir, player->speed, LEFT_BOUND_PLAYER,RIGHT_BOUND_PLAYER);
 }
 
-void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT8 speed, UINT16 left_bound, UINT16 right_bound){
-    if (hor_dir == 1 && position->x < (right_bound - SHIP_WIDTH)){
+void move_ship_pos(Position *position, char hor_dir, char ver_dir, UINT8 speed, UINT16 left_bound, UINT16 right_bound){
+    if (hor_dir == RIGHT && position->x < (right_bound - SHIP_WIDTH)){
             position->x += speed;    /*move player one to the right if that direction is inputted, and it still has room to move right*/
         }
-        else if (hor_dir == 2 && position->x > (left_bound + 1)) {
+        else if (hor_dir == LEFT && position->x > (left_bound + 1)) {
          position->x -= speed;      /*move player one to the left if that direction is inputted, and it still has room to move left*/
         }
         /*seperate if because player can move both horizontally and vertically in one clock cycle*/
-        if (ver_dir == 1 && position->y > 0) {
+        if (ver_dir == UP && position->y > 0) {
          position->y -= speed;      /*move player one pixel upwards if inputted, and it still has room to move up*/
         }
-        else if (ver_dir == 2 && position->y <= 368) {
+        else if (ver_dir == DOWN && position->y <= 368) {
          position->y += speed;      /*move player one pixel downwards if inputted, and it still has room to move down*/
     }
 }
