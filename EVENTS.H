@@ -444,7 +444,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void destroy_jets(Jet *jets)
+void destroy_jets(Jet *jets);
 /*
 =====================================================================================================================
 purpose:  process the death of all objects capable and meant to be dead that are in the playable area

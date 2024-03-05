@@ -3,11 +3,25 @@
 #include "MODEL.H"
 #include "RENDERER.H"
 #include <stdio.h>
+#include <osbind.h>
 
+char buff[32256];
 
+char *get_base(char *second_buffer){
+    char *base;
+    UINT16 difference;
+    base = second_buffer;
+    difference = (int)base;
+    difference %= 0x100;
+    difference = 0x100 - difference;
+    return base + difference;
+}
 
 
 int main(){
+    char *base1 = Physbase();
+    char *base2 = get_base(buff);
+
     Model model;
     Model *model_ptr = &model;
     int old_lives = 3;
@@ -55,6 +69,8 @@ int main(){
             check_collisions(model_ptr);
             destroy_all(model_ptr);
 
+            Setscreen(-1, base1, -1);
+            
             render(model_ptr);
             timeThen = timeNow;
         }

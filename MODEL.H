@@ -483,7 +483,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void despawn_jet(Jet *jet, Jet *jets)
+void despawn_jet(Jet *jet, Jet *jets);
 /*
 =====================================================================================================================
 purpose:     initialize all components of the games model needed to start the game
