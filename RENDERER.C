@@ -105,8 +105,8 @@ void render_all_16(Model *model, UINT16 *base) {
         plot_bitmap_16(base,model->powerup.position.x,model->powerup.position.y,powerup, POWER_UP_HEIGHT);
     }
 }
-void render(Model *model){
-    void *base = Physbase();
+void render(Model *model, char *base){
+    /*void *base = Physbase();*/
     clear_screen(base);         /*clear entire screen*/
     plot_bitmap_32(base,model->ship[0].position.x,model->ship[0].position.y,player_ship, SHIP_HEIGHT); /*rasterize all 32 bitmaps that should be on screen */
     render_all_32(model, base);
@@ -118,7 +118,5 @@ void render(Model *model){
     render_panel_right(base);
     render_score(model,base);
     render_life_counter(model,base);
-    
-    
 }
 

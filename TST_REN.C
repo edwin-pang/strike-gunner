@@ -50,6 +50,6 @@ int main(){
     the_model.lives.position.x = 10;
     the_model.lives.position.y = 150;
 
-    render(&(the_model));
+    render(&(the_model), Physbase());
     return 0;
 }

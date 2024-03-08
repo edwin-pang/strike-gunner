@@ -98,7 +98,7 @@ limitations: Will not render objects that land outside the playable area (object
 bugs:        N/A
 =====================================================================================================================
 */
-void render(Model *model);
+void render(Model *model, char *base);
 /*
 =====================================================================================================================
 purpose:    render the current in game score into the left panel     
