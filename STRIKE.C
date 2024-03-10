@@ -21,6 +21,7 @@ char *get_base(char *second_buffer){
 int main(){
     char *base1 = Physbase();
     char *base2 = get_base(buff);
+    char *active_base = base1;
 
     Model model;
     Model *model_ptr = &model;
@@ -33,12 +34,12 @@ int main(){
     UINT32 timeThen,timeNow,timeElapsed;
     init_model(model_ptr);
 
-    render(model_ptr);
+    render(model_ptr, active_base);
     timeThen = get_time();
     while(model_ptr->quit_game == FALSE){
         timeNow = get_time();
         timeElapsed = timeNow - timeThen;
-        if (timeElapsed <= 5){ 
+        if (timeElapsed <= 10){ 
             key = get_key();
             if(key)
             {
@@ -69,9 +70,15 @@ int main(){
             check_collisions(model_ptr);
             destroy_all(model_ptr);
 
-            Setscreen(-1, base1, -1);
+            if (active_base == base1){
+                active_base = base2;
+            }else{
+                active_base = base1;
+            }
             
-            render(model_ptr);
+            render(model_ptr, active_base);
+            Setscreen(-1, active_base, -1);
+
             timeThen = timeNow;
         }
 
