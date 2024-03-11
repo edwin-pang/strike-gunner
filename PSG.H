@@ -34,6 +34,15 @@
 #define IO_C_NOISEON_TONEOFF 0x1F
 #define IO_C_NOISEOFF_TONEON 0x3B
 
+#define ENVELOPE_FINE_REG 0xB
+#define ENVELOPE_ROUGH_REG 0xC
+#define ENVELOPE_SHAPE_REG 0xD
+
+#define ENVELOPE_ROUGH_MASK 0xFF00
+#define ENVELOPE_FINE_MASK 0x00FF
+
+#define SHAPE_1 0x00
+
 extern volatile char *PSG_reg_select = 0xFF8800;
 extern volatile char *PSG_reg_write = 0xFF8802;
 
@@ -44,6 +53,6 @@ void set_volume(int channel, int volume);
 void enable_channel(int channel, int noise_on, int tone_on);
 void stop_sound();
 void set_noise(int tuning);
-void set_envelope();
+void set_envelope(int shape, unsigned int sustain);
 
 #endif

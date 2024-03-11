@@ -51,11 +51,12 @@ game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o
 input.o: input.c input.h
 	cc68x -g -c input.c
 
+tst_eff.o: tst_eff.c psg.h effects.h
+	cc68x -g -c tst_eff.c
+
 strike.o: strike.c
 	cc68x -g -c strike.c
 
 effects.o: effects.c effects.h
 	cc68x -g -c effects.c
-
-tst_eff.o: tst_eff.c psg.h effects.h
-	cc68x -g -c tst_eff.c
+	

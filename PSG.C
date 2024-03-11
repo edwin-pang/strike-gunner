@@ -125,5 +125,7 @@ void set_noise(int tuning){
     write_psg(NOISE_REG, tuning);
 }
 
-void set_envelope(){
+void set_envelope(int shape, unsigned int sustain){
+    write_psg(ENVELOPE_SHAPE_REG, shape);
+    write_psg(ENVELOPE_FINE_REG, sustain);
 }
