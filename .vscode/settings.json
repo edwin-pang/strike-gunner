@@ -10,6 +10,9 @@
         "TST_EV.C": "cpp",
         "TST_ST4.C": "cpp",
         "STRIKE.C": "cpp",
-        "INPUT.C": "cpp"
+        "INPUT.C": "cpp",
+        "PSG.C": "cpp",
+        "EFFECTS.C": "cpp",
+        "TST_EFF.C": "cpp"
     }
 }

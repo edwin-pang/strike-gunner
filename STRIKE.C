@@ -39,21 +39,22 @@ int main(){
     while(model_ptr->quit_game == FALSE){
         timeNow = get_time();
         timeElapsed = timeNow - timeThen;
-        if (timeElapsed <= 10){ 
-            key = get_key();
-            if(key)
+        if (timeElapsed <= 4){ 
+            if(Cconis())
             {
+                key = get_key();
+
                 if(key == 'w'){
-                    move_up_request(player);        
+                    move_up_request(player);
                 }
                 else if(key == 's'){
                     move_down_request(player);
                 }
                 else if(key == 'a'){
                     move_left_request(player);        
-                }
+                }   
                 else if(key == 'd'){
-                 move_right_request(player); 
+                    move_right_request(player);
                 }
                 else if(key == 'x'){
                     fire_main_request(player);
@@ -69,6 +70,10 @@ int main(){
             shoot_bullets(model_ptr);
             check_collisions(model_ptr);
             destroy_all(model_ptr);
+
+            move_up_cancel(player);
+            move_right_cancel(player);
+            fire_main_cancel(player);
 
             if (active_base == base1){
                 active_base = base2;
