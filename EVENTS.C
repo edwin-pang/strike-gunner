@@ -10,7 +10,7 @@ void move_up_cancel(PlayerShip *player) {
     player->ver_dir = STOP;                    /*will change the player's vertical direction to 0 for nothing*/
 }
 void move_down_request(PlayerShip *player) {
-    player->ver_dir = DOWN;                    /*will change the player's vertical direction to 2 for down*/
+    player->ver_dir = DOWN;                    /*will change the player's vertical direction to -1 for down*/
 }
 
 void move_down_cancel(PlayerShip *player) {
@@ -26,7 +26,7 @@ void move_right_cancel(PlayerShip *player) {
 }
 
 void move_left_request(PlayerShip *player) {
-    player->hor_dir = LEFT;                    /*will change the player's horizontal direction to 2 for left*/
+    player->hor_dir = LEFT;                    /*will change the player's horizontal direction to -1 for left*/
 }
 
 void move_left_cancel(PlayerShip *player) {
@@ -63,7 +63,7 @@ void move_all(Model *model){
 void move_ships(PlayerShip *players, Helicopter *helicopters, Jet *jets){
 int i = 0;
 move_player(players);
-if ((players + 1)->position.x != 0) {
+if (players[1].position.x != 0) {
     move_player(&players[1]);
 }
 while (i < 20 && helicopters[i].position.x != 0){
@@ -152,7 +152,19 @@ void destroy_helicopters(Helicopter *helicopters){
         i++;
     }
 }
-
+void destroy_jets(Jet *jets){
+    int i = 0;
+    while (i < NUM_ENEMY && jets[i].position.x != 0){
+        if (jets[i].collision == 1 && jets[i].death_time < 10){
+            jets[i].death_time++;      /*jet will explode on screen for 10 clock cycles*/
+        }
+        else if (jets[i].death_time == 10){
+            despawn_jet(&jets[i],jets);
+                                              /*if 10 clock cycles have occured, despawn the jet*/
+        }
+        i++;
+    }
+}
 void check_player_hit(PlayerShip *player, Bullet *bullets){
     int i = 0;
     int j = 0;

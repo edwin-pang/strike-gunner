@@ -20,6 +20,11 @@ i dont think we need the space ints take up for some of them*/
 #define NUM_ENEMY 20
 #define NUM_BULLET 50
 #define NUM_PLAYER 1 /*for now*/
+#define RIGHT 1
+#define LEFT -1
+#define UP 1
+#define DOWN -1
+#define STOP 0
 
 
 typedef struct {
@@ -30,7 +35,7 @@ typedef struct
 {
 Position position;          /*horizontal and vertical postion of the player's ship*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 wep_upgrade;          /*represents the current damage level of the main cannon*/
 UINT8 fire_wep;             /*boolean flag for whether the main cannon is firing. 1 for fire, 0 for not*/
 UINT8 fire_spec;            /*boolean flag for whether the special weapon is firing. 1 for fire, 0 for not*/
@@ -44,7 +49,7 @@ typedef struct
 {
 Position position;          /*horizontal and vertical postion of the helicopter*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 fire_wep;             /*boolean flag for whether the helicopter will fire next clock cycle. 1 for fire, 0 for not. After firing reset to 0*/
 UINT16 cooldown;            /*amount of time until the fire_wep flag is set, this will then reset to 210 (3 seconds) */
 UINT8 cur_weapon;           /*value specifies weapon held. 1 for bullet, 2 for missile*/
@@ -58,7 +63,7 @@ typedef struct
 { 
 Position position;          /*horizontal and vertical postion of the jet*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 fire_wep;             /*boolean flag for whether the jet will fire next clock cycle. 1 for fire, 0 for not. After firing reset to 0*/
 UINT16 cooldown;            /*amount of time until the fire_wep flag is set, this will then reset to 210 (3 seconds) */
 UINT8 cur_weapon;           /*value specifies weapon held. 1 for bullet, 2 for missile*/
@@ -88,7 +93,7 @@ typedef struct
 {
 Position position;          /*horizontal and vertical postion of the bullet*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 damage;               /*amount of damage the bullet will do*/
 UINT8 num;                  /*position in array*/
 } Bullet;
@@ -96,7 +101,7 @@ UINT8 num;                  /*position in array*/
 typedef struct {
 Position position;          /*horizontal and vertical postion of the bullet*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 damage;               /*amount of damage the bullet will do*/
 UINT8 num;                  /*position in array*/
 } PlayerBullet;
@@ -105,7 +110,7 @@ typedef struct
 {
 Position position;          /*horizontal and vertical postion of the missile*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-UINT8 hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
 UINT8 damage;               /*amount of damage the missile will do*/
 UINT8 home_cd;              /*amount of time until missile will attempt to turn to player next clock cycle. player missiles wont home*/
 UINT8 friendly;             /*boolean flag to determine whether missile is from a player (1) or not (0). players cant hurt players */
@@ -172,7 +177,7 @@ limitations: movement is constrained within the specified boundaries.
 bugs:        N/A
 =====================================================================================================================
 */
-void move_ship_pos(Position *position, UINT8 hor_dir, UINT8 ver_dir, UINT8 speed, UINT16 left_bound, UINT16 right_bound);
+void move_ship_pos(Position *position, char hor_dir, char ver_dir, UINT8 speed, UINT16 left_bound, UINT16 right_bound);
 
 /*
 =====================================================================================================================

@@ -1,5 +1,16 @@
 #include "types.h"
 
+UINT8 empty_8[8] =
+{
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00
+};
 UINT32 empty_32[32] =
 {
     0x00000000,

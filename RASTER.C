@@ -1,4 +1,5 @@
 #include "raster.h"
+#include <stdio.h>
 
 #define SCREEN_HEIGHT 400	/* These can be moved later on if there is a better */
 #define SCREEN_WIDTH 640	/* spot to put them */
@@ -27,10 +28,40 @@ void plot_vertical_line(UINT32 *base, int x, int y, unsigned int length, int up)
 
 }
 
-
-
-
-
+void clear_part(UINT32 *base, int x, int y, int length, int height){
+	UINT32 *loc = base + (y * 20) + (x >> 5);
+	UINT32 x_array[20];
+	UINT32 clear = 0x00000000;
+	UINT32 dont_clear = 0xFFFFFFFF;
+	int row = 1;
+	int long_length = (length >> 5) + 1;
+	int column;
+	int right_offset = x % 32;
+	int left_offset = 32 - right_offset;
+	int x_add_loc = 20 - long_length;
+	x_array[0] = (dont_clear << left_offset);
+	while (row < long_length -1){ 
+		x_array[row] = clear;
+		row++;
+	}
+	x_array[row] = (dont_clear >> right_offset);
+	row = 0;
+	for (column = 0; column < height; column++)	
+	{
+		if ((loc < base) || (loc > base + 8000)){
+				loc += 20;
+			}
+		else{	
+			for(row = 0; row < long_length; row++){
+				/*printf("%d", row);*/
+				*loc = (*loc & x_array[row]); 
+				loc += 1;
+			}
+			/*printf("/n");*/
+			loc += x_add_loc;
+		}
+	}
+}
 void plot_horizontal_line(UINT32 *base, int x, int y, unsigned int length,int right){
 	UINT32 *loc = base + (y * 20) + (x >> 5);
 	int full_longs = length >> 5;

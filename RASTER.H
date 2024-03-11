@@ -105,5 +105,5 @@ bugs:        see above
 */
 void plot_bitmap_32(UINT32 *base, int x, int y, const UINT32 *bitmap, unsigned int height);
 
-
+void clear_part(UINT32 *base, int x, int y, int length, int height);
 #endif
