@@ -53,6 +53,15 @@
 #define FADE_OUT 0x00
 
 
+#define ENVELOPE_FINE_REG 0xB
+#define ENVELOPE_ROUGH_REG 0xC
+#define ENVELOPE_SHAPE_REG 0xD
+
+#define ENVELOPE_ROUGH_MASK 0xFF00
+#define ENVELOPE_FINE_MASK 0x00FF
+
+#define SHAPE_1 0x00
+
 extern volatile char *PSG_reg_select = 0xFF8800;
 extern volatile char *PSG_reg_write = 0xFF8802;
 
