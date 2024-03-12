@@ -3,6 +3,10 @@
 
 #include "TYPES.H"
 
+#define FIVE_BIT_MAX 32
+#define TWELVE_BIT_MAX 4096
+#define SIXTEEN_BIT_MAX 65536
+
 #define CHANNEL_A 0
 #define CHANNEL_B 1
 #define CHANNEL_C 2
