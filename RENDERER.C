@@ -3,7 +3,7 @@
 #include <osbind.h>
 #include "bitmap.c"
 #include "font.c"
-
+#include <stdio.h>
 
 void render_clear(){
     void *base = Physbase();
@@ -93,6 +93,7 @@ void render_all_32(Model *model, UINT32 *base) {
         if (model->ship[i].hor_dir != 0 || model->ship[i].ver_dir != 0){
         clear_part(base,model->ship[i].position.x + ( model->ship[i].hor_dir * model->ship[i].speed * -1),model->ship[i].position.y - ( model->ship[i].ver_dir * model->ship[i].speed * -1),SHIP_WIDTH,SHIP_HEIGHT);
         plot_bitmap_32(base,model->ship[i].position.x,model->ship[i].position.y,player_ship, SHIP_HEIGHT);
+        printf("bug \n");
         i++;
         }
         else {
@@ -158,8 +159,7 @@ void render(Model *model, char *base){
     render_score(model,base);
     render_life_counter(model,base);
 }
-void render_moveables(Model *model){
-    void *base = Physbase();
+void render_moveables(Model *model, char *base){
     render_all_32(model, base);/*rasterize all 32 bitmaps that should be on screen */
 
     render_all_16(model, base);/*rasterize all 16 bitmaps to screen*/

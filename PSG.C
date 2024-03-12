@@ -1,7 +1,7 @@
 #include <osbind.h>
 #include "PSG.H"
 #include "TYPES.H"
-
+#include <stdio.h>
 void write_psg(int reg, UINT8 val){
     long old_ssp;
 
@@ -32,21 +32,19 @@ int read_psg(int reg){
 }
 
 void set_tone(int channel, int tuning){
-    int fine_tune = tuning * 0x00FF;
-    int rough_tune = tuning * 0x00F0;
-
+    int rough = tuning;
+    if (tuning > 255){
+        
+    }
     switch(channel){
         case CHANNEL_A:
-            write_psg(CHANNEL_A_FINE, fine_tune);
-            write_psg(CHANNEL_A_ROUGH, rough_tune);
+            write_psg(CHANNEL_A_FINE, tuning);
             break;
         case CHANNEL_B:
-            write_psg(CHANNEL_B_FINE, fine_tune);
-            write_psg(CHANNEL_B_ROUGH, rough_tune);
+            write_psg(CHANNEL_B_FINE, tuning);
             break;
         case CHANNEL_C:
-            write_psg(CHANNEL_C_FINE, fine_tune);
-            write_psg(CHANNEL_C_ROUGH, rough_tune);
+            write_psg(CHANNEL_C_FINE, tuning);
             break;
         default:
             break;
@@ -71,47 +69,46 @@ void set_volume(int channel, int volume){
 
 void enable_channel(int channel, int noise_on, int tone_on){
     UINT8 mixer_control;
-    mixer_control = read_psg(MIXER_REG);
+     mixer_control = read_psg(MIXER_REG);
 
     switch (channel)
     {
     case CHANNEL_A:
         if (noise_on && tone_on){
-            mixer_control = mixer_control & IO_A_NOISEON_TONEON;
+            mixer_control = (mixer_control & IO_A) | IO_A_TURN_NOISE_TONE;
         }
         if (noise_on && !tone_on){
-            mixer_control = mixer_control & IO_A_NOISEON_TONEOFF;
+            mixer_control = (mixer_control & IO_A) | IO_A_TURN_NOISE;
         }
         if (!noise_on && tone_on){
-            mixer_control = mixer_control & IO_A_NOISEOFF_TONEON;
+            mixer_control = (mixer_control & IO_A) | IO_A_TURN_TONE;
         }
         break;
     case CHANNEL_B:
         if (noise_on && tone_on){
-            mixer_control = mixer_control & IO_B_NOISEON_TONEON;
+            mixer_control = (mixer_control & IO_B) | IO_B_TURN_NOISE_TONE;
         }
         if (noise_on && !tone_on){
-            mixer_control = mixer_control & IO_B_NOISEON_TONEOFF;
+            mixer_control = (mixer_control & IO_B) | IO_B_TURN_NOISE;
         }
         if (!noise_on && tone_on){
-            mixer_control = mixer_control & IO_B_NOISEOFF_TONEON;
+            mixer_control = (mixer_control & IO_B) | IO_B_TURN_TONE;
         }
         break;
     case CHANNEL_C:
         if (noise_on && tone_on){
-            mixer_control = mixer_control & IO_C_NOISEON_TONEON;
+            mixer_control = (mixer_control & IO_C) | IO_C_TURN_NOISE_TONE;
         }
         if (noise_on && !tone_on){
-            mixer_control = mixer_control & IO_C_NOISEON_TONEOFF;
+            mixer_control = (mixer_control & IO_C) | IO_C_TURN_NOISE;
         }
         if (!noise_on && tone_on){
-            mixer_control = mixer_control & IO_C_NOISEOFF_TONEON;
+            mixer_control = (mixer_control & IO_C) | IO_C_TURN_TONE;
         }
         break;
     default:
         break;
     }
-
     write_psg(MIXER_REG, mixer_control);
 }
 
@@ -125,5 +122,12 @@ void set_noise(int tuning){
     write_psg(NOISE_REG, tuning);
 }
 
-void set_envelope(){
+void set_envelope(int shape, UINT16 sustain){
+    write_psg(SHAPE_REG,shape);
+    if (sustain > 255){
+       write_psg(ENVELOPE_FINE,sustain);
+    }
+    else{
+        write_psg(ENVELOPE_ROUGH,sustain);
+    }
 }

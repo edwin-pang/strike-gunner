@@ -1,5 +1,7 @@
 #include "EVENTS.H"
 #include "MODEL.H"
+#include "EFFECTS.H"
+#include "PSG.H"
 
 
 void move_up_request(PlayerShip *player) {
@@ -36,6 +38,7 @@ void move_left_cancel(PlayerShip *player) {
 
 void fire_main_request(PlayerShip *player) {
     player->fire_wep = TRUE;                   /*will change the player's main weapon flag to 1 for true*/
+    play_bullet();
 }
 
 

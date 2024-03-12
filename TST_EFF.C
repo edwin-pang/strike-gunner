@@ -9,5 +9,11 @@ int main(){
         ;
     set_volume(CHANNEL_A, 0);
     Cnecin();
+
+    play_bullet();
+    while (!Cconis())
+        ;
+    set_volume(CHANNEL_A, 0);
+    Cnecin();
     return 0;
 }

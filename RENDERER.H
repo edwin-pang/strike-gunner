@@ -128,7 +128,7 @@ bugs:
 */
 void render_clear();
 void render_enemies(Model *model, UINT32 *base);
-void render_moveables(Model *model);
+void render_moveables(Model *model, char *base);
 void clear_32(UINT16 height, UINT16 x, UINT16 y, UINT8 hor_dir, UINT8 Ver_dir);
 void clear_8(Model *model, UINT8 *base);
 void clear_16(Model *model, UINT16 *base);

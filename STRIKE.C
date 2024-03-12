@@ -30,16 +30,18 @@ int main(){
     int key;
     int collision;
     int collision2;
+    int shot_time = 0;
     PlayerShip *player = &(model_ptr->ship[PLAYER_ONE]);
     UINT32 timeThen,timeNow,timeElapsed;
     init_model(model_ptr);
 
     render(model_ptr, active_base);
+    render(model_ptr, base2);
     timeThen = get_time();
     while(model_ptr->quit_game == FALSE){
         timeNow = get_time();
         timeElapsed = timeNow - timeThen;
-        if (timeElapsed <= 4){ 
+        if (timeElapsed <= 5){ 
             if(Cconis())
             {
                 key = get_key();
@@ -56,13 +58,14 @@ int main(){
                 else if(key == 'd'){
                     move_right_request(player);
                 }
-                else if(key == 'x'){
+                else if(key == 'x' && shot_time >= 20){
                     fire_main_request(player);
+                    shot_time = 0;
                 }
                 else if (key == ESC_KEY){
                     model_ptr->quit_game = TRUE;
                 }
-
+                shot_time++;
             }
         }
         else{
@@ -85,8 +88,12 @@ int main(){
             Setscreen(-1, active_base, -1);
 
             timeThen = timeNow;
+            shot_time++;
         }
 
+    }
+    if (base2 = active_base){
+        Setscreen(-1, base1, -1);
     }
     return 0;
 }

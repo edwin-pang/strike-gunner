@@ -5,5 +5,6 @@
 #include "PSG.H"
 
 void play_explosion();
+void play_bullet();
 
 #endif

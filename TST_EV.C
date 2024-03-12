@@ -3,6 +3,7 @@
 #include "TYPES.H"
 #include <stdio.h>
 #include <osbind.h>
+#include "EFFECTS.H"
 int main() {
 
     Model model;

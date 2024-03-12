@@ -2,6 +2,7 @@
 #define EVENTS_H
 #include "MODEL.H"
 #include "TYPES.H"
+#include "EFFECTS.H"
 /*
 =====================================================================================================================
 purpose:    this is intended to be called when a player presses "up", changing vertical direction
