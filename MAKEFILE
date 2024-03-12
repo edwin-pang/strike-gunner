@@ -30,33 +30,33 @@ renderer.o: renderer.c renderer.h raster.h
 tst_ren.o: tst_ren.c renderer.h raster.h
 	cc68x -g -c tst_ren.c
 
-tst_ev: events.o tst_ev.o model.o
-	cc68x -g events.o tst_ev.o model.o -o tst_ev
+tst_ev: tst_ev.o events.o model.o effects.o psg.o
+	cc68x -g tst_ev.o events.o model.o  effects.o  psg.o -o tst_ev
 
-events.o: events.c events.h model.h
+events.o: events.c events.h model.h effects.h psg.h
 	cc68x -g -c events.c
 
-tst_ev.o: tst_ev.c events.h model.h
+tst_ev.o: tst_ev.c events.h model.h effects.h psg.h
 	cc68x -g -c tst_ev.c
 
 psg.o: psg.c psg.h
 	cc68x -g -c psg.c
 
-tst_eff: effects.o tst_eff.o psg.o
-	cc68x -g effects.o tst_eff.o psg.o -o tst_eff
 
-game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o
-	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o -o game_exe
+
+game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o
+	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o -o game_exe
 
 input.o: input.c input.h
 	cc68x -g -c input.c
 
-tst_eff.o: tst_eff.c psg.h effects.h
-	cc68x -g -c tst_eff.c
-
 strike.o: strike.c
 	cc68x -g -c strike.c
+tst_eff: effects.o tst_eff.o psg.o
+	cc68x -g effects.o tst_eff.o psg.o -o tst_eff
 
 effects.o: effects.c effects.h
 	cc68x -g -c effects.c
-	
+
+tst_eff.o: tst_eff.c psg.h effects.h
+	cc68x -g -c tst_eff.c
