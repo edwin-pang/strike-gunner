@@ -13,6 +13,8 @@
         "INPUT.C": "cpp",
         "PSG.C": "cpp",
         "EFFECTS.C": "cpp",
-        "TST_EFF.C": "cpp"
+        "TST_EFF.C": "cpp",
+        "MUSIC.C": "cpp",
+        "TST_MUS.C": "cpp"
     }
 }
