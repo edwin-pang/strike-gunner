@@ -13,5 +13,5 @@ void play_bullet(){
     set_volume(CHANNEL_B, 0x10);
     set_noise(0x0F);
     set_envelope(0x00,0x0010);
-    /*set_volume(CHANNEL_B, 0);/*
+    /*set_volume(CHANNEL_B, 0);*/
 }
