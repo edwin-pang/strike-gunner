@@ -2,10 +2,40 @@
 #include "MODEL.H"
 #include "EFFECTS.H"
 #include "PSG.H"
+#include "STRIKE.H"
+#include "TST_EV.H"
+#include "INPUT.H"
 
 
+void key_request(){
+    UINT8 key = get_key();
+    if(key == 'w'){
+        model.ship->ver_dir = UP; 
+    }
+    else if(key == 's'){
+        model.ship->ver_dir = DOWN; 
+        }
+    else if(key == 'a'){
+        model.ship->hor_dir = LEFT;         
+    }   
+    else if(key == 'd'){
+        model.ship->hor_dir = RIGHT; 
+    }
+    else if(key == 'x' && model.shot_time >= 35){
+        model.ship->fire_wep = TRUE; 
+        model.shot_time = 0;
+        play_bullet();
+    }
+    else if (key == ESC_KEY){
+        model.quit_game = TRUE;
+    }
+}
+void sync_event_check(){
+        process_player(&model);
+        process_enemy(&model);
+}
 void move_up_request(PlayerShip *player) {
-    player->ver_dir = UP;                    /*will change the player's vertical direction to 1 for up*/
+    model.ship->ver_dir = UP;                    /*will change the player's vertical direction to 1 for up*/
 }
 
 void move_up_cancel(PlayerShip *player) {
@@ -58,7 +88,7 @@ void quit_game(Model *model) {
     model->quit_game = QUIT;                   /*will change the model's quit game flag to 1 for true*/
 }
 
-void move_all(Model *model){
+/*void move_all(Model *model){
     move_ships(model->ship,model->helicopters,model->jets);
     move_bullets(model->playerBullets,model->bullets);
 }
@@ -79,12 +109,12 @@ while (i < 20 && jets[i].position.x != 0){
     i++;
 }
 }
-
+*/
 void move_bullets(PlayerBullet *player_bullets, Bullet *bullets){
     int i = 0;
     while (i < 50 && player_bullets[i].position.x != 0){
         if (player_bullets[i].position.y <= 1){
-            despawn_player_bullet(&player_bullets[i],player_bullets);
+            despawn_player_bullet(&player_bullets[i]);
         }                           /*bullet off screen, remove it*/
         else{
             move_player_bullet(&(player_bullets[i]));
@@ -94,7 +124,7 @@ void move_bullets(PlayerBullet *player_bullets, Bullet *bullets){
     i = 0;
     while (i < 50 && bullets[i].position.x != 0){
          if (bullets[i].position.y >= 392){
-            despawn_enem_bullet(&bullets[i],bullets);
+            despawn_enem_bullet(&bullets[i]);
         } 
         else {
             move_enem_bullet(&bullets[i]);
@@ -102,14 +132,15 @@ void move_bullets(PlayerBullet *player_bullets, Bullet *bullets){
         }
     }
 }
-
+/*
 void players_shoot(PlayerShip *players, PlayerBullet *bullets){
     player_shoot(players, bullets);
     if ((&players[1])->position.x != 0){
     player_shoot(&players[1], bullets);
     }
 }
-void helicopters_shoot(Helicopter *helicopters, Bullet *bullets){
+*/
+/*void helicopters_shoot(Helicopter *helicopters, Bullet *bullets){
     int i = 0;
     while (i < 19 && helicopters[i].position.x != 0){
         if (helicopters[i].cooldown == 0){
@@ -121,8 +152,9 @@ void helicopters_shoot(Helicopter *helicopters, Bullet *bullets){
         i++;
     }
 }
+
 void shoot_bullets(Model *model){
-    players_shoot(model->ship,model->playerBullets);        /*if any ship is currently able to fre, do so*/
+    players_shoot(model->ship,model->playerBullets);        
     helicopters_shoot(model->helicopters,model->bullets);
 }
 
@@ -132,25 +164,25 @@ void check_heliopter_hit(Helicopter *helicopters, PlayerBullet *bullets){
     while (i < NUM_ENEMY && helicopters[i].position.x != 0){
         while(j < NUM_BULLET && bullets[j].position.x != 0){
             if (check_collision(&(helicopters[i].position), SHIP_WIDTH, SHIP_HEIGHT,&(bullets[j].position), PLAYER_BULLET_WIDTH,PLAYER_BULLET_HEIGHT)){
-                despawn_player_bullet(&(bullets[j]), bullets); /*remove intercepting bullet*/
-                helicopters[i].collision = 1;                  /*mark ship for death*/
-                helicopters[i].cooldown = 210;                 /*ensure ship wont fire in explosion process*/
+                despawn_player_bullet(&(bullets[j]), bullets); 
+                helicopters[i].collision = 1;                  
+                helicopters[i].cooldown = 210;                 
             }
             j++;
         }
         i++;
     }
 }
-
-void destroy_helicopters(Helicopter *helicopters){
+*/
+/*void destroy_helicopters(Helicopter *helicopters){
     int i = 0;
     while (i < NUM_ENEMY && helicopters[i].position.x != 0){
         if (helicopters[i].collision == 1 && helicopters[i].death_time < 10){
-            helicopters[i].death_time++;      /*helicopter will explode on screen for 10 clock cycles*/
+            helicopters[i].death_time++;     
         }
         else if (helicopters[i].death_time == 10){
             despawn_helicopter(&helicopters[i],helicopters);
-                                              /*if 10 clock cycles have occured, despawn the helicopter*/
+                                             
         }
         i++;
     }
@@ -159,22 +191,22 @@ void destroy_jets(Jet *jets){
     int i = 0;
     while (i < NUM_ENEMY && jets[i].position.x != 0){
         if (jets[i].collision == 1 && jets[i].death_time < 10){
-            jets[i].death_time++;      /*jet will explode on screen for 10 clock cycles*/
+            jets[i].death_time++;     
         }
         else if (jets[i].death_time == 10){
             despawn_jet(&jets[i],jets);
-                                              /*if 10 clock cycles have occured, despawn the jet*/
+                                              
         }
         i++;
-    }
-}
+    }*/
+
 void check_player_hit(PlayerShip *player, Bullet *bullets){
     int i = 0;
     int j = 0;
     while (i < NUM_PLAYER && player[i].position.x != 0){
         while(j < NUM_BULLET && bullets[j].position.x != 0){
             if (check_collision(&(player[i].position), SHIP_WIDTH, SHIP_HEIGHT,&(bullets[j].position),BULLET_WIDTH,BULLET_HEIGHT)){
-                despawn_enem_bullet(&(bullets[j]), bullets); /*remove intercepting bullet*/
+                despawn_enem_bullet(&(bullets[j])); /*remove intercepting bullet*/
                 player[i].hor_dir = 0;
                 player[i].ver_dir = 0;
                 player[i].collision = 1;                  /*mark ship for death*/
@@ -185,7 +217,7 @@ void check_player_hit(PlayerShip *player, Bullet *bullets){
         i++;
 }
 }
-void check_enemy_hit(Model *model){
+/*void check_enemy_hit(Model *model){
 check_heliopter_hit(model->helicopters,model->playerBullets);
 }
 
@@ -213,3 +245,4 @@ void destroy_all(Model *model){
     destroy_player(model->ship);
     destroy_helicopters(model->helicopters);
 }
+*/

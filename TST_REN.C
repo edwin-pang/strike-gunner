@@ -4,52 +4,51 @@
 #include "TYPES.H"
 
 
-
+Model model;
 int main(){
-    Model the_model;
-    the_model.ship[0].position.x = 300;
-    the_model.ship[0].position.y = 350;
+    model.ship[0].position.x = 300;
+    model.ship[0].position.y = 350;
 
-    the_model.playerBullets[0].position.x = 300;
-    the_model.playerBullets[0].position.y = 318;
-    the_model.playerBullets[1].position.x = 310;
-    the_model.playerBullets[1].position.y = 290;
-    the_model.playerBullets[2].position.x = 290;
-    the_model.playerBullets[2].position.y = 270;
+    model.playerBullets[0].position.x = 300;
+    model.playerBullets[0].position.y = 318;
+    model.playerBullets[1].position.x = 310;
+    model.playerBullets[1].position.y = 290;
+    model.playerBullets[2].position.x = 290;
+    model.playerBullets[2].position.y = 270;
 
-    the_model.helicopters[0].position.x = 100;
-    the_model.helicopters[0].position.y = 100;
-    the_model.helicopters[1].position.x = 500;
-    the_model.helicopters[1].position.y = 100;
-    the_model.helicopters[2].position.x = 200;
-    the_model.helicopters[2].position.y = 200;
-    the_model.helicopters[3].position.x = 440;
-    the_model.helicopters[3].position.y = 200;
+    model.enemies[0].position.x = 100;
+    model.enemies[0].position.y = 100;
+    model.enemies[1].position.x = 500;
+    model.enemies[1].position.y = 100;
+    model.enemies[2].position.x = 200;
+    model.enemies[2].position.y = 200;
+    model.enemies[3].position.x = 440;
+    model.enemies[3].position.y = 200;
 
-    the_model.jets[0].position.x = 320;
-    the_model.jets[0].position.y = 50;
+    model.enemies[0].position.x = 320;
+    model.enemies[0].position.y = 50;
     
 
-    the_model.bullets[0].position.x = 120;
-    the_model.bullets[0].position.y = 141;
-    the_model.bullets[1].position.x = 490;
-    the_model.bullets[1].position.y = 141;
-    the_model.bullets[2].position.x = 230;
-    the_model.bullets[2].position.y = 261;
-    the_model.bullets[3].position.x = 410;
-    the_model.bullets[3].position.y = 261;
+    model.bullets[0].position.x = 120;
+    model.bullets[0].position.y = 141;
+    model.bullets[1].position.x = 490;
+    model.bullets[1].position.y = 141;
+    model.bullets[2].position.x = 230;
+    model.bullets[2].position.y = 261;
+    model.bullets[3].position.x = 410;
+    model.bullets[3].position.y = 261;
     
-    the_model.powerup.position.x = 310;
-    the_model.powerup.position.y = 250;
+    model.powerup.position.x = 310;
+    model.powerup.position.y = 250;
 
-    the_model.score.total =56374;
-    the_model.score.position.x = 10;
-    the_model.score.position.y = 100;
+    model.score.total =56374;
+    model.score.position.x = 10;
+    model.score.position.y = 100;
 
-    the_model.lives.health_bar = 3;
-    the_model.lives.position.x = 10;
-    the_model.lives.position.y = 150;
+    model.lives.health_bar = 3;
+    model.lives.position.x = 10;
+    model.lives.position.y = 150;
 
-    render(&(the_model), Physbase());
+    render(&(model), Physbase());
     return 0;
 }

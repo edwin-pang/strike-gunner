@@ -219,7 +219,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void move_ships(PlayerShip *players, Helicopter *helicopters, Jet *jets);
+/*void move_ships(PlayerShip *players, Helicopter *helicopters, Jet *jets);*/
 /*
 =====================================================================================================================
 purpose:  performs the movement functions on all player bullets, and bullets if they are 
@@ -307,7 +307,7 @@ limitations:
 bugs:        
 =====================================================================================================================
 */
-void check_heliopter_hit(Helicopter *helicopters, PlayerBullet *bullets);
+/*void check_heliopter_hit(Helicopter *helicopters, PlayerBullet *bullets);*/
 /*
 =====================================================================================================================
 purpose: will check jet helicopter on the game field for collisions with all player bullets on the game field 
@@ -324,7 +324,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void check_jet_hit(Jet *jets, PlayerBullet bullets);
+/*void check_jet_hit(Jet *jets, PlayerBullet bullets);*/
 /*
 =====================================================================================================================
 purpose:     performs the collision detection functions on all enemies on the screen
@@ -412,7 +412,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void destroy_helicopters(Helicopter *helicopters);
+/*void destroy_helicopters(Helicopter *helicopters);*/
 /*
 =====================================================================================================================
 purpose:     check all helicopters in playable area for weapon cooldown. fire if 0 and reset, or otherwise reduce by 1
@@ -428,7 +428,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void helicopters_shoot(Helicopter *helicopters, Bullet *bullets);
+/*void helicopters_shoot(Helicopter *helicopters, Bullet *bullets);*/
 /*
 =====================================================================================================================
 purpose:     process the "death state" of the jets, facilitating its explosion and respawning
@@ -445,7 +445,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void destroy_jets(Jet *jets);
+/*void destroy_jets(Jet *jets);*/
 /*
 =====================================================================================================================
 purpose:  process the death of all objects capable and meant to be dead that are in the playable area
@@ -464,6 +464,6 @@ bugs:        N/A
 =====================================================================================================================
 */
 void destroy_all(Model *model);
-
-
+void key_request();
+void sync_event_check();
 #endif

@@ -4,6 +4,7 @@
 #include "bitmap.c"
 #include "font.c"
 #include <stdio.h>
+#include "STRIKE.H"
 
 void render_clear(){
     void *base = Physbase();
@@ -79,21 +80,23 @@ void render_panel_right(UINT32 *base){
 void render_all_32(Model *model, UINT32 *base) {
     int i = 0;
      while (i < NUM_BULLET && model->playerBullets[i].position.x != 0) {
-        if (model->playerBullets[i].position.x == 1){
-            i++;
-        }
+        if (model->playerBullets[i].position.x == 1)
+            ;
+        else if(model->playerBullets[i].collision == 1)
+            clear_part(base,model->playerBullets[i].prev_x,model->playerBullets[i].prev_y,SHIP_WIDTH,PLAYER_BULLET_HEIGHT);
         else{
-        plot_bitmap_32(base,model->playerBullets[i].position.x, model->playerBullets[i].position.y + model->playerBullets->speed, empty_32, PLAYER_BULLET_HEIGHT );
-        plot_bitmap_32(base,model->playerBullets[i].position.x,model->playerBullets[i].position.y,player_bullet_hex, PLAYER_BULLET_HEIGHT);
-        i++;
+            
+            plot_bitmap_32(base,model->playerBullets[i].position.x,model->playerBullets[i].position.y,player_bullet_hex, PLAYER_BULLET_HEIGHT);
         }
+        i++;
     }
     i = 0;
     while (i < NUM_PLAYER && model->ship[i].position.x != 0) {
         if (model->ship[i].hor_dir != 0 || model->ship[i].ver_dir != 0){
-        clear_part(base,model->ship[i].position.x + ( model->ship[i].hor_dir * model->ship[i].speed * -1),model->ship[i].position.y - ( model->ship[i].ver_dir * model->ship[i].speed * -1),SHIP_WIDTH,SHIP_HEIGHT);
+            if(model->ship[i].position.x != model->ship[i].prev_x || model->ship[i].position.y != model->ship[i].prev_y)
+                clear_part(base,model->ship[i].prev_x,model->ship[i].prev_y,SHIP_WIDTH,SHIP_HEIGHT);
+
         plot_bitmap_32(base,model->ship[i].position.x,model->ship[i].position.y,player_ship, SHIP_HEIGHT);
-        printf("bug \n");
         i++;
         }
         else {
@@ -104,17 +107,21 @@ void render_all_32(Model *model, UINT32 *base) {
 }
 void render_enemies(Model *model, UINT32 *base){
     int i = 0;
-    while (i < NUM_ENEMY && model->helicopters[i].position.x != 0) {
-        if (model->helicopters[i].hor_dir == 0 && model->helicopters[i].ver_dir == 0 ){
+    while (i < NUM_ENEMY && model->enemies[i].position.x != 0) {
+        if ((model->enemies[i].hor_dir == 0 && model->enemies[i].ver_dir == 0) || model->enemies[i].position.x == 1){
             i++;
         }
         else{
-        plot_bitmap_32(base,model->helicopters[i].position.x +(model->helicopters[i].hor_dir * model->helicopters[i].speed), model->helicopters[i].position.y + (model->helicopters[i].ver_dir * model->helicopters[i].speed), empty_32, SHIP_HEIGHT );
-        plot_bitmap_32(base,model->helicopters[i].position.x,model->helicopters[i].position.y, helicopter, SHIP_HEIGHT);
-        i++;
+             if(model->enemies[i].position.x != model->enemies[i].prev_x || model->enemies[i].position.y != model->enemies[i].prev_y)
+                clear_part(base,model->enemies[i].prev_x,model->enemies[i].prev_y,SHIP_WIDTH,SHIP_HEIGHT);
+            if (model->enemies[i].type == 1)
+                plot_bitmap_32(base,model->enemies[i].position.x,model->enemies[i].position.y, helicopter, SHIP_HEIGHT);
+            else
+                plot_bitmap_32(base,model->enemies[i].position.x,model->enemies[i].position.y, jet, SHIP_HEIGHT);                
+            i++;
         }
     }
-    i = 0;
+   /* i = 0;
     while (i < NUM_ENEMY && model->jets[i].position.x != 0) {
         if (model->jets[i].hor_dir == 0 && model->jets[i].ver_dir == 0){
             i++;
@@ -124,7 +131,7 @@ void render_enemies(Model *model, UINT32 *base){
         plot_bitmap_32(base,model->jets[i].position.x,model->jets[i].position.y, jet, SHIP_HEIGHT);
         i++;
     }
-    }
+    }*/
 }
 
 void render_all_8(Model *model, UINT8 *base) {
@@ -145,8 +152,9 @@ void render_all_16(Model *model, UINT16 *base) {
         plot_bitmap_16(base,model->powerup.position.x,model->powerup.position.y,powerup, POWER_UP_HEIGHT);
     }
 }
-void render(Model *model, char *base){
+void render(Model *model, UINT8 *base){
     /*void *base = Physbase();*/
+    UINT16 *base16 = base;
     clear_screen(base);         /*clear entire screen*/
     plot_bitmap_32(base,model->ship[0].position.x,model->ship[0].position.y,player_ship, SHIP_HEIGHT); /*rasterize all 32 bitmaps that should be on screen */
     render_all_32(model, base);
@@ -181,3 +189,86 @@ void clear_lives(Model *model){
 
 }
 
+
+void check_snapshot(UINT8 *base){
+    snap_player(base);
+    snap_enemy(base);
+    snap_enemy_bullet(base);
+}
+
+void snap_player(UINT8 *base){
+    PlayerShip *players = model.ship;
+    PlayerBullet *bullets = model.playerBullets;
+
+    int i = 0;
+     while (i < NUM_BULLET && bullets[i].position.x != 0) {
+        if(bullets[i].collision == 1)
+            clear_part(base,bullets[i].prev_x,bullets[i].prev_y,SHIP_WIDTH,PLAYER_BULLET_HEIGHT);
+        else if (bullets[i].position.x == 1){
+           ;
+        }
+        else {
+        clear_part(base,bullets[i].prev_x,bullets[i].prev_y,SHIP_WIDTH,PLAYER_BULLET_HEIGHT);
+        plot_bitmap_32(base,bullets[i].position.x,bullets[i].position.y,player_bullet_hex, PLAYER_BULLET_HEIGHT);
+        
+        }
+        i++;
+    }
+    i = 0;
+    while(i < NUM_PLAYER && players[i].position.x != 0){
+        if(players[i].position.x == 1){
+            i++;
+        }
+        else if (players[i].prev_x != players[i].position.x || players[i].prev_y != players[i].position.y){
+            clear_part(base,players[i].prev_x,players[i].prev_y,SHIP_WIDTH,SHIP_HEIGHT);
+            plot_bitmap_32(base,players[i].position.x,players[i].position.y,player_ship, SHIP_HEIGHT);
+            i++;
+        }
+        else   
+            i++;
+    }
+}
+
+void snap_enemy(UINT8 *base){
+    Enemy *enemies = model.enemies;
+    int i = 0;
+    while(i < NUM_ENEMY && enemies[i].position.x != 0){
+        if(enemies[i].position.x == 1)
+            ;
+        else if (enemies[i].death_time > 0){
+            if(enemies[i].death_time == 1){
+                clear_part(base,enemies[i].prev_x,enemies[i].prev_y,SHIP_WIDTH,SHIP_HEIGHT);
+            }
+            clear_part(base,enemies[i].position.x,enemies[i].position.y,SHIP_WIDTH,SHIP_HEIGHT);
+            if (enemies[i].death_time < 8)
+                plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,explosion,SHIP_HEIGHT);
+        }
+        else if (enemies[i].prev_x != enemies[i].position.x || enemies[i].prev_y != enemies[i].position.y){
+            clear_part(base,enemies[i].prev_x,enemies[i].prev_y,SHIP_WIDTH,SHIP_HEIGHT);
+            if(enemies[i].collision == 1)
+                plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,explosion,SHIP_HEIGHT);
+            
+            else if(enemies[i].type == 1)
+                plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,helicopter,SHIP_HEIGHT);
+            else 
+                plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,jet,SHIP_HEIGHT);
+        }
+        i++;
+    }
+}
+void snap_enemy_bullet(UINT8 *base){
+    Bullet *bullets = model.bullets;
+    int i = 0;
+    while(i < NUM_BULLET && bullets[i].position.x != 0){
+        if(bullets[i].position.x == 1)
+            i++;
+        else if (bullets[i].prev_x != bullets[i].position.x || bullets[i].prev_y != bullets[i].position.y){
+            clear_part(base,bullets[i].prev_x,bullets[i].prev_y,BULLET_WIDTH,BULLET_HEIGHT);
+            plot_bitmap_32(base,bullets[i].position.x,bullets[i].position.y,heli_bullet_bitmap, BULLET_HEIGHT);
+            i++;
+        }
+        else   
+            i++;
+    }
+}
+    

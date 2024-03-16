@@ -4,9 +4,10 @@
 #include "RENDERER.H"
 #include <stdio.h>
 #include <osbind.h>
-
+#include "STRIKE.H"
+#include "RANDOM.H"
 char buff[32256];
-
+Model model;
 char *get_base(char *second_buffer){
     char *base;
     UINT16 difference;
@@ -22,73 +23,54 @@ int main(){
     char *base1 = Physbase();
     char *base2 = get_base(buff);
     char *active_base = base1;
+    char *inactive_base = base2;
+    UINT8 prev_hor;
+    UINT8 prev_ver;
 
-    Model model;
     Model *model_ptr = &model;
     int old_lives = 3;
     int old_score = 0;
     int key;
     int collision;
     int collision2;
-    int shot_time = 0;
     PlayerShip *player = &(model_ptr->ship[PLAYER_ONE]);
     UINT32 timeThen,timeNow,timeElapsed;
+    UINT32 seed = 0;
     init_model(model_ptr);
-
+    random_formation(0);
     render(model_ptr, active_base);
     render(model_ptr, base2);
     timeThen = get_time();
     while(model_ptr->quit_game == FALSE){
         timeNow = get_time();
         timeElapsed = timeNow - timeThen;
-        if (timeElapsed <= 5){ 
+        if (timeElapsed <= 3){ 
             if(Cconis())
             {
-                key = get_key();
-
-                if(key == 'w'){
-                    move_up_request(player);
-                }
-                else if(key == 's'){
-                    move_down_request(player);
-                }
-                else if(key == 'a'){
-                    move_left_request(player);        
-                }   
-                else if(key == 'd'){
-                    move_right_request(player);
-                }
-                else if(key == 'x' && shot_time >= 20){
-                    fire_main_request(player);
-                    shot_time = 0;
-                }
-                else if (key == ESC_KEY){
-                    model_ptr->quit_game = TRUE;
-                }
-                shot_time++;
+                seed++;
+                key_request();
+                model.shot_time++;
             }
         }
         else{
-            move_all(model_ptr);
-            shoot_bullets(model_ptr);
-            check_collisions(model_ptr);
-            destroy_all(model_ptr);
-
+            sync_event_check();
+            /*printf("%d %d %d %d %d %d %d %d %d %d \n", model_ptr->enemies[0].prev_y,model_ptr->enemies[0].position.y, model_ptr->enemies[1].prev_y,model_ptr->enemies[1].position.y,model_ptr->enemies[2].prev_y,model_ptr->enemies[2].position.y,model_ptr->enemies[3].prev_y,model_ptr->enemies[3].position.y,model_ptr->enemies[4].prev_y,model_ptr->enemies[4].position.y);*/
+            render_moveables(model_ptr, active_base);
+            if (active_base == base1){
+                active_base = base2;
+                inactive_base = base1;
+            }else{
+                active_base = base1;
+                inactive_base = base2;
+            }
+            check_snapshot(active_base);
+            Setscreen(-1, active_base, -1);
+            timeThen = timeNow;
+            model.shot_time++;
             move_up_cancel(player);
             move_right_cancel(player);
             fire_main_cancel(player);
-
-            if (active_base == base1){
-                active_base = base2;
-            }else{
-                active_base = base1;
-            }
             
-            render(model_ptr, active_base);
-            Setscreen(-1, active_base, -1);
-
-            timeThen = timeNow;
-            shot_time++;
         }
 
     }

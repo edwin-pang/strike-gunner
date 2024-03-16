@@ -1,6 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
-
+#define LEFT_BOUND_ENEMY_RENDER 
+#define RIGHT_BOUND_ENEMY_RENDER
 #include "TYPES.H"
 #include "RASTER.H"
 #include "MODEL.H"
@@ -98,7 +99,7 @@ limitations: Will not render objects that land outside the playable area (object
 bugs:        N/A
 =====================================================================================================================
 */
-void render(Model *model, char *base);
+void render(Model *model, UINT8 *base);
 /*
 =====================================================================================================================
 purpose:    render the current in game score into the left panel     
@@ -136,6 +137,8 @@ void clear_moveables(Model *model);
 void clear_score(Model *model);
 
 void clear_lives(Model *model);
-
-
+void check_snapshot(UINT8 *base);
+void snap_player(UINT8 *base);
+void snap_enemy(UINT8 *base);
+ void snap_enemy_bullet(UINT8 *base);
 #endif
