@@ -3,7 +3,7 @@
 #include <osbind.h>
 #include <stdio.h>
 
-duration = 0;
+UINT32 duration = 32;
 
 int main(){
     UINT32 timeThen, timeNow, timeElapsed;
@@ -14,7 +14,7 @@ int main(){
     while(!Cconis()){
         timeNow = get_time();
         timeElapsed = timeNow - timeThen;
-        if(timeElapsed >= (60000 / 160)){
+        if(timeElapsed >= 1){
             update_music(duration);
             timeThen = timeNow;
         }

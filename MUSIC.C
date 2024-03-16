@@ -1,4 +1,5 @@
 #include "MUSIC.H"
+#include "TST_MUS.H"
 
 const Note song[] = {
     {A3, QUARTER_NOTE},
@@ -30,12 +31,14 @@ void start_music(){
 }
 
 void update_music(UINT32 time_elapsed) {
-    time_elapsed = song[current_note].sustain;
-    if(time_elapsed >= song[current_note].sustain){
+
+    if(duration == 0){
+        duration = song[current_note].sustain;
         current_note = (current_note == SONG_SZ - 1) ? 0 : current_note + 1;
         set_envelope(0x00, song[current_note].sustain);
         set_tone(CHANNEL_A, song[current_note].the_note);
-        time_elapsed -= 1;
+    }else if(time_elapsed >= 0){
+        duration -=1;
     }
 }
 
