@@ -33,6 +33,9 @@ void start_music(){
 void update_music(UINT32 time_elapsed) {
 
     if(duration == 0){
+        set_noise(0x00);
+        set_volume(CHANNEL_C, 0x00);
+        set_volume(CHANNEL_B, 0x00);
         duration = song[current_note].sustain;
         current_note = (current_note == SONG_SZ - 1) ? 0 : current_note + 1;
         set_envelope(0x00, song[current_note].sustain);
