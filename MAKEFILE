@@ -1,4 +1,4 @@
-all: tst_rast tst_mo tst_ren tst_ev tst_eff tst_mus game_exe
+all: tst_rast tst_mo tst_ren tst_ev tst_eff game_exe
 
 tst_rast: tst_rast.o raster.o rast_asm.o
 	cc68x -g tst_rast.o raster.o rast_asm.o -o tst_rast
@@ -12,8 +12,8 @@ raster.o: raster.c raster.h
 rast_asm.o: rast_asm.s
 	gen -D -L2 rast_asm.s
 
-tst_mo: tst_mo.o model.o
-	cc68x -g tst_mo.o model.o -o tst_mo
+tst_mo: tst_mo.o model.o effects.o psg.o
+	cc68x -g tst_mo.o model.o effects.o psg.o -o tst_mo
 
 tst_mo.o: tst_mo.c model.h
 	cc68x -g -c tst_mo.c
@@ -24,23 +24,26 @@ model.o: model.c model.h
 tst_ren: tst_ren.o renderer.o
 	cc68x -g tst_ren.o renderer.o raster.o rast_asm.o -o tst_ren
 
-renderer.o: renderer.c renderer.h raster.h
+renderer.o: renderer.c renderer.h raster.h 
 	cc68x -g -c renderer.c
 
 tst_ren.o: tst_ren.c renderer.h raster.h
 	cc68x -g -c tst_ren.c
 
-tst_ev: tst_ev.o events.o model.o effects.o psg.o
-	cc68x -g tst_ev.o events.o model.o  effects.o  psg.o -o tst_ev
+tst_ev: tst_ev.o events.o model.o effects.o psg.o input.o
+	cc68x -g tst_ev.o events.o model.o  effects.o  psg.o input.o -o tst_ev
 
-events.o: events.c events.h model.h effects.h psg.h
+events.o: events.c events.h model.h effects.h psg.h input.h
 	cc68x -g -c events.c
 
-tst_ev.o: tst_ev.c events.h model.h effects.h psg.h
+tst_ev.o: tst_ev.c events.h model.h effects.h psg.h input.h
 	cc68x -g -c tst_ev.c
 
 psg.o: psg.c psg.h
 	cc68x -g -c psg.c
+
+random.o: random.c strike.h model.h
+	cc68x -g -c random.c
 
 music.o: music.c music.h psg.h
 	cc68x -g -c music.c
@@ -51,8 +54,8 @@ tst_mus.o: tst_mus.c tst_mus.h music.h
 tst_mus: music.o tst_mus.o input.o psg.o
 	cc68x -g music.o tst_mus.o input.o psg.o -o tst_mus
 
-game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o
-	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o -o game_exe
+game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o
+	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o -o game_exe
 
 input.o: input.c input.h
 	cc68x -g -c input.c
@@ -68,3 +71,4 @@ effects.o: effects.c effects.h
 
 tst_eff.o: tst_eff.c psg.h effects.h
 	cc68x -g -c tst_eff.c
+
