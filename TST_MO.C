@@ -11,7 +11,7 @@ int main()
     Position *player_pos = &(player.position);
     Position *bullet_pos = &(bullet.position);
 
-    Helicopter heli;
+    Enemy heli;
     Position *heli_pos = &(heli.position);
     
                                                                
@@ -49,17 +49,17 @@ int main()
     heli.position.x = 300;
     heli.position.y = 300;
     heli.hor_dir = 1;
-    move_heli(&heli);
+    move_enemy(&heli);
     printf("Helicopter moved: %d\n", heli.position.x);
     heli.hor_dir = 2;
-    move_heli(&heli);
+    move_enemy(&heli);
     printf("Helicopter moved: %d\n", heli.position.x);
     heli.hor_dir = 0;
     heli.ver_dir = 1;
-    move_heli(&heli);
+    move_enemy(&heli);
     printf("Helicopter moved: %d\n", heli.position.y);
     heli.ver_dir = 2;
-    move_heli(&heli);
+    move_enemy(&heli);
     printf("Helicopter moved: %d\n", heli.position.y);
 
     return 0;

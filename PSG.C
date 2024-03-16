@@ -126,6 +126,7 @@ void set_noise(int tuning){
     }
 }
 
+
 void set_envelope(int shape, UINT16 sustain){
     UINT16 rough = sustain;
     if(sustain < SIXTEEN_BIT_MAX){

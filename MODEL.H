@@ -1,14 +1,16 @@
 #ifndef MODEL_H
 #define MODEL_H
 #include "types.h"
+#include "EFFECTS.H"
+#include "PSG.H"
 
 /*note to later change some of our spec properties to characters as 
 i dont think we need the space ints take up for some of them*/
 
 #define LEFT_BOUND_PLAYER   100
 #define RIGHT_BOUND_PLAYER  540 
-#define LEFT_BOUND_ENEMY    0
-#define RIGHT_BOUND_ENEMY   640
+#define LEFT_BOUND_ENEMY_MOVEMENT    0
+#define RIGHT_BOUND_ENEMY_MOVEMENT   640
 #define SHIP_WIDTH 32
 #define SHIP_HEIGHT 32
 #define BULLET_WIDTH 8
@@ -35,7 +37,8 @@ typedef struct
 {
 Position position;          /*horizontal and vertical postion of the player's ship*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;       /*direction of movement, 1 for up or right, 2 for down or left*/
+int prev_x,prev_y;          /*previous coords of Playership, this is a held snapshot*/
 UINT8 wep_upgrade;          /*represents the current damage level of the main cannon*/
 UINT8 fire_wep;             /*boolean flag for whether the main cannon is firing. 1 for fire, 0 for not*/
 UINT8 fire_spec;            /*boolean flag for whether the special weapon is firing. 1 for fire, 0 for not*/
@@ -49,29 +52,17 @@ typedef struct
 {
 Position position;          /*horizontal and vertical postion of the helicopter*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+char hor_dir,ver_dir;       /*direction of movement, 1 for up or right, 2 for down or left*/
+int prev_x,prev_y;         /*previous coords of enemy, this is a held snapshot*/
 UINT8 fire_wep;             /*boolean flag for whether the helicopter will fire next clock cycle. 1 for fire, 0 for not. After firing reset to 0*/
 UINT16 cooldown;            /*amount of time until the fire_wep flag is set, this will then reset to 210 (3 seconds) */
 UINT8 cur_weapon;           /*value specifies weapon held. 1 for bullet, 2 for missile*/
 UINT8 collision;            /*a value used to determine the type of collsion, 0 none, 1 helicopter to be destroyed*/
 UINT16 value;               /*amount of points to be added to score upon elimination*/
 UINT8 death_time;           /*a value used to determine how long until helicopter should despawn*/
-UINT8 num;                  /*position in array*/
-} Helicopter;
+UINT8 type;                 /*type of enemy. 1 for helicopter, 2 for jet*/
+} Enemy;
 
-typedef struct 
-{ 
-Position position;          /*horizontal and vertical postion of the jet*/              
-UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
-char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
-UINT8 fire_wep;             /*boolean flag for whether the jet will fire next clock cycle. 1 for fire, 0 for not. After firing reset to 0*/
-UINT16 cooldown;            /*amount of time until the fire_wep flag is set, this will then reset to 210 (3 seconds) */
-UINT8 cur_weapon;           /*value specifies weapon held. 1 for bullet, 2 for missile*/
-UINT8 collision;            /*a value used to determine the type of collsion, 0 none, 1 helicopter to be destroyed*/
-UINT16 value;               /*amount of points to be added to score upon elimination*/
-UINT8 death_time;           /*a value used to determine how long until jet should despawn*/
-UINT8 num;                  /*position in array*/
-} Jet;
 
 typedef struct 
 {
@@ -94,16 +85,20 @@ typedef struct
 Position position;          /*horizontal and vertical postion of the bullet*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
 char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+int prev_x,prev_y;          /*previous coords of bullet, this is a held snapshot*/
 UINT8 damage;               /*amount of damage the bullet will do*/
 UINT8 num;                  /*position in array*/
+UINT8 collision;            /*a value used to determine the type of collsion, 0 none, 1 bullet to be destroyed*/
 } Bullet;
 
 typedef struct {
 Position position;          /*horizontal and vertical postion of the bullet*/              
 UINT8 speed;                /*rate of displacement for movement in any direction (pixels per clock cycle)*/
 char hor_dir,ver_dir;      /*direction of movement, 1 for up or right, 2 for down or left*/
+int prev_x,prev_y;          /*previous coords of playerbullet, this is a held snapshot*/
 UINT8 damage;               /*amount of damage the bullet will do*/
 UINT8 num;                  /*position in array*/
+UINT8 collision;            /*a value used to determine the type of collsion, 0 none, 1 player bullet to be destroyed*/
 } PlayerBullet;
 
 typedef struct 
@@ -127,13 +122,13 @@ PlayerShip ship[2];
 Bullet bullets[50];
 PlayerBullet playerBullets[50];
 Missile missiles[25];
-Helicopter helicopters[20];
-Jet jets[20];
+Enemy enemies[20];
 Score score;
 LifeCounter lives;
 PowerUp powerup;
 UINT8 quit_game;
 UINT8 game_over;
+UINT16 shot_time;
 } Model;
 
 /*
@@ -190,7 +185,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void player_shoot (PlayerShip *player, PlayerBullet *bullets);
+/*int player_shoot (PlayerShip *player, PlayerBullet *bullets);*/
 
 /*
 =====================================================================================================================
@@ -202,7 +197,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void init_helicopter(Model *model);
+/*void init_helicopter(Model *model);*/
 
 /*
 =====================================================================================================================
@@ -214,11 +209,11 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void move_heli(Helicopter *helicopter);
+void move_enemy(Enemy *enemy);
 
 /*
 =====================================================================================================================
-purpose:     moving helicopter position based on the specified horizontal and vertical direction within bounds.
+purpose:     moving enemy position based on the specified horizontal and vertical direction within bounds.
 input:       position   - pointer to the position struct representing current position of the helicopter.
              hor_dir    - unsigned 8-bit int representing horizontal direction of movement (1 for right, 2 for left).
              ver_dir    - unsigned 8-bit int representing vertical direction of movement (1 for up, 2 for down).
@@ -243,7 +238,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void init_jet(Model *model);
+/*void init_jet(Model *model);*/
 
 /*
 =====================================================================================================================
@@ -255,7 +250,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void move_jet(Jet *jet);
+/*void move_jet(Jet *jet);*/
 
 /*
 =====================================================================================================================
@@ -419,7 +414,7 @@ limitations: bullets will not be fired if there is no room in the array for more
 bugs:        N/A
 =====================================================================================================================
 */
-void heli_shoot(Helicopter *helicopter, Bullet *bullets);
+void enemy_shoot(Enemy *enemy, Bullet *bullets);
 /*
 =====================================================================================================================
 purpose:    remove player bullet from screen and reserve in array for future usage
@@ -436,7 +431,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void despawn_player_bullet(PlayerBullet *bullet, PlayerBullet *bullets);
+void despawn_player_bullet(PlayerBullet *bullet);
 /*
 =====================================================================================================================
 purpose:     remove enemy bullet from screen and reserve in array for future usage
@@ -453,7 +448,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void despawn_enem_bullet(Bullet *bullet, Bullet *bullets);
+void despawn_enem_bullet(Bullet *bullet);
 /*
 =====================================================================================================================
 purpose:     remove helicopter from screen and reserve in array for future usage
@@ -470,7 +465,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void despawn_helicopter(Helicopter *helicopter, Helicopter *helicopters);
+void despawn_enemy(Enemy *enemy);
 /*
 =====================================================================================================================
 purpose:      remove jet from screen and reserve in array for future usage
@@ -488,7 +483,7 @@ limitations: N/A
 bugs:        N/A
 =====================================================================================================================
 */
-void despawn_jet(Jet *jet, Jet *jets);
+/*void despawn_jet(Jet *jet, Jet *jets);*/
 /*
 =====================================================================================================================
 purpose:     initialize all components of the games model needed to start the game
@@ -521,5 +516,17 @@ bugs:        N/A
 =====================================================================================================================
 */
 void respawn_player(PlayerShip *player);
-
+void process_player(Model *model);
+int process_player_bullet(PlayerShip *player, PlayerBullet *bullets, int start);
+void process_player_collisions(PlayerShip *player, Bullet *bullets);
+void process_player_death(PlayerShip *player);
+void process_enemy(Model *model);
+int process_helicopter_bullet(Enemy *enemy, Bullet *Bullets, int start);
+int process_jet_bullet(Enemy *enemy, Bullet *bullets, int start);
+void process_enemy_collisions(Enemy *enemy,PlayerBullet *bullets);
+void process_enemy_death(Enemy * enemy);
+Score get_score(Model *model);
+LifeCounter get_life(Model *model);
+PlayerShip * get_ship(Model *model);
+PlayerBullet * get_Pbullets(Model *model);
 #endif

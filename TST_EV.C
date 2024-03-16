@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <osbind.h>
 #include "EFFECTS.H"
+Model model;
 int main() {
 
-    Model model;
     Model *model_ptr = &model;
 
     int key;
@@ -14,7 +14,7 @@ int main() {
     int collision2;
 
     PlayerShip *player = &(model_ptr->ship[PLAYER_ONE]);
-    Helicopter *heli = &(model_ptr->helicopters[0]);
+    Enemy *heli = &(model_ptr->enemies[0]);
     Bullet *bullet = &(model_ptr->bullets[0]);
     PlayerBullet *p_bullet = &(model_ptr->playerBullets[0]);
 
@@ -78,7 +78,7 @@ int main() {
         move_up_cancel(player);
         move_left_cancel(player);
         move_right_cancel(player);
-        player_shoot(player, model_ptr->playerBullets);
+        /*player_shoot(player, model_ptr->playerBullets);*/
         move_bullets(model_ptr->playerBullets,model_ptr->bullets);
         printf("Player bullet is x: %d, y: %d\n", p_bullet_pos->x, p_bullet_pos->y);
         collision = check_collision(player_pos, SHIP_WIDTH, SHIP_HEIGHT, bullet_pos, BULLET_WIDTH, BULLET_HEIGHT);
