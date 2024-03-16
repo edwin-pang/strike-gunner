@@ -4,20 +4,28 @@
 #include "PSG.H"
 #include "TYPES.H"
 
-#define A5 0x07F
-#define E5 0x0AA
-
-#define A3 0x1FC
 #define E3 0x2A7
+#define G3 0x23B
+#define B3 0x1C5
+#define D3 0x2FA
+#define F3 0x281
+#define A3 0x1FC
+#define C3 0x357
 
-#define SONG_SIZE
+#define E4 0x153
+#define G4 0x11D
+#define B4 0x0E2
+#define D4 0x17D
+#define F4 0x140
+#define A4 0x0FE
+#define C4 0x1AC
 
                             /*note: 1 beat = 32Hz = 0.45s*/
 #define WHOLE_NOTE 128      /*4 beats (1 full bar)*/
 #define HALF_NOTE 64        /*2 beats*/
-#define QUARTER_NOTE 32     /*1 beats*/
-#define EIGHTH_NOTE 16      /*1/2 beats*/
-#define SIXTEENTH_NOTE 8    /*1/4 beats*/
+#define QUARTER_NOTE 32     /*1 beat*/
+#define EIGHTH_NOTE 16      /*1/2 beat*/
+#define SIXTEENTH_NOTE 8    /*1/4 beat*/
 
 typedef struct{
     UINT16 the_note;

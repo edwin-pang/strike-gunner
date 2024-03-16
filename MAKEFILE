@@ -45,7 +45,7 @@ psg.o: psg.c psg.h
 music.o: music.c music.h psg.h
 	cc68x -g -c music.c
 
-tst_mus.o: tst_mus.c music.h
+tst_mus.o: tst_mus.c tst_mus.h music.h
 	cc68x -g -c tst_mus.c
 
 tst_mus: music.o tst_mus.o input.o psg.o
