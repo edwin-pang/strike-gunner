@@ -6,10 +6,10 @@
 #include <osbind.h>
 #include "STRIKE.H"
 #include "RANDOM.H"
-char buff[32256];
+UINT8 buff[32256];
 Model model;
-char *get_base(char *second_buffer){
-    char *base;
+UINT8 *get_base(UINT8 *second_buffer){
+    UINT8 *base;
     UINT16 difference;
     base = second_buffer;
     difference = (int)base;
@@ -20,10 +20,10 @@ char *get_base(char *second_buffer){
 
 
 int main(){
-    char *base1 = Physbase();
-    char *base2 = get_base(buff);
-    char *active_base = base1;
-    char *inactive_base = base2;
+    UINT8 *base1 = Physbase();
+    UINT8 *base2 = get_base(buff);
+    UINT8 *active_base = base1;
+    UINT8 *inactive_base = base2;
     UINT8 prev_hor;
     UINT8 prev_ver;
 
