@@ -1,4 +1,4 @@
-all: tst_rast tst_mo tst_ren tst_ev tst_eff game_exe
+all: tst_rast tst_mo tst_ren tst_ev tst_eff tst_mus game_exe
 
 tst_rast: tst_rast.o raster.o rast_asm.o
 	cc68x -g tst_rast.o raster.o rast_asm.o -o tst_rast
@@ -54,8 +54,8 @@ tst_mus.o: tst_mus.c tst_mus.h music.h
 tst_mus: music.o tst_mus.o input.o psg.o
 	cc68x -g music.o tst_mus.o input.o psg.o -o tst_mus
 
-game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o
-	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o -o game_exe
+game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o music.o
+	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o music.o -o game_exe
 
 input.o: input.c input.h
 	cc68x -g -c input.c
