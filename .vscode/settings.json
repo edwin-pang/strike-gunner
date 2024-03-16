@@ -15,6 +15,10 @@
         "EFFECTS.C": "cpp",
         "TST_EFF.C": "cpp",
         "MUSIC.C": "cpp",
-        "TST_MUS.C": "cpp"
+        "TST_MUS.C": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "random": "cpp",
+        "xutility": "cpp"
     }
 }

@@ -32,7 +32,29 @@ typedef struct{
     UINT16 sustain;
 } Note;
 
+/*
+=====================================================================================================================
+purpose:  Begin the music track
+
+input:      
+output:      first note through channel A
+assumptions: N/A
+limitations: 
+bugs:        boom music
+=====================================================================================================================
+*/
 void start_music();
+/*
+=====================================================================================================================
+purpose:  Update music when ready
+
+input:      
+output:      potentially start a note through channel A
+assumptions: N/A
+limitations: 
+bugs:        boom music
+=====================================================================================================================
+*/
 void update_music(UINT32 time_elapsed);
 
 #endif
