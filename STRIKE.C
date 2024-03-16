@@ -8,11 +8,11 @@
 #include "RANDOM.H"
 #include "MUSIC.H"
 
-char buff[32256];
+UINT8 buff[32256];
 Model model;
 UINT32 duration = QUARTER_NOTE;
 
-UINT8 *get_base8(UINT8 *second_buffer){
+UINT8 *get_base(UINT8 *second_buffer){
     UINT8 *base;
     UINT16 difference;
     base = second_buffer;
@@ -24,6 +24,8 @@ UINT8 *get_base8(UINT8 *second_buffer){
 
 
 int main(){
+    UINT8 *base1 = Physbase();
+    UINT8 *base2 = get_base(buff);
     UINT8 *active_base = base1;
     UINT8 *inactive_base = base2;
     UINT8 prev_hor;

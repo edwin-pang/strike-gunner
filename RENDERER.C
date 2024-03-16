@@ -154,24 +154,23 @@ void render_all_16(Model *model, UINT16 *base) {
 }
 void render(Model *model, UINT8 *base){
     /*void *base = Physbase();*/
-    UINT16 *base16 = base;
     clear_screen(base);         /*clear entire screen*/
-    plot_bitmap_32(base,model->ship[0].position.x,model->ship[0].position.y,player_ship, SHIP_HEIGHT); /*rasterize all 32 bitmaps that should be on screen */
-    render_all_32(model, base);
+    plot_bitmap_32((UINT32 *)base,model->ship[0].position.x,model->ship[0].position.y,player_ship, SHIP_HEIGHT); /*rasterize all 32 bitmaps that should be on screen */
+    render_all_32(model,(UINT32 *) base);
 
-    render_all_16(model, base);/*rasterize all 16 bitmaps to screen*/
+    render_all_16(model,(UINT16 *) base);/*rasterize all 16 bitmaps to screen*/
     render_all_8(model, base); /*rasterize all 8 bitmaps to screen*/
 
-    render_panel_left(base);
-    render_panel_right(base);
+    render_panel_left((UINT32*)base);
+    render_panel_right((UINT32*)base);
     render_score(model,base);
     render_life_counter(model,base);
 }
-void render_moveables(Model *model, char *base){
-    render_all_32(model, base);/*rasterize all 32 bitmaps that should be on screen */
+void render_moveables(Model *model, UINT8 *base){
+    render_all_32(model,(UINT32*) base);/*rasterize all 32 bitmaps that should be on screen */
 
-    render_all_16(model, base);/*rasterize all 16 bitmaps to screen*/
-    render_all_8(model, base); /*rasterize all 8 bitmaps to screen*/
+    render_all_16(model,(UINT16*) base);/*rasterize all 16 bitmaps to screen*/
+    render_all_8(model, (UINT8 *)base); /*rasterize all 8 bitmaps to screen*/
 }
 
 void clear_moveables(Model *model){
@@ -191,12 +190,12 @@ void clear_lives(Model *model){
 
 
 void check_snapshot(UINT8 *base){
-    snap_player(base);
-    snap_enemy(base);
+    snap_player((UINT32 *)base);
+    snap_enemy((UINT32 *)base);
     snap_enemy_bullet(base);
 }
 
-void snap_player(UINT8 *base){
+void snap_player(UINT32 *base){
     PlayerShip *players = model.ship;
     PlayerBullet *bullets = model.playerBullets;
 
@@ -229,7 +228,7 @@ void snap_player(UINT8 *base){
     }
 }
 
-void snap_enemy(UINT8 *base){
+void snap_enemy(UINT32 *base){
     Enemy *enemies = model.enemies;
     int i = 0;
     while(i < NUM_ENEMY && enemies[i].position.x != 0){
@@ -263,8 +262,8 @@ void snap_enemy_bullet(UINT8 *base){
         if(bullets[i].position.x == 1)
             i++;
         else if (bullets[i].prev_x != bullets[i].position.x || bullets[i].prev_y != bullets[i].position.y){
-            clear_part(base,bullets[i].prev_x,bullets[i].prev_y,BULLET_WIDTH,BULLET_HEIGHT);
-            plot_bitmap_32(base,bullets[i].position.x,bullets[i].position.y,heli_bullet_bitmap, BULLET_HEIGHT);
+            clear_part((UINT32 *)base,bullets[i].prev_x,bullets[i].prev_y,BULLET_WIDTH,BULLET_HEIGHT);
+            plot_bitmap_8(base,bullets[i].position.x,bullets[i].position.y,heli_bullet_bitmap, BULLET_HEIGHT);
             i++;
         }
         else   
