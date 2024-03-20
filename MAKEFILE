@@ -1,4 +1,4 @@
-all: tst_rast tst_mo tst_ren tst_ev tst_eff tst_mus game_exe
+all: tst_rast tst_mo tst_ren tst_ev tst_eff menu tst_mus game_exe
 
 tst_rast: tst_rast.o raster.o rast_asm.o
 	cc68x -g tst_rast.o raster.o rast_asm.o -o tst_rast
@@ -69,6 +69,11 @@ tst_eff: effects.o tst_eff.o psg.o
 effects.o: effects.c effects.h
 	cc68x -g -c effects.c
 
+menu: menu.o raster.o rast_asm.o
+	cc68x -g menu.o raster.o rast_asm.o -o menu
+
+menu.o: menu.c raster.h
+	cc68x -g -c menu.c
+
 tst_eff.o: tst_eff.c psg.h effects.h
 	cc68x -g -c tst_eff.c
-
