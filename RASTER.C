@@ -4,6 +4,19 @@
 #define SCREEN_HEIGHT 400	/* These can be moved later on if there is a better */
 #define SCREEN_WIDTH 640	/* spot to put them */
 
+void flip_screen(UINT32* base){
+	int x = 0;
+	int y = 0;
+	int i, j;
+	UINT32 *loc = base + (y * 20) + (x >> 5);
+	for (i = 0; i < SCREEN_HEIGHT; i++){
+		for (j = 0; j < SCREEN_WIDTH; j++){
+    		*loc ^= 0xFFFFFFFF;
+			loc ++;
+		}
+	}            
+
+}
 
 void plot_vertical_line(UINT32 *base, int x, int y, unsigned int length, int up){
 	UINT32 *loc = base + (y * 20) + (x >> 5);

@@ -106,4 +106,16 @@ bugs:        see above
 void plot_bitmap_32(UINT32 *base, int x, int y, const UINT32 *bitmap, unsigned int height);
 
 void clear_part(UINT32 *base, int x, int y, int length, int height);
+
+/*
+=====================================================================================================================
+purpose:			will flip the entire screen's bits depending on the bit (XOR)
+input:				base	- this is a pointer to the location (0,0) in the frame buffer
+output:			    a flipped frame buffer
+assumptions:		N/A
+limitations:		N/A
+bugs:				N/A
+=====================================================================================================================
+*/
+void flip_screen(UINT32* base);
 #endif

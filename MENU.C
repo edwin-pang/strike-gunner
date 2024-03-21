@@ -4,15 +4,8 @@
 
 int main(){
     UINT8 *base = Physbase();
-    int i;
 
     clear_screen(base);
-
-    /* Black Background */
-
-    /*for (i = 0; i < 639; i++){
-        plot_horizontal_line((UINT32*) base, 0, i, 640, 1);
-    }*/
 
     /* STRIKE */
     plot_bitmap_32((UINT32 *)base, 10, 40, s_32, 32);
@@ -50,7 +43,8 @@ int main(){
     plot_bitmap_16((UINT16 *)base, 360, 200, r_16, 16);
     plot_bitmap_16((UINT16 *)base, 380, 200, t_16, 16);
 
-    /* WORK IN PROGRESS */
+    /* Black Background */
+    flip_screen((UINT32*) base);
 
     return 0;
 }
