@@ -19,6 +19,7 @@
         "iterator": "cpp",
         "memory": "cpp",
         "random": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "MENU.C": "cpp"
     }
 }
