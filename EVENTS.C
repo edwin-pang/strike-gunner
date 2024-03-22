@@ -31,8 +31,17 @@ void key_request(){
     }
 }
 void sync_event_check(){
-        process_player(&model);
-        process_enemy(&model);
+    process_player(&model);
+    process_enemy(&model);
+
+    if(inactive_base == front_base){
+        process_player(&front);
+        process_enemy(&front);
+    }
+    else{
+        process_player(&back);
+        process_enemy(&back);
+    }
 }
 void move_up_request(PlayerShip *player) {
     model.ship->ver_dir = UP;                    /*will change the player's vertical direction to 1 for up*/

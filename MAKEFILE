@@ -77,3 +77,4 @@ effects.o: effects.c effects.h
 
 tst_eff.o: tst_eff.c psg.h effects.h
 	cc68x -g -c tst_eff.c
+	

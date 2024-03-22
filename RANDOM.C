@@ -19,7 +19,7 @@ void formation1(Enemy *enemies){
     int end = 0;
     int spawned = 0;
     int x = 150;
-    int y = 50;
+    int y = -10;
     while (i < NUM_ENEMY && !end){
         if (enemies[i].position.x < 2 && spawned < 3){
             enemies[i].position.y = y;

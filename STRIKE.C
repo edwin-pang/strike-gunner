@@ -10,6 +10,13 @@
 
 UINT8 buff[32256];
 Model model;
+Model front;
+Model back;
+UINT8 *front_base;
+UINT8 *back_base;
+UINT8 *active_base;
+UINT8 *inactive_base;
+
 UINT32 duration = QUARTER_NOTE;
 
 UINT8 *get_base(UINT8 *second_buffer){
@@ -22,15 +29,9 @@ UINT8 *get_base(UINT8 *second_buffer){
     return base + difference;
 }
 
-
 int main(){
-    UINT8 *base1 = Physbase();
-    UINT8 *base2 = get_base(buff);
-    UINT8 *active_base = base1;
-    UINT8 *inactive_base = base2;
     UINT8 prev_hor;
     UINT8 prev_ver;
-
     Model *model_ptr = &model;
     int old_lives = 3;
     int old_score = 0;
@@ -40,49 +41,57 @@ int main(){
     PlayerShip *player = &(model_ptr->ship[PLAYER_ONE]);
     UINT32 timeThen,timeNow,timeElapsed;
     UINT32 seed = 0;
+    Model* inactive_model;
+    front_base = Physbase();
+    back_base = get_base(buff);
+    active_base = front_base;
+    inactive_base = back_base;
     init_model(model_ptr);
+    init_model(&front);
+    init_model(&back);
     random_formation(0);
     render(model_ptr, active_base);
-    render(model_ptr, base2);
+    render(model_ptr, back_base);
+    inactive_model = &back;
     timeThen = get_time();
     start_music();
 
     while(model_ptr->quit_game == FALSE){
         timeNow = get_time();
         timeElapsed = timeNow - timeThen;
-        if (timeElapsed <= 3){ 
-            if(Cconis())
-            {
-                seed++;
-                key_request();
-                model.shot_time++;
-            }
+        if(Cconis())
+        {
+            seed++;
+            key_request();
+            model.shot_time++;
         }
-        else{
+        if(timeElapsed >= 1){
             update_music(duration);
             sync_event_check();
             /*printf("%d %d %d %d %d %d %d %d %d %d \n", model_ptr->enemies[0].prev_y,model_ptr->enemies[0].position.y, model_ptr->enemies[1].prev_y,model_ptr->enemies[1].position.y,model_ptr->enemies[2].prev_y,model_ptr->enemies[2].position.y,model_ptr->enemies[3].prev_y,model_ptr->enemies[3].position.y,model_ptr->enemies[4].prev_y,model_ptr->enemies[4].position.y);*/
-            render_moveables(model_ptr, active_base);
-            if (active_base == base1){
-                active_base = base2;
-                inactive_base = base1;
+            /*check_snapshot(inactive_base);*/
+            render_moveables(inactive_model, inactive_base);
+            if (active_base == front_base){
+                active_base = back_base;
+                inactive_base = front_base;
+                inactive_model = &front;
             }else{
-                active_base = base1;
-                inactive_base = base2;
+                active_base = front_base;
+                inactive_base = back_base;
+                inactive_model = &back;
             }
-            check_snapshot(active_base);
             Setscreen(-1, active_base, -1);
-            timeThen = timeNow;
+            timeThen = get_time();
             model.shot_time++;
             move_up_cancel(player);
             move_right_cancel(player);
             fire_main_cancel(player);
             
         }
-
     }
-    if (base2 = active_base){
-        Setscreen(-1, base1, -1);
+
+    if (back_base = active_base){
+        Setscreen(-1, front_base, -1);
     }
         set_volume(CHANNEL_A, 0);
     return 0;

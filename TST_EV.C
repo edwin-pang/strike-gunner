@@ -5,6 +5,12 @@
 #include <osbind.h>
 #include "EFFECTS.H"
 Model model;
+Model front;
+Model back;
+UINT8 *front_base;
+UINT8 *back_base;
+UINT8 *active_base;
+UINT8 *inactive_base;
 int main() {
 
     Model *model_ptr = &model;

@@ -94,7 +94,7 @@ void render_all_32(Model *model, UINT32 *base) {
     while (i < NUM_PLAYER && model->ship[i].position.x != 0) {
         if (model->ship[i].hor_dir != 0 || model->ship[i].ver_dir != 0){
             if(model->ship[i].position.x != model->ship[i].prev_x || model->ship[i].position.y != model->ship[i].prev_y)
-                clear_part(base,model->ship[i].prev_x,model->ship[i].prev_y,SHIP_WIDTH,SHIP_HEIGHT);
+                clear_part(base,model->ship[i].position.x,model->ship[i].position.y,SHIP_WIDTH,SHIP_HEIGHT);
 
         plot_bitmap_32(base,model->ship[i].position.x,model->ship[i].position.y,player_ship, SHIP_HEIGHT);
         i++;
@@ -166,13 +166,100 @@ void render(Model *model, UINT8 *base){
     render_score(model,base);
     render_life_counter(model,base);
 }
-void render_moveables(Model *model, UINT8 *base){
-    render_all_32(model,(UINT32*) base);/*rasterize all 32 bitmaps that should be on screen */
-
-    render_all_16(model,(UINT16*) base);/*rasterize all 16 bitmaps to screen*/
-    render_all_8(model, (UINT8 *)base); /*rasterize all 8 bitmaps to screen*/
+void render_moveables(Model *second_model, UINT8 *base){
+    UINT32 * base32 = (UINT32*) base;
+    render_player_move(second_model,base32);
+    render_player_bullet_move(second_model,base32);
+    render_enemy_bullet_move(second_model,base);
+    render_enemy_move(second_model,base32);
+ 
 }
 
+void render_player_bullet_move(Model *second_model, UINT32 *base){
+    PlayerBullet *bullets = model.playerBullets;
+    PlayerBullet *bullets_second = second_model->playerBullets;
+    int i = 0;
+    while(i < NUM_BULLET && bullets[i].position.x != 0){
+        if(bullets[i].collision == 1 && bullets_second[i].collision != bullets[i].collision)
+            clear_part(base,bullets_second[i].position.x,bullets_second[i].position.y,SHIP_WIDTH,PLAYER_BULLET_HEIGHT);
+        else if (bullets[i].position.x == 1 && bullets_second[i].prev_y != bullets[i].prev_y)
+            clear_part(base,bullets_second[i].prev_x,bullets_second[i].prev_y,SHIP_WIDTH,PLAYER_BULLET_HEIGHT);
+        else if(bullets[i].position.y != bullets_second[i].position.y){
+            clear_part(base,bullets_second[i].position.x,bullets_second[i].position.y,PLAYER_BULLET_WIDTH,PLAYER_BULLET_HEIGHT);  
+            plot_bitmap_32(base,bullets[i].position.x,bullets[i].position.y,player_bullet_hex, PLAYER_BULLET_HEIGHT);
+        }
+    bullets_second[i].position.y = bullets[i].position.y;
+    bullets_second[i].position.x = bullets[i].position.x;
+    bullets_second[i].prev_x = bullets[i].prev_x;
+    bullets_second[i].prev_y = bullets[i].prev_y;
+    i++;
+    }
+}
+void render_enemy_bullet_move(Model *second_model, UINT8 *base){
+    Bullet *bullets = model.bullets;
+    Bullet *bullets_second = second_model->bullets;
+    int i = 0;
+    while(i < NUM_BULLET && bullets[i].position.x != 0){
+         if(bullets[i].collision == 1 && bullets_second[i].collision != bullets[i].collision)
+            clear_part((UINT32*)base,bullets_second[i].position.x,bullets_second[i].position.y,BULLET_WIDTH,BULLET_HEIGHT);
+        else if (bullets[i].position.x == 1 && bullets_second[i].prev_y != bullets[i].prev_y)
+            clear_part((UINT32*)base,bullets_second[i].prev_x,bullets_second[i].prev_y,BULLET_HEIGHT,BULLET_HEIGHT);
+        else if(bullets[i].position.y != bullets_second[i].position.y){
+            clear_part((UINT32*)base,bullets_second[i].position.x,bullets_second[i].position.y,BULLET_WIDTH,BULLET_HEIGHT);  
+            plot_bitmap_8(base,bullets[i].position.x,bullets[i].position.y,heli_bullet_bitmap, BULLET_HEIGHT);
+        }
+    }
+    bullets_second[i].position.y = bullets[i].position.y;
+    bullets_second[i].position.x = bullets[i].position.x;
+    bullets_second[i].prev_x = bullets[i].prev_x;
+    bullets_second[i].prev_y = bullets[i].prev_y;
+    i++;
+}
+    void render_enemy_move(Model *second_model, UINT32 *base){
+    Enemy * enemies = model.enemies;
+    Enemy * enemies_second = second_model->enemies;
+    int i = 0;
+    while(i < NUM_ENEMY && enemies[i].position.x != 0){
+        if((enemies[i].position.x != enemies_second[i].position.x) || (enemies[i].position.y != enemies_second[i].position.y)){
+            clear_part(base,enemies_second[i].position.x,enemies_second[i].position.y,SHIP_WIDTH,SHIP_HEIGHT);  
+            if (enemies[i].death_time == 1){
+                plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,explosion, SHIP_HEIGHT);
+            }
+            else if (enemies[i].position.x == 1)
+                ;
+            else if(enemies[i].type == 1)
+                plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,helicopter, SHIP_HEIGHT);
+            else
+                plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,jet, SHIP_HEIGHT);
+        }       
+        else if (enemies[i].death_time == 2){
+            clear_part(base,enemies_second[i].position.x,enemies_second[i].position.y,SHIP_WIDTH,SHIP_HEIGHT);  
+            plot_bitmap_32(base,enemies[i].position.x,enemies[i].position.y,explosion, SHIP_HEIGHT);
+        }
+        enemies_second[i].position.x = enemies[i].position.x;
+        enemies_second[i].position.y = enemies[i].position.y;
+        enemies_second[i].prev_x = enemies[i].prev_x;
+        enemies_second[i].prev_y = enemies[i].prev_y;
+        i++;
+    }
+}
+
+void render_player_move(Model *second_model, UINT32 *base){
+    PlayerShip *players = model.ship;
+    PlayerShip *players_second = second_model->ship;
+    int i = 0;
+    while(i < NUM_PLAYER && players[i].position.x != 0){
+        if((players[i].position.x != players_second[i].position.x) || (players[i].position.y != players_second[i].position.y)){
+            clear_part(base,players_second[i].position.x,players_second[i].position.y,SHIP_WIDTH,SHIP_HEIGHT);  
+            players_second[i].position.x = players[i].position.x;
+            players_second[i].position.y = players[i].position.y;
+            players_second[i].prev_x = players[i].prev_x;
+            players_second[i].prev_y = players[i].prev_y;
+            plot_bitmap_32(base,players[i].position.x,players[i].position.y,player_ship, SHIP_HEIGHT);
+        }
+    i++;
+    }
+}
 void clear_moveables(Model *model){
  
 }
