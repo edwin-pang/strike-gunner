@@ -45,6 +45,6 @@ int main(){
 
     /* Black Background */
     flip_screen((UINT32*) base);
-
+    
     return 0;
 }

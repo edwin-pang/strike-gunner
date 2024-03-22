@@ -1,4 +1,4 @@
-all: tst_rast tst_mo tst_ren tst_ev tst_eff menu tst_mus game_exe
+all: tst_rast tst_mo tst_ren tst_ev menu tst_mus tst_eff game_exe
 
 tst_rast: tst_rast.o raster.o rast_asm.o
 	cc68x -g tst_rast.o raster.o rast_asm.o -o tst_rast
@@ -66,11 +66,11 @@ game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effec
 input.o: input.c input.h
 	cc68x -g -c input.c
 
-strike.o: strike.c
-	cc68x -g -c strike.c
-
 tst_eff: effects.o tst_eff.o psg.o
 	cc68x -g effects.o tst_eff.o psg.o -o tst_eff
+
+strike.o: strike.c
+	cc68x -g -c strike.c
 
 effects.o: effects.c effects.h
 	cc68x -g -c effects.c
