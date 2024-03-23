@@ -28,9 +28,16 @@ UINT8 *get_base(UINT8 *second_buffer){
     difference = 0x100 - difference;
     return base + difference;
 }
+void menu(){
+    active_base = Physbase();
+    run_menu(active_base);
+    while (!Cconis()){
 
-int main(){
-    UINT8 prev_hor;
+    }
+    key_request();
+}
+void game(){
+        UINT8 prev_hor;
     UINT8 prev_ver;
     Model *model_ptr = &model;
     int old_lives = 3;
@@ -65,7 +72,7 @@ int main(){
             key_request();
             model.shot_time++;
         }
-        if(timeElapsed >= 1){
+        if(timeElapsed >= 2){
             update_music(duration);
             sync_event_check();
             /*printf("%d %d %d %d %d %d %d %d %d %d \n", model_ptr->enemies[0].prev_y,model_ptr->enemies[0].position.y, model_ptr->enemies[1].prev_y,model_ptr->enemies[1].position.y,model_ptr->enemies[2].prev_y,model_ptr->enemies[2].position.y,model_ptr->enemies[3].prev_y,model_ptr->enemies[3].position.y,model_ptr->enemies[4].prev_y,model_ptr->enemies[4].position.y);*/
@@ -94,5 +101,9 @@ int main(){
         Setscreen(-1, front_base, -1);
     }
         set_volume(CHANNEL_A, 0);
+}
+int main(){
+    menu();
+    game();
     return 0;
 }

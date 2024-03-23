@@ -139,7 +139,7 @@ void clear_8(Model *model, UINT8 *base);
 void clear_16(Model *model, UINT16 *base);
 void clear_moveables(Model *model);
 void clear_score(Model *model);
-
+void run_menu(UINT8 * base);
 void clear_lives(Model *model);
 void check_snapshot(UINT8 *base);
 void snap_player(UINT32 *base);

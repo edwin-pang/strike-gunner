@@ -5,7 +5,49 @@
 #include "font.c"
 #include <stdio.h>
 #include "STRIKE.H"
+void run_menu(UINT8 * base){
 
+    clear_screen(base);
+
+    /* STRIKE */
+    plot_bitmap_32((UINT32 *)base, 10, 40, s_32, 32);
+    plot_bitmap_32((UINT32 *)base, 50, 40, t_32, 32);
+    plot_bitmap_32((UINT32 *)base, 100, 40, r_32, 32);
+    plot_bitmap_32((UINT32 *)base, 150, 40, i_32, 32);
+    plot_bitmap_32((UINT32 *)base, 200, 40, k_32, 32);
+    plot_bitmap_32((UINT32 *)base, 250, 40, e_32, 32);
+
+    /* GUNNER */
+    plot_bitmap_32((UINT32 *)base, 350, 40, g_32, 32);
+    plot_bitmap_32((UINT32 *)base, 400, 40, u_32, 32);
+    plot_bitmap_32((UINT32 *)base, 450, 40, n_32, 32);
+    plot_bitmap_32((UINT32 *)base, 500, 40, n_32, 32);
+    plot_bitmap_32((UINT32 *)base, 550, 40, e_32, 32);
+    plot_bitmap_32((UINT32 *)base, 600, 40, r_32, 32);
+
+    /* Player Ship */
+    plot_bitmap_32 ((UINT32 *)base, 300, 40, player_ship, 32);
+
+    /* Underline */
+    plot_horizontal_line((UINT32 *)base, 35, 80, 600, 1);
+    plot_horizontal_line((UINT32 *)base, 35, 81, 600, 1);
+    plot_horizontal_line((UINT32 *)base, 35, 82, 600, 1);
+    /* TO FIX ITS BUGGY */
+
+    /* 1P */
+    plot_bitmap_16((UINT16 *)base, 240, 200, one_16, 16);
+    plot_bitmap_16((UINT16 *)base, 260, 200, p_16, 16);
+
+    /* START */
+    plot_bitmap_16((UINT16 *)base, 300, 200, s_16, 16);
+    plot_bitmap_16((UINT16 *)base, 320, 200, t_16, 16);
+    plot_bitmap_16((UINT16 *)base, 340, 200, a_16, 16);
+    plot_bitmap_16((UINT16 *)base, 360, 200, r_16, 16);
+    plot_bitmap_16((UINT16 *)base, 380, 200, t_16, 16);
+
+    /* Black Background */
+    flip_screen((UINT32*) base);
+}
 void render_clear(){
     void *base = Physbase();
     clear_screen(base);
@@ -185,7 +227,7 @@ void render_player_bullet_move(Model *second_model, UINT32 *base){
         else if (bullets[i].position.x == 1 && bullets_second[i].prev_y != bullets[i].prev_y)
             clear_part(base,bullets_second[i].prev_x,bullets_second[i].prev_y,SHIP_WIDTH,PLAYER_BULLET_HEIGHT);
         else if(bullets[i].position.y != bullets_second[i].position.y){
-            clear_part(base,bullets_second[i].position.x,bullets_second[i].position.y,PLAYER_BULLET_WIDTH,PLAYER_BULLET_HEIGHT);  
+            clear_part(base,bullets_second[i].prev_x,bullets_second[i].prev_y,PLAYER_BULLET_WIDTH,PLAYER_BULLET_HEIGHT);  
             plot_bitmap_32(base,bullets[i].position.x,bullets[i].position.y,player_bullet_hex, PLAYER_BULLET_HEIGHT);
         }
     bullets_second[i].position.y = bullets[i].position.y;
