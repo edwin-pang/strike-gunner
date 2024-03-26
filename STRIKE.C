@@ -8,6 +8,8 @@
 #include "RANDOM.H"
 #include "MUSIC.H"
 #include "RASTER.H"
+#include "ISR.H"
+
 
 UINT8 buff[32256];
 Model model;
@@ -17,7 +19,7 @@ UINT8 *front_base;
 UINT8 *back_base;
 UINT8 *active_base;
 UINT8 *inactive_base;
-
+UINT8 render_request;
 UINT32 duration = QUARTER_NOTE;
 
 UINT8 *get_base(UINT8 *second_buffer){
@@ -104,7 +106,10 @@ void game(){
         set_volume(CHANNEL_A, 0);
 }
 int main(){
+    Vector orig_vb_vector;
+    orig_vb_vector = (VB_ISR,new_vb_isr);
     menu();
     game();
+    install_vector(VB_ISR,orig_vb_vector);
     return 0;
 }
