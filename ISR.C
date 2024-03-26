@@ -1,4 +1,4 @@
-/*#include "EVENTS.H"
+#include "EVENTS.H"
 #include "INPUT.H"
 #include "MODEL.H"
 #include "RENDERER.H"
@@ -11,14 +11,13 @@
 #include "ISR.H"
 #include "IKBD.H"
 
-
-volatile       UINT8 * const IKBD_control = 0xFFFC00;
-volatile const UINT8 * const IKBD_status = 0xFFFC00;
-volatile const UINT8 * const IKBD_RDR = 0xFFFC02;
 void new_vb_isr_c(){
     update_music(1);
 }
 SCANCODE read_scancode(){
+    volatile       UINT8 * const IKBD_control = 0xFFFC00;
+    volatile const UINT8 * const IKBD_status = 0xFFFC00;
+    volatile const UINT8 * const IKBD_RDR = 0xFFFC02;
     while(!(*IKBD_status & RDR_FULL))
         ;
     return *IKBD_RDR;
@@ -35,6 +34,9 @@ Vector install_vector(int num, Vector vector){
 }
 
 void do_IKBD_ISR(){
+    volatile       UINT8 * const IKBD_control = 0xFFFC00;
+volatile const UINT8 * const IKBD_status = 0xFFFC00;
+volatile const UINT8 * const IKBD_RDR = 0xFFFC02;
     UINT8 scancode;
     UINT8 ascii;
     char *scancode_2_ascii = (char *)((Keytbl(-1,-1,-1))->unshift);
@@ -46,4 +48,4 @@ void do_IKBD_ISR(){
     
     *IKBD_control = TOS_DEFAULT;
 }
-*/
+

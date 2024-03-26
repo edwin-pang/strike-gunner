@@ -13,5 +13,5 @@ Vector install_vector(int num, Vector vector);
 SCANCODE read_scancode();
 void do_IKBD_ISR();
 void new_vb_isr_c();
-void new_vb_isr()
+void new_vb_isr();
 #endif
