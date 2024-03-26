@@ -1,6 +1,9 @@
 #ifndef RASTER_H
 #define RASTER_H
 #include "types.h"
+#define VIDEO_HIGH 0xFFFF8201
+#define VIDEO_MED 0xFFFF8203
+#define CLEAR_LSB 0xFF000000
 
 extern void clear_screen();
 
@@ -118,4 +121,7 @@ bugs:				N/A
 =====================================================================================================================
 */
 void flip_screen(UINT32* base);
+UINT16 * get_video_base();
+void set_video_base(UINT16 * base);
+void set_video_base_C(UINT16 * base);
 #endif
