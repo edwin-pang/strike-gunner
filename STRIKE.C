@@ -7,6 +7,7 @@
 #include "STRIKE.H"
 #include "RANDOM.H"
 #include "MUSIC.H"
+#include "RASTER.H"
 #include "ISR.H"
 #include "IKBD.H"
 
@@ -34,7 +35,7 @@ UINT8 *get_base(UINT8 *second_buffer){
     return base + difference;
 }
 void menu(){
-    active_base = Physbase();
+    active_base = (UINT8 *) get_video_base();
     run_menu(active_base);
     while (!Cconis()){
 
@@ -54,7 +55,7 @@ void game(){
     UINT32 timeThen,timeNow,timeElapsed;
     UINT32 seed = 0;
     Model* inactive_model;
-    front_base = Physbase();
+    front_base = (UINT8 *) get_video_base();
     back_base = get_base(buff);
     active_base = front_base;
     inactive_base = back_base;
@@ -92,7 +93,7 @@ void game(){
                 inactive_base = back_base;
                 inactive_model = &back;
             }
-            Setscreen(-1, active_base, -1);
+            set_video_base_C((UINT16 *)active_base);
             timeThen = get_time();
             model.shot_time++;
             move_up_cancel(player);
@@ -103,7 +104,7 @@ void game(){
     }
 
     if (back_base = active_base){
-        Setscreen(-1, front_base, -1);
+        set_video_base_C((UINT16 *)front_base);
     }
         set_volume(CHANNEL_A, 0);
 }

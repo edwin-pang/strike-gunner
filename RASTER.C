@@ -1,5 +1,6 @@
 #include "raster.h"
 #include <stdio.h>
+#include <osbind.h>
 
 #define SCREEN_HEIGHT 400	/* These can be moved later on if there is a better */
 #define SCREEN_WIDTH 640	/* spot to put them */
@@ -178,4 +179,32 @@ void plot_pixel(UINT8 *base, int x, int y)
 		UINT8 *loc = base + y * 80 + (x >> 3);
 		*loc |= 1 << 7 - (x & 7);
 	}
+}
+
+UINT16 * get_video_base(){
+	long old_ssp;
+	UINT8 * temp_word;
+	UINT16 * the_base;
+	UINT32 temp;
+	UINT32 address;
+	old_ssp = Super(0); /* enter privileged mode */
+	temp_word = VIDEO_HIGH;
+	temp = *temp_word;
+	temp = temp << 16 ;
+	address = temp;
+	temp_word = VIDEO_MED;
+	temp = *temp_word;
+	temp = temp << 8;
+	address += temp;
+	the_base = (UINT16 *) address;
+	Super(old_ssp); /* exit privileged mode as soon as possible */
+	
+	return the_base;
+
+}
+void set_video_base_C(UINT16 * base){
+	long old_ssp;
+	old_ssp = Super(0); /* enter privileged mode */
+	set_video_base(base);
+	Super(old_ssp); /* exit privileged mode as soon as possible */
 }
