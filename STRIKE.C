@@ -10,6 +10,7 @@
 #include "RASTER.H"
 #include "ISR.H"
 
+#include "IKBD.H"
 
 UINT8 buff[32256];
 Model model;
@@ -20,6 +21,10 @@ UINT8 *back_base;
 UINT8 *active_base;
 UINT8 *inactive_base;
 UINT8 render_request;
+UINT8 key_buff[50];
+UINT8 head = 0;
+UINT8 rear = 0;
+
 UINT32 duration = QUARTER_NOTE;
 
 UINT8 *get_base(UINT8 *second_buffer){
@@ -40,7 +45,7 @@ void menu(){
     key_request();
 }
 void game(){
-        UINT8 prev_hor;
+    UINT8 prev_hor;
     UINT8 prev_ver;
     Model *model_ptr = &model;
     int old_lives = 3;
@@ -107,9 +112,12 @@ void game(){
 }
 int main(){
     Vector orig_vb_vector;
+        Vector orig_ikbd_vector = install_vector(IKBD_ISR, ikbd_isr);
     orig_vb_vector = (VB_ISR,new_vb_isr);
     menu();
     game();
     install_vector(VB_ISR,orig_vb_vector);
+    install_vector(IKBD_ISR, orig_ikbd_vector);
+   
     return 0;
 }

@@ -20,6 +20,9 @@
         "memory": "cpp",
         "random": "cpp",
         "xutility": "cpp",
-        "MENU.C": "cpp"
+        "MENU.C": "cpp",
+        "RANDOM.C": "cpp",
+        "ISR.C": "cpp",
+        "TST_ISR.C": "cpp"
     }
 }
