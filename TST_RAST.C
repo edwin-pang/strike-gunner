@@ -2,12 +2,13 @@
 #include "raster.h"
 #include "TYPES.H"
 #include "bitmap.c"
-
+#include <stdio.h>
 
 
 int main()
 {
-	void *base = Physbase();
+	void *base = get_video_base();
+	set_video_base_C(base);
 
 	clear_screen(base);
 
@@ -58,7 +59,6 @@ int main()
 
 	plot_vertical_line(base,250,350,75,1);
 	plot_vertical_line(base,255,275,75,1);
-
-
+	printf("%p\n",base);
 	return 0;
 }

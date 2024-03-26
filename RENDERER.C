@@ -49,7 +49,7 @@ void run_menu(UINT8 * base){
     flip_screen((UINT32*) base);
 }
 void render_clear(){
-    void *base = Physbase();
+    void *base = get_video_base;
     clear_screen(base);
 }
 void render_score(Model *model, UINT8 *base){
