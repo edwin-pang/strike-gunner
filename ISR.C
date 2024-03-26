@@ -1,16 +1,21 @@
-#include "ISR.H"
+/*#include "EVENTS.H"
+#include "INPUT.H"
+#include "MODEL.H"
+#include "RENDERER.H"
+#include <stdio.h>
 #include <osbind.h>
-#include "strike.h"
+#include "STRIKE.H"
+#include "RANDOM.H"
 #include "MUSIC.H"
-#include "PSG.H"
-
-
+#include "RASTER.H"
+#include "ISR.H"
+#include "IKBD.H"
 
 volatile       UINT8 * const IKBD_control = 0xFFFC00;
 volatile const UINT8 * const IKBD_status = 0xFFFC00;
 volatile const UINT8 * const IKBD_RDR = 0xFFFC02;
 void new_vb_isr_c(){
-    update_music()
+    update_music(1);
 }
 SCANCODE read_scancode(){
     while(!(*IKBD_status & RDR_FULL))
@@ -31,7 +36,7 @@ Vector install_vector(int num, Vector vector){
 void do_IKBD_ISR(){
     UINT8 scancode;
     UINT8 ascii;
-    /*char *scancode_2_ascii = (char *)((Keytbl(-1,-1,-1))->unshift);*/
+    char *scancode_2_ascii = (char *)((Keytbl(-1,-1,-1))->unshift);
 
     *IKBD_control = RX_DISABLE;
 
@@ -40,3 +45,4 @@ void do_IKBD_ISR(){
     
     *IKBD_control = TOS_DEFAULT;
 }
+*/

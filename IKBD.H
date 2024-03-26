@@ -7,6 +7,5 @@
 #define BREAK_CODE 0x80
 #define MAKE_CODE 0xEF
 
-void ikbd_isr();
 
 #endif
