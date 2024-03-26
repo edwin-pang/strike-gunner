@@ -8,6 +8,9 @@
 #include "RANDOM.H"
 #include "MUSIC.H"
 #include "RASTER.H"
+#include "ISR.H"
+#include "IKBD.H"
+#include "RASTER.H"
 
 UINT8 buff[32256];
 Model model;
