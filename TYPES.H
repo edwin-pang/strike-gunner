@@ -16,11 +16,12 @@
 #define LEFT_KEY 0x004b0000
 #define ESC_KEY 27
 
-
 #define QUIT 1
 
 typedef unsigned char UINT8;
 typedef unsigned int  UINT16;
 typedef unsigned long UINT32;
+
+typedef UINT8 SCANCODE;
 
 #endif

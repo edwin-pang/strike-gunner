@@ -7,6 +7,8 @@
 #include "STRIKE.H"
 #include "RANDOM.H"
 #include "MUSIC.H"
+#include "ISR.H"
+#include "IKBD.H"
 
 UINT8 buff[32256];
 Model model;
@@ -16,6 +18,9 @@ UINT8 *front_base;
 UINT8 *back_base;
 UINT8 *active_base;
 UINT8 *inactive_base;
+UINT8 key_buff[50];
+UINT8 head = 0;
+UINT8 rear = 0;
 
 UINT32 duration = QUARTER_NOTE;
 
@@ -37,7 +42,7 @@ void menu(){
     key_request();
 }
 void game(){
-        UINT8 prev_hor;
+    UINT8 prev_hor;
     UINT8 prev_ver;
     Model *model_ptr = &model;
     int old_lives = 3;
@@ -103,7 +108,9 @@ void game(){
         set_volume(CHANNEL_A, 0);
 }
 int main(){
+    Vector orig_vector = install_vector(IKBD_ISR, ikbd_isr);
     menu();
     game();
+    install_vector(IKBD_ISR, orig_vector);
     return 0;
 }
