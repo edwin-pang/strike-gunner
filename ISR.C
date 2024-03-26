@@ -1,6 +1,7 @@
 #include "ISR.H"
-#include "IKBD.H
+#include "IKBD.H"
 #include "STRIKE.H"
+
 
 volatile       UINT8 * const IKBD_control = 0xFFFC00;
 volatile const UINT8 * const IKBD_status = 0xFFFC00;
@@ -25,12 +26,12 @@ Vector install_vector(int num, Vector vector){
 void do_IKBD_ISR(){
     UINT8 scancode;
     UINT8 ascii;
-    /*char *scancode_2_ascii = (char *)((Keytbl(-1,-1,-1))->unshift);*/
+    /*char *scancode_2_ascii = (char *)((Keytbl(-1,-1,-1))->unshift);
 
     *IKBD_control = RX_DISABLE;
 
     scancode = read_scancode();
     key_buff[(rear + 1) % KEY_BUFF_SZ] = scancode;
     
-    *IKBD_control = TOS_DEFAULT;
+    *IKBD_control = TOS_DEFAULT;*/
 }
