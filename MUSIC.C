@@ -55,7 +55,7 @@ void start_music(){
     set_volume(CHANNEL_A, 0x10);
 }
 
-void update_music(UINT32 time_elapsed) {
+void update_music() {
 
     if(duration == 0){
         set_noise(0x00);
@@ -65,7 +65,7 @@ void update_music(UINT32 time_elapsed) {
         current_note = (current_note == SONG_SZ - 1) ? 0 : current_note + 1;
         set_envelope(0x00, song[current_note].sustain);
         set_tone(CHANNEL_A, song[current_note].the_note);
-    }else if(time_elapsed >= 0){
+    }else {
         duration -=1;
     }
 }

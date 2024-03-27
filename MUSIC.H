@@ -79,6 +79,6 @@ limitations:
 bugs:        boom music
 =====================================================================================================================
 */
-void update_music(UINT32 time_elapsed);
+void update_music();
 
 #endif

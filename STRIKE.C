@@ -8,6 +8,7 @@
 #include "RANDOM.H"
 #include "MUSIC.H"
 #include "RASTER.H"
+#include "isr.h"
 
 UINT8 buff[32256];
 Model model;
@@ -53,6 +54,8 @@ void game(){
     UINT32 timeThen,timeNow,timeElapsed;
     UINT32 seed = 0;
     Model* inactive_model;
+    long old_ssp;
+    render_request = 0;
     front_base = (UINT8 *) get_video_base();
     back_base = get_base(buff);
     active_base = front_base;
@@ -65,7 +68,7 @@ void game(){
     render(model_ptr, back_base);
     inactive_model = &back;
     timeThen = get_time();
-    start_music();
+
 
     while(model_ptr->quit_game == FALSE){
         timeNow = get_time();
@@ -76,9 +79,9 @@ void game(){
             key_request();
             model.shot_time++;
         }
-        if(timeElapsed >= 2){
-            update_music(duration);
-            sync_event_check();
+        if(render_request){
+            /*update_music(duration);
+            sync_event_check();*/
             /*printf("%d %d %d %d %d %d %d %d %d %d \n", model_ptr->enemies[0].prev_y,model_ptr->enemies[0].position.y, model_ptr->enemies[1].prev_y,model_ptr->enemies[1].position.y,model_ptr->enemies[2].prev_y,model_ptr->enemies[2].position.y,model_ptr->enemies[3].prev_y,model_ptr->enemies[3].position.y,model_ptr->enemies[4].prev_y,model_ptr->enemies[4].position.y);*/
             /*check_snapshot(inactive_base);*/
             render_moveables(inactive_model, inactive_base);
@@ -94,9 +97,10 @@ void game(){
             set_video_base_C((UINT16 *)active_base);
             timeThen = get_time();
             model.shot_time++;
-            move_up_cancel(player);
+            render_request = 0;
+            /*move_up_cancel(player);
             move_right_cancel(player);
-            fire_main_cancel(player);
+            fire_main_cancel(player);*/
             
         }
     }
@@ -104,16 +108,23 @@ void game(){
     if (back_base = active_base){
         set_video_base_C((UINT16 *)front_base);
     }
-        set_volume(CHANNEL_A, 0);
+    old_ssp = Super(0);
+    set_volume(CHANNEL_A, 0);
+    Super(old_ssp);
 }
 int main(){
-    /*Vector orig_vb_vector;
-    Vector orig_ikbd_vector = install_vector(IKBD_ISR, ikbd_isr);
-    orig_vb_vector = (VB_ISR,new_vb_isr);*/
+    Vector orig_vb_vector;
+    long old_ssp;
+    /*Vector orig_ikbd_vector = install_vector(IKBD_ISR, ikbd_isr);*/
+    
     menu();
+    old_ssp = Super(0);
+    start_music();
+    Super(old_ssp);
+    
+    orig_vb_vector = install_vector(VB_ISR,VBL_ISR);
     game();
-    /*install_vector(VB_ISR,orig_vb_vector);
+    install_vector(VB_ISR,orig_vb_vector);/*
     install_vector(IKBD_ISR, orig_ikbd_vector);*/
-   
     return 0;
 }

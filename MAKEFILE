@@ -60,8 +60,8 @@ menu: menu.o raster.o rast_asm.o
 menu.o: menu.c raster.h
 	cc68x -g -c menu.c
 
-game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o music.o
-	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o music.o -o game_exe
+game_exe: strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o music.o isr.o isr_asm.o
+	cc68x -g strike.o input.o model.o events.o renderer.o raster.o rast_asm.o effects.o psg.o random.o music.o isr.o isr_asm.o -o game_exe
 
 input.o: input.c input.h
 	cc68x -g -c input.c
@@ -69,10 +69,10 @@ input.o: input.c input.h
 tst_eff: effects.o tst_eff.o psg.o
 	cc68x -g effects.o tst_eff.o psg.o -o tst_eff
 
-strike.o: strike.c
+strike.o: strike.c strike.h
 	cc68x -g -c strike.c
 
-tst_isr.o: tst_isr.c isr.o
+tst_isr.o: tst_isr.c
 	cc68x -g -c tst_isr.c
 
 effects.o: effects.c effects.h
@@ -84,8 +84,11 @@ tst_eff.o: tst_eff.c psg.h effects.h
 ikbd_asm.o:	ikbd_asm.s
 	gen -D -L2 ikbd_asm.s
 
+isr_asm.o:	isr_asm.s
+	gen -D -L2 isr_asm.s
+
 isr.o: isr.c isr.h ikbd.h
 	cc68x -g -c isr.c
 
-tst_isr: tst_isr.o isr.o ikbd_asm.o music.o psg.o
-	cc68x -g tst_isr.o isr.o ikbd_asm.o music.o psg.o -o tst_isr
+tst_isr: tst_isr.o isr.o isr_asm.o ikbd_asm.o music.o psg.o events.o model.o input.o effects.o
+	cc68x -g tst_isr.o isr.o isr_asm.o ikbd_asm.o music.o psg.o events.o model.o input.o effects.o -o tst_isr

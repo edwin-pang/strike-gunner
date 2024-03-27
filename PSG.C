@@ -6,12 +6,10 @@ void write_psg(int reg, UINT8 val){
     long old_ssp;
 
     if (reg >= 0 && reg <= 15 ){
-        old_ssp = Super(0);
 
         *PSG_reg_select = reg;
         *PSG_reg_write = val;
 
-        Super(old_ssp);
     }
 }
 
@@ -20,12 +18,10 @@ int read_psg(int reg){
     int val = -1;
 
     if (reg >= 0 && reg <= 15){
-        old_ssp = Super(0);
 
         *PSG_reg_select = reg;
         val = *PSG_reg_select;
 
-        Super(old_ssp);
     }
 
     return val;

@@ -11,9 +11,14 @@
 #include "ISR.H"
 #include "IKBD.H"
 
-void new_vb_isr_c(){
-    update_music(1);
+void VB_ISR_c(){
+    update_music();
+    if (render_request == 0){
+        sync_event_check();
+        render_request = 1;
+    }
 }
+ 
 SCANCODE read_scancode(){
     volatile       UINT8 * const IKBD_control = 0xFFFC00;
     volatile const UINT8 * const IKBD_status = 0xFFFC00;

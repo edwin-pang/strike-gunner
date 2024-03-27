@@ -11,7 +11,7 @@
 typedef void (*Vector)(); /* a Vector is a function start addr. */
 Vector install_vector(int num, Vector vector);
 SCANCODE read_scancode();
+extern void VBL_ISR();
 void do_IKBD_ISR();
-void new_vb_isr_c();
-void new_vb_isr();
+void VB_ISR_c();
 #endif

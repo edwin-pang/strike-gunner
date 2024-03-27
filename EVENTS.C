@@ -5,10 +5,12 @@
 #include "STRIKE.H"
 #include "TST_EV.H"
 #include "INPUT.H"
+#include <osbind.h>
 
 
 void key_request(){
     UINT8 key = get_key();
+    long old_ssp;
     if(key == 'w'){
         model.ship->ver_dir = UP; 
     }
@@ -24,7 +26,9 @@ void key_request(){
     else if(key == 'x' && model.shot_time >= 35){
         model.ship->fire_wep = TRUE; 
         model.shot_time = 0;
+        old_ssp = Super(0);
         play_bullet();
+        Super(old_ssp);
     }
     else if (key == ESC_KEY){
         model.quit_game = TRUE;
